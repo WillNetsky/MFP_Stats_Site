@@ -35,14 +35,47 @@ The project is organized into modular Python scripts:
 *   `site_generator.py`: Responsible for rendering Jinja2 templates and writing HTML files to the `output` directory.
 *   `config.py`: Centralized configuration settings for the project (e.g., excluded series, directory paths).
 *   `requirements.txt`: Lists all Python dependencies.
+*   `matchplay-openapi.yaml`: OpenAPI specification for the Matchplay API.
 *   `templates/`: Contains Jinja2 HTML templates (`.html` files).
 *   `static/`: Contains static assets like CSS files.
 *   `data/`: Stores cached API responses and mapping files (e.g., `finals_mapping.json`).
 *   `.github/workflows/deploy.yml`: GitHub Actions workflow definition for automated deployment.
+*   `player_page_example_files/`: Example files for player pages (if applicable, otherwise consider removing or clarifying).
+
+## Quick Start
+
+Follow these steps to get the site up and running locally:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/WillNetsky/MFP_Stats_Site.git
+    cd MFP_Stats_Site
+    ```
+
+2.  **Set up Python environment:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `.\venv\Scripts\activate`
+    pip install -r requirements.txt
+    ```
+
+3.  **Configure API Keys:**
+    Create a `.env` file in the root directory with your Matchplay API Key and your Matchplay User ID:
+    ```
+    MATCHPLAY_API_KEY="YOUR_MATCHPLAY_API_KEY"
+    USER_ID="YOUR_MATCHPLAY_USER_ID" # Your Matchplay Events User ID
+    ```
+    Replace `"YOUR_MATCHPLAY_API_KEY"` and `"YOUR_MATCHPLAY_USER_ID"` with your actual credentials.
+
+4.  **Fetch data and generate the site:**
+    ```bash
+    python main.py --fetch --generate
+    ```
+    After generation, open `output/index.html` in your browser to view the site.
 
 ## Setup (Local Development)
 
-To set up the project locally:
+To set up the project locally (detailed version):
 
 1.  **Clone the repository:**
     ```bash
@@ -68,7 +101,7 @@ To set up the project locally:
     Create a `.env` file in the root directory of the project with your Matchplay API Key and User ID:
     ```
     MATCHPLAY_API_KEY="YOUR_MATCHPLAY_API_KEY"
-    USER_ID="YOUR_MATCHPLAY_USER_ID"
+    USER_ID="YOUR_MATCHPLAY_USER_ID" # Your Matchplay Events User ID
     ```
     Replace `"YOUR_MATCHPLAY_API_KEY"` and `"YOUR_MATCHPLAY_USER_ID"` with your actual credentials.
 
@@ -94,6 +127,12 @@ Run the `main.py` script with command-line arguments:
     ```
 
 After generation, the static HTML files will be located in the `output/` directory. You can open `output/index.html` in your browser to view the site.
+
+## Customization
+
+*   **Excluded Series:** Modify the `EXCLUDED_SERIES_NAMES` list in `config.py` to control which series are included or excluded from the generated statistics.
+*   **Templates:** The HTML structure and content can be customized by editing the Jinja2 templates located in the `templates/` directory.
+*   **Static Assets:** Update CSS styles or add new static files in the `static/` directory.
 
 ## Automated Deployment (GitHub Actions & Pages)
 
