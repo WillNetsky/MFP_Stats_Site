@@ -1,0 +1,38 @@
+name: Deploy Static Site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+  schedule:
+    - cron: '0 0 * * *' # Daily build at midnight UTC
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Use a Linux virtual machine
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4 # Action to checkout your repository code
+
+      - name: Set up Python 🐍
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x' # Specify your Python version
+
+      - name: Install dependencies ⚙️
+        run: pip install -r requirements.txt
+
+      - name: Fetch data and Generate site 🚀
+        env:
+          MATCHPLAY_API_KEY: ${{ secrets.MATCHPLAY_API_KEY }} # Access API key from GitHub Secrets
+          USER_ID: ${{ secrets.USER_ID }} # Access User ID from GitHub Secrets
+        run: python main.py --fetch --generate
+
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v3 # Action to deploy to gh-pages branch
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub's built-in token for authentication
+          publish_dir: ./output # The directory containing your generated site
+          publish_branch: gh-pages # The branch to push the static files to
