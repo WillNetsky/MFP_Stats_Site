@@ -12,6 +12,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest # Use a Linux virtual machine
 
+    permissions:
+      contents: write # This grants write access to the repository contents
+
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4 # Action to checkout your repository code
