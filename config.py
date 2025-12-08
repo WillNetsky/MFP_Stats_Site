@@ -4,6 +4,7 @@
 DATA_DIR = "data"
 OUTPUT_DIR = "output"
 TEMPLATES_DIR = "templates"
+STATIC_DIR = "static"
 
 # -- Series Configuration --
 # Series to exclude from all processing

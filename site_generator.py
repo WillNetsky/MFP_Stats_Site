@@ -1,10 +1,11 @@
 import os
+import shutil
 from jinja2 import Environment, FileSystemLoader
 import json # Import json to dump data for Chart.js
 
 from data_processor import load_all_series_data, load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list
 from api_client import fetch_finals_results
-from config import OUTPUT_DIR, TEMPLATES_DIR, MIN_WEEKS_FOR_IMPROVEMENT
+from config import OUTPUT_DIR, TEMPLATES_DIR, MIN_WEEKS_FOR_IMPROVEMENT, STATIC_DIR
 
 # --- Jinja2 Custom Filters ---
 def score_color_filter(score):
@@ -763,6 +764,13 @@ def generate_site(excluded_series_names):
     print("Generating static site...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     
+    # Copy static files to output directory
+    static_output_dir = os.path.join(OUTPUT_DIR, 'static')
+    if os.path.exists(static_output_dir):
+        shutil.rmtree(static_output_dir)
+    shutil.copytree(STATIC_DIR, static_output_dir)
+    print(f"Copied static files from '{STATIC_DIR}' to '{static_output_dir}'")
+
     all_series_data = load_all_series_data(excluded_series_names)
 
     if not all_series_data:

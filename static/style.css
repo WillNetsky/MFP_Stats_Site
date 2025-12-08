@@ -60,7 +60,28 @@ thead {
     background-color: #cd7f32; /* Bronze */
 }
 
-.trophy-icon::after {
-    content: '🏆';
+/* Specific medals for 1st, 2nd, 3rd and 4th */
+.gold-finish .trophy-icon::after {
+    content: '🥇';
     font-size: 1.2em;
+}
+
+.silver-finish .trophy-icon::after {
+    content: '🥈';
+    font-size: 1.2em;
+}
+
+.bronze-finish .trophy-icon::after {
+    content: '🥉';
+    font-size: 1.2em;
+}
+
+.fourth-finish .trophy-icon::after {
+    content: '4️⃣';
+    font-size: 1.2em;
+}
+
+/* Wider container for player pages */
+.player-page .container {
+    max-width: 1600px;
 }

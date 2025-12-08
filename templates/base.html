@@ -86,7 +86,7 @@
         themeSwitcher.init();
     </script>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
     {% include '_navbar.html' %}
     <main class="container">
         {% block content %}{% endblock %}

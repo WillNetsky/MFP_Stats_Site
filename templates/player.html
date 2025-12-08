@@ -2,6 +2,8 @@
 
 {% block title %}{{ player.name }} - Pinball League Stats{% endblock %}
 
+{% block body_class %}player-page{% endblock %}
+
 {% block head %}
     {{ super() }}
 {% endblock %}
@@ -39,12 +41,12 @@
                 <tbody>
                     {% for season_data in mfp_seasons %}
                         {% set pos = season_data.summary_stats.final_position %}
-                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% endif %}">
+                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
                             <td>{{ season_data.year }}</td>
                             <td>{{ season_data.season_name }}</td>
                             <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
                             <td>{{ pos }}</td>
-                            <td>{% if pos is number and pos <= 4 %}<span class="trophy-icon"></span>{% endif %}</td>
+                            <td class="trophy-icon"></td>
                             <td>{{ season_data.summary_stats.total_adjusted_points | format_number }}</td>
                             <td>{{ season_data.summary_stats.total_raw_points | format_number }}</td>
                             <td>{{ season_data.summary_stats.weeks_played }}</td>
@@ -90,12 +92,12 @@
                 <tbody>
                     {% for season_data in mflp_seasons %}
                         {% set pos = season_data.summary_stats.final_position %}
-                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% endif %}">
+                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
                             <td>{{ season_data.year }}</td>
                             <td>{{ season_data.season_name }}</td>
                             <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
                             <td>{{ pos }}</td>
-                            <td>{% if pos is number and pos <= 4 %}<span class="trophy-icon"></span>{% endif %}</td>
+                            <td class="trophy-icon"></td>
                             <td>{{ season_data.summary_stats.total_adjusted_points | format_number }}</td>
                             <td>{{ season_data.summary_stats.total_raw_points | format_number }}</td>
                             <td>{{ season_data.summary_stats.weeks_played }}</td>
@@ -160,7 +162,7 @@
                 const mflpLabels = mflpChartData.map(item => item.label);
                 const mflpValues = mflpChartData.map(item => item.value);
                 const mflpCtx = document.getElementById('mflpPerformanceChart').getContext('2d');
-                new Chart(mflpCtx, {
+                new Chart(mfpCtx, {
                     type: 'line',
                     data: {
                         labels: mflpLabels,
