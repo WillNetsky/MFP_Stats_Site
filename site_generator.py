@@ -493,8 +493,7 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
     
     # Track all winning scores to determine the global minimum winning score
     all_winning_scores = []
-    mfp_perfect_nights = []
-    mflp_perfect_nights = []
+    all_perfect_nights = [] # Consolidated list for perfect nights
 
     # Create a temporary list of season entries to apply year corrections consistently
     temp_season_entries = []
@@ -642,12 +641,15 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                                 'seriesName': series_name,
                                 'year': year,
                                 'season_name': season_name_parsed,
-                                'week_num': week_num
+                                'week_num': week_num,
+                                'league_type': 'Combined' # Default to combined
                             }
                             if "MFPinball" in league_name_parsed or "MFP" in league_name_parsed:
-                                mfp_perfect_nights.append(perfect_night_entry)
+                                perfect_night_entry['league_type'] = 'MFP'
                             elif "MFLadies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
-                                mflp_perfect_nights.append(perfect_night_entry)
+                                perfect_night_entry['league_type'] = 'MFLP'
+                            
+                            all_perfect_nights.append(perfect_night_entry)
                     
                     if weekly_winner_id and target_stats_dict and weekly_winner_id in target_stats_dict:
                         target_stats_dict[weekly_winner_id]['weekly_wins'] += 1
@@ -660,10 +662,8 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
         if stats['total_weeks_played'] > 0:
             stats['average_points_per_week'] = stats['total_raw_points'] / stats['total_weeks_played']
 
-    # Sort perfect nights by seriesId then week_num
-    mfp_perfect_nights.sort(key=lambda x: (x['seriesId'], x['week_num']))
-    mflp_perfect_nights.sort(key=lambda x: (x['seriesId'], x['week_num']))
-    combined_perfect_nights = sorted(mfp_perfect_nights + mflp_perfect_nights, key=lambda x: (x['seriesId'], x['week_num']))
+    # Sort all perfect nights by seriesId then week_num
+    all_perfect_nights.sort(key=lambda x: (x['seriesId'], x['week_num']))
 
     # Determine global minimum winning score
     min_winning_score = min(all_winning_scores) if all_winning_scores else 0.0
@@ -836,9 +836,7 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
             combined_top_4_finishes_leaderboard=combined_top_4_finishes_leaderboard,
             combined_best_season_score_leaderboard=combined_best_season_score_leaderboard,
             combined_most_improved_leaderboard=combined_most_improved_leaderboard,
-            mfp_perfect_nights=mfp_perfect_nights,
-            mflp_perfect_nights=mflp_perfect_nights,
-            combined_perfect_nights=combined_perfect_nights
+            all_perfect_nights=all_perfect_nights # Pass the consolidated list
         ))
     print("Generated leaderboards.html")
 

@@ -489,7 +489,7 @@
     </div>
 
     <h2>Perfect Nights (Score of 35)</h2>
-    {% if perfect_nights_leaderboard %}
+    {% if all_perfect_nights %}
         <div class="table-container">
             <table id="perfect-nights-table">
                 <thead>
@@ -497,14 +497,16 @@
                         <th onclick="sortTable('perfect-nights-table', 0)">Player</th>
                         <th onclick="sortTable('perfect-nights-table', 1)">Season</th>
                         <th onclick="sortTable('perfect-nights-table', 2)">Week</th>
+                        <th onclick="sortTable('perfect-nights-table', 3)">League</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for entry in perfect_nights_leaderboard %}
-                        <tr>
+                    {% for entry in all_perfect_nights %}
+                        <tr data-league-type="{{ entry.league_type }}">
                             <td><a href="player_{{ entry.playerId }}.html">{{ entry.name }}</a></td>
                             <td><a href="season_{{ entry.seriesId }}.html">{{ entry.seriesName }}</a></td>
                             <td>Week {{ entry.week_num }}</td>
+                            <td>{{ entry.league_type }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -516,10 +518,47 @@
 
     <script>
         function showLeaderboard(league) {
+            // Hide all leaderboard sets
             document.getElementById('mfp-leaderboards').style.display = 'none';
             document.getElementById('mflp-leaderboards').style.display = 'none';
             document.getElementById('both-leaderboards').style.display = 'none';
+
+            // Show the selected leaderboard set
             document.getElementById(league + '-leaderboards').style.display = 'block';
+
+            // Filter perfect nights based on the selected league
+            filterPerfectNights(league);
         }
+
+        function filterPerfectNights(league) {
+            const table = document.getElementById('perfect-nights-table');
+            if (!table) return;
+
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            let leagueTypeFilter;
+
+            if (league === 'mfp') {
+                leagueTypeFilter = 'MFP';
+            } else if (league === 'mflp') {
+                leagueTypeFilter = 'MFLP';
+            } else { // 'both' or any other default
+                leagueTypeFilter = 'Combined';
+            }
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const rowLeagueType = row.getAttribute('data-league-type');
+                if (leagueTypeFilter === 'Combined' || rowLeagueType === leagueTypeFilter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize display to 'both' on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            showLeaderboard('both');
+        });
     </script>
 {% endblock %}
