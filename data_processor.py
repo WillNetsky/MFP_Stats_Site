@@ -16,14 +16,9 @@ def load_all_series_data(excluded_series_names):
             with open(filepath, 'r') as f:
                 series_data_raw = json.load(f)
                 
-                # --- ADD THIS DEBUG PRINT STATEMENT ---
-                current_series_name = series_data_raw['data']['name']
-                print(f"DEBUG: Checking series '{current_series_name}' (ID: {series_data_raw['data']['seriesId']}) against excluded list: {excluded_series_names}")
-                # --- END DEBUG PRINT STATEMENT ---
-
                 # Also filter excluded series during loading, in case they were fetched previously
-                if current_series_name in excluded_series_names:
-                    print(f"Skipping excluded series during load: {current_series_name} (ID: {series_data_raw['data']['seriesId']})")
+                if series_data_raw['data']['name'] in excluded_series_names:
+                    print(f"Skipping excluded series during load: {series_data_raw['data']['name']} (ID: {series_data_raw['data']['seriesId']})")
                     continue
                 all_series_data.append(series_data_raw)
     return all_series_data

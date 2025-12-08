@@ -1,5 +1,6 @@
 import os
 from jinja2 import Environment, FileSystemLoader
+import json # Import json to dump data for Chart.js
 
 from data_processor import load_all_series_data, load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list
 from api_client import fetch_finals_results
@@ -444,11 +445,32 @@ def generate_player_pages(env, all_series_data):
     for player_id, data in player_categorized_seasons.items():
         player = data['player_info']
         
+        # Prepare data for Chart.js
+        mfp_chart_data = []
+        # Sort seasons by year and then by seriesId to ensure chronological order for the graph
+        sorted_mfp_seasons = sorted(data['mfp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
+        for season in sorted_mfp_seasons:
+            mfp_chart_data.append({
+                'label': f"{season['season_name']} {season['year']}",
+                'value': season['summary_stats']['average_points_per_week'] # Changed to average_points_per_week
+            })
+        
+        mflp_chart_data = []
+        # Sort seasons by year and then by seriesId to ensure chronological order for the graph
+        sorted_mflp_seasons = sorted(data['mflp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
+        for season in sorted_mflp_seasons:
+            mflp_chart_data.append({
+                'label': f"{season['season_name']} {season['year']}",
+                'value': season['summary_stats']['average_points_per_week'] # Changed to average_points_per_week
+            })
+
         with open(os.path.join(OUTPUT_DIR, f"player_{player_id}.html"), 'w') as f:
             f.write(player_template.render(
                 player=player,
                 mfp_seasons=data['mfp_seasons'],
-                mflp_seasons=data['mflp_seasons']
+                mflp_seasons=data['mflp_seasons'],
+                mfp_chart_data=json.dumps(mfp_chart_data), # Pass as JSON string
+                mflp_chart_data=json.dumps(mflp_chart_data) # Pass as JSON string
             ))
         print(f"Generated player_{player_id}.html")
 
@@ -744,13 +766,12 @@ def generate_site(excluded_series_names):
     all_series_data = load_all_series_data(excluded_series_names)
 
     if not all_series_data:
-        print("\\nNo data found in the 'data' directory.")
+        print("\nNo data found in the 'data' directory.")
         print("Please run the script with fetch_data() enabled to download the data first.")
         return
     
     project_root = os.environ.get('GITHUB_WORKSPACE', os.path.abspath(os.path.dirname(__file__)))
     templates_full_path = os.path.join(project_root, TEMPLATES_DIR)
-    print(f"DEBUG: Attempting to load templates from: {templates_full_path}")
 
     env = Environment(loader=FileSystemLoader(templates_full_path))
     env.filters['score_color_code'] = score_color_filter # Register the custom filter
