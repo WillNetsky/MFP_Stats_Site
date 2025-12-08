@@ -2,8 +2,9 @@ import os
 import requests
 import json
 from dotenv import load_dotenv
+import time # Import time module
 
-from config import DATA_DIR
+from config import DATA_DIR, CACHE_EXPIRY_HOURS
 
 load_dotenv()
 
@@ -17,6 +18,14 @@ HEADERS = {
     "Content-Type": "application/json",
     "Accept": "application/json"
 }
+
+def is_cache_stale(filepath):
+    """Checks if a cached file is older than CACHE_EXPIRY_HOURS."""
+    if not os.path.exists(filepath):
+        return True
+    file_mod_time = os.path.getmtime(filepath)
+    current_time = time.time()
+    return (current_time - file_mod_time) > (CACHE_EXPIRY_HOURS * 3600) # 3600 seconds in an hour
 
 def get_series_by_owner(user_id, status=None):
     """
@@ -47,10 +56,11 @@ def get_series_by_owner(user_id, status=None):
     
     return all_series
 
-def fetch_finals_results(tournament_ids):
+def fetch_finals_results(tournament_ids, series_status='active'):
     """
     Fetches and caches finals standings for a given tournament ID or list of IDs.
     Combines results if multiple IDs are provided.
+    The series_status is used to determine if cache staleness should be checked.
     """
     if not isinstance(tournament_ids, list):
         tournament_ids = [tournament_ids]
@@ -61,11 +71,25 @@ def fetch_finals_results(tournament_ids):
         filepath = os.path.join(DATA_DIR, f"finals_standings_{tournament_id}.json")
         
         current_results = None
-        if os.path.exists(filepath):
-            with open(filepath, 'r') as f:
-                current_results = json.load(f)
-        else:
-            print(f"Fetching finals standings for Tournament ID: {tournament_id}...")
+        should_fetch = False
+
+        if series_status == 'completed':
+            if not os.path.exists(filepath):
+                should_fetch = True
+            else:
+                print(f"Using permanently cached finals standings for Tournament ID: {tournament_id} (completed series)...")
+                with open(filepath, 'r') as f:
+                    current_results = json.load(f)
+        else: # active or upcoming series
+            if not os.path.exists(filepath) or is_cache_stale(filepath):
+                should_fetch = True
+            else:
+                print(f"Using cached finals standings for Tournament ID: {tournament_id}...")
+                with open(filepath, 'r') as f:
+                    current_results = json.load(f)
+
+        if should_fetch:
+            print(f"Fetching finals standings for Tournament ID: {tournament_id} (cache stale/not found or completed series)...")
             url = f"{BASE_URL}/tournaments/{tournament_id}/standings" # Corrected endpoint
             try:
                 response = requests.get(url, headers=HEADERS)
@@ -102,9 +126,22 @@ def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
         series_id = series['seriesId']
         series_filepath = os.path.join(DATA_DIR, f"series_{series_id}.json")
 
-        # Only fetch data if the file doesn't exist
-        if not os.path.exists(series_filepath):
-            print(f"Fetching details for Series ID: {series_id}...")
+        should_fetch_series = False
+        if series['status'] == 'completed':
+            if not os.path.exists(series_filepath):
+                should_fetch_series = True
+            else:
+                print(f"Using permanently cached details for Series ID: {series_id} (completed series)...")
+                series_data_raw = json.load(open(series_filepath, 'r'))
+        else: # active or upcoming series
+            if not os.path.exists(series_filepath) or is_cache_stale(series_filepath):
+                should_fetch_series = True
+            else:
+                print(f"Using cached details for Series ID: {series_id}...")
+                series_data_raw = json.load(open(series_filepath, 'r'))
+
+        if should_fetch_series:
+            print(f"Fetching details for Series ID: {series_id} (cache stale/not found or completed series)...")
             url = f"{BASE_URL}/series/{series_id}"
             params = {'includeDetails': 'true'}
             response = requests.get(url, headers=HEADERS, params=params)
@@ -114,8 +151,6 @@ def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
             with open(series_filepath, 'w') as f:
                 json.dump(series_data_raw, f, indent=4)
             print(f"Saved details for series {series_id}")
-        else:
-            print(f"Skipping fetch for existing Series ID: {series_id}")
 
         # After saving series data, check if it has associated finals in the mapping
         year, season_name_parsed, league_name_parsed = parse_series_name_func(series['name'])
@@ -133,4 +168,5 @@ def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
             key = f"{season_name_parsed} {corrected_year}"
             finals_tournament_ids = finals_mapping[league_name_parsed].get(key)
             if finals_tournament_ids:
-                fetch_finals_results(finals_tournament_ids) # Fetch and cache finals results
+                # Pass the series status to fetch_finals_results
+                fetch_finals_results(finals_tournament_ids, series_status=series['status'])
