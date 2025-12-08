@@ -114,6 +114,36 @@
         <p>No MFLadies Pinball season data available for this player.</p>
     {% endif %}
 
+    <h2>Performance by Machine</h2>
+    {% if game_performance %}
+        <div class="table-container">
+            <table id="game-performance-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('game-performance-table', 0)">Machine</th>
+                        <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
+                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game_name, stats in game_performance.items() %}
+                        <tr>
+                            <td>{{ game_name }}</td>
+                            <td>{{ stats.total_plays }}</td>
+                            <td>{{ stats['1st_place'] }}</td>
+                            <td>{{ stats['2nd_place'] }}</td>
+                            <td>{{ stats['3rd_place'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No game performance data available for this player.</p>
+    {% endif %}
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // MFPinball Chart
@@ -162,7 +192,7 @@
                 const mflpLabels = mflpChartData.map(item => item.label);
                 const mflpValues = mflpChartData.map(item => item.value);
                 const mflpCtx = document.getElementById('mflpPerformanceChart').getContext('2d');
-                new Chart(mfpCtx, {
+                new Chart(mflpCtx, {
                     type: 'line',
                     data: {
                         labels: mflpLabels,

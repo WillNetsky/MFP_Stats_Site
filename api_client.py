@@ -111,6 +111,47 @@ def fetch_finals_results(tournament_ids, series_status='active'):
     
     return all_combined_results
 
+def fetch_tournament_games(tournament_id, series_status='active'):
+    """
+    Fetches and caches game data for a specific tournament.
+    """
+    filepath = os.path.join(DATA_DIR, f"tournament_games_{tournament_id}.json")
+    
+    games_data = None
+    should_fetch = False
+
+    if series_status == 'completed':
+        if not os.path.exists(filepath):
+            should_fetch = True
+        else:
+            print(f"Using permanently cached game data for Tournament ID: {tournament_id} (completed series)...")
+            with open(filepath, 'r') as f:
+                games_data = json.load(f)
+    else: # active or upcoming series
+        if not os.path.exists(filepath) or is_cache_stale(filepath):
+            should_fetch = True
+        else:
+            print(f"Using cached game data for Tournament ID: {tournament_id}...")
+            with open(filepath, 'r') as f:
+                games_data = json.load(f)
+
+    if should_fetch:
+        print(f"Fetching game data for Tournament ID: {tournament_id} (cache stale/not found or completed series)...")
+        url = f"{BASE_URL}/tournaments/{tournament_id}/games"
+        try:
+            response = requests.get(url, headers=HEADERS)
+            response.raise_for_status()
+            games_data = response.json()
+            with open(filepath, 'w') as f:
+                json.dump(games_data, f, indent=4)
+            print(f"Saved game data for tournament {tournament_id}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching game data for tournament {tournament_id}: {e}")
+            games_data = None
+            
+    return games_data
+
+
 def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
     """Fetches all necessary data from the Matchplay API."""
     print("Fetching data from Matchplay API...")
@@ -170,3 +211,8 @@ def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
             if finals_tournament_ids:
                 # Pass the series status to fetch_finals_results
                 fetch_finals_results(finals_tournament_ids, series_status=series['status'])
+        
+        # Fetch game data for each tournament in the series
+        if 'data' in series_data_raw and 'tournamentIds' in series_data_raw['data']:
+            for tournament_id in series_data_raw['data']['tournamentIds']:
+                fetch_tournament_games(tournament_id, series_status=series['status'])

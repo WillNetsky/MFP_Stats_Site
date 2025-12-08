@@ -22,7 +22,7 @@ def main():
     parser.add_argument(
         "--generate",
         action="store_true",
-        help="Generate the static HTML site."
+        help="Generate the static HTML site."                                                                                                                                                                                                                                                                                                                                                                                                                          
     )
     args = parser.parse_args()
 

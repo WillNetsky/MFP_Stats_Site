@@ -3,8 +3,9 @@ import shutil
 from jinja2 import Environment, FileSystemLoader
 import json
 from copy import deepcopy
+from collections import defaultdict
 
-from data_processor import load_all_series_data, load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list
+from data_processor import load_all_series_data, load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data
 from api_client import fetch_finals_results
 from config import OUTPUT_DIR, TEMPLATES_DIR, MIN_WEEKS_FOR_IMPROVEMENT, STATIC_DIR
 
@@ -98,7 +99,7 @@ def generate_seasons_page(env, all_series_data):
 
         if "MFPinball" in league_name_parsed or "MFP" in league_name_parsed:
             mfp_seasons_raw.append(season_entry)
-        elif "MFLadies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
+        elif "Monterey Flipper Ladies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
             mflp_seasons_raw.append(season_entry)
     
     # Apply year corrections to the collected lists
@@ -302,9 +303,8 @@ def generate_season_pages(env, all_series_data):
             
             # Collect weekly scores
             if 'tournamentPoints' in series and series['tournamentPoints']:
-                for tournament_id_str in series['tournamentPoints']:
-                    # Ensure we get points for this specific player
-                    if str(player_id) in series['tournamentPoints'][tournament_id_str]:
+                for tournament_id_str, player_points_map in series['tournamentPoints'].items():
+                    if str(player_id) in player_points_map:
                         points = float(series['tournamentPoints'][tournament_id_str][str(player_id)])
                         weekly_scores_raw.append({'tournament_id': int(tournament_id_str), 'points': points})
                         total_raw_points += points
@@ -353,6 +353,7 @@ def generate_player_pages(env, all_series_data):
     """Generates individual player pages and a main players list page."""
     unique_players = {}
     player_categorized_seasons = {} # To store aggregated and categorized data for each player
+    all_players_game_performance = defaultdict(lambda: defaultdict(lambda: defaultdict(int))) # Aggregated game performance
     finals_mapping = load_finals_mapping()
 
     for series_data_raw in all_series_data:
@@ -361,6 +362,16 @@ def generate_player_pages(env, all_series_data):
         series_name = series_data['name']
         
         year, season_name_parsed, league_name_parsed = parse_series_name(series_name)
+
+        # Process game data for the current series
+        current_series_game_performance = process_game_data(series_data_raw)
+        for player_id, games in current_series_game_performance.items():
+            for game_name, stats in games.items():
+                all_players_game_performance[player_id][game_name]['1st_place'] += stats['1st_place']
+                all_players_game_performance[player_id][game_name]['2nd_place'] += stats['2nd_place']
+                all_players_game_performance[player_id][game_name]['3rd_place'] += stats['3rd_place']
+                all_players_game_performance[player_id][game_name]['total_plays'] += stats['total_plays']
+
 
         # Determine if season has finals
         finals_tournament_ids = None
@@ -432,7 +443,7 @@ def generate_player_pages(env, all_series_data):
 
             if "MFPinball" in league_name_parsed or "MFP" in league_name_parsed:
                 player_categorized_seasons[player_id]['mfp_seasons'].append(season_entry)
-            elif "MFLadies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
+            elif "Monterey Flipper Ladies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
                 player_categorized_seasons[player_id]['mflp_seasons'].append(season_entry)
 
     players_list = list(unique_players.values())
@@ -441,6 +452,9 @@ def generate_player_pages(env, all_series_data):
     for player_id, data in player_categorized_seasons.items():
         data['mfp_seasons'] = apply_year_corrections_to_seasons_list(data['mfp_seasons'])
         data['mflp_seasons'] = apply_year_corrections_to_seasons_list(data['mflp_seasons'])
+        # Add aggregated game performance to player data
+        data['game_performance'] = dict(all_players_game_performance[player_id])
+
 
     # Generate individual player pages
     player_template = env.get_template('player.html')
@@ -470,9 +484,9 @@ def generate_player_pages(env, all_series_data):
             f.write(player_template.render(
                 player=player,
                 mfp_seasons=data['mfp_seasons'],
-                mflp_seasons=data['mflp_seasons'],
                 mfp_chart_data=json.dumps(mfp_chart_data), # Pass as JSON string
-                mflp_chart_data=json.dumps(mflp_chart_data) # Pass as JSON string
+                mflp_chart_data=json.dumps(mflp_chart_data), # Pass as JSON string
+                game_performance=data['game_performance'] # Pass game performance data
             ))
         print(f"Generated player_{player_id}.html")
 
@@ -531,7 +545,7 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
         target_stats_dict = None
         if "MFPinball" in league_name_parsed or "MFP" in league_name_parsed:
             target_stats_dict = mfp_players_stats
-        elif "MFLadies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
+        elif "Monterey Flipper Ladies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
             target_stats_dict = mflp_players_stats
         
         # --- Process for All-Time Leaderboards ---
@@ -670,10 +684,9 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
 
     # --- MFP Leaderboards ---
     mfp_leaderboard_data = list(mfp_players_stats.values())
+    # Combine total points and weekly wins into a single leaderboard, sorted by total_raw_points
     mfp_total_points_leaderboard = sorted(mfp_leaderboard_data, key=lambda x: x['total_raw_points'], reverse=True)[:25]
     
-    mfp_weekly_wins_leaderboard = sorted([p for p in mfp_leaderboard_data if p['weekly_wins'] > 0], key=lambda x: x['weekly_wins'], reverse=True)
-
     mfp_top_4_finishes_leaderboard = [p for p in mfp_leaderboard_data if sum(p['top_4_finishes'].values()) > 0]
     mfp_top_4_finishes_leaderboard.sort(key=lambda x: (x['top_4_finishes'][1], x['top_4_finishes'][2], x['top_4_finishes'][3], x['top_4_finishes'][4]), reverse=True)
 
@@ -682,10 +695,9 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
 
     # --- MFLadies Pinball Leaderboards ---
     mflp_leaderboard_data = list(mflp_players_stats.values())
+    # Combine total points and weekly wins into a single leaderboard, sorted by total_raw_points
     mflp_total_points_leaderboard = sorted(mflp_leaderboard_data, key=lambda x: x['total_raw_points'], reverse=True)[:25]
     
-    mflp_weekly_wins_leaderboard = sorted([p for p in mflp_leaderboard_data if p['weekly_wins'] > 0], key=lambda x: x['weekly_wins'], reverse=True)
-
     mflp_top_4_finishes_leaderboard = [p for p in mflp_leaderboard_data if sum(p['top_4_finishes'].values()) > 0]
     mflp_top_4_finishes_leaderboard.sort(key=lambda x: (x['top_4_finishes'][1], x['top_4_finishes'][2], x['top_4_finishes'][3], x['top_4_finishes'][4]), reverse=True)
 
@@ -713,8 +725,9 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
             stats['average_points_per_week'] = stats['total_raw_points'] / stats['total_weeks_played']
 
     combined_leaderboard_data = list(combined_players_stats.values())
+    # Combine total points and weekly wins into a single leaderboard, sorted by total_raw_points
     combined_total_points_leaderboard = sorted(combined_leaderboard_data, key=lambda x: x['total_raw_points'], reverse=True)[:25]
-    combined_weekly_wins_leaderboard = sorted([p for p in combined_leaderboard_data if p['weekly_wins'] > 0], key=lambda x: x['weekly_wins'], reverse=True)
+    
     combined_top_4_finishes_leaderboard = [p for p in combined_leaderboard_data if sum(p['top_4_finishes'].values()) > 0]
     combined_top_4_finishes_leaderboard.sort(key=lambda x: (x['top_4_finishes'][1], x['top_4_finishes'][2], x['top_4_finishes'][3], x['top_4_finishes'][4]), reverse=True)
     combined_best_season_score_leaderboard = [p for p in combined_leaderboard_data if p['best_season_score']['score'] >= min_winning_score and isinstance(p['best_season_score']['final_position'], int) and p['best_season_score']['final_position'] <= 10]
@@ -822,17 +835,14 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
     with open(os.path.join(OUTPUT_DIR, 'leaderboards.html'), 'w') as f:
         f.write(template.render(
             mfp_total_points_leaderboard=mfp_total_points_leaderboard,
-            mfp_weekly_wins_leaderboard=mfp_weekly_wins_leaderboard,
             mfp_top_4_finishes_leaderboard=mfp_top_4_finishes_leaderboard,
             mfp_best_season_score_leaderboard=mfp_best_season_score_leaderboard,
             mfp_most_improved_leaderboard=mfp_most_improved_leaderboard,
             mflp_total_points_leaderboard=mflp_total_points_leaderboard,
-            mflp_weekly_wins_leaderboard=mflp_weekly_wins_leaderboard,
             mflp_top_4_finishes_leaderboard=mflp_top_4_finishes_leaderboard,
             mflp_best_season_score_leaderboard=mflp_best_season_score_leaderboard,
             mflp_most_improved_leaderboard=mflp_most_improved_leaderboard,
             combined_total_points_leaderboard=combined_total_points_leaderboard,
-            combined_weekly_wins_leaderboard=combined_weekly_wins_leaderboard,
             combined_top_4_finishes_leaderboard=combined_top_4_finishes_leaderboard,
             combined_best_season_score_leaderboard=combined_best_season_score_leaderboard,
             combined_most_improved_leaderboard=combined_most_improved_leaderboard,

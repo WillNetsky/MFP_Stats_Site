@@ -1,8 +1,10 @@
 import os
 import json
 import re
+from collections import defaultdict
 
 from config import DATA_DIR
+from api_client import fetch_tournament_games # Import the new function
 
 def load_all_series_data(excluded_series_names):
     """Loads all series data from the JSON files in the data directory."""
@@ -20,6 +22,18 @@ def load_all_series_data(excluded_series_names):
                 if series_data_raw['data']['name'] in excluded_series_names:
                     print(f"Skipping excluded series during load: {series_data_raw['data']['name']} (ID: {series_data_raw['data']['seriesId']})")
                     continue
+                
+                series_id = series_data_raw['data']['seriesId']
+                series_status = series_data_raw['data']['status']
+
+                # Fetch and store game data for each tournament in the series
+                series_data_raw['tournament_games_data'] = {}
+                if 'tournamentIds' in series_data_raw['data']:
+                    for tournament_id in series_data_raw['data']['tournamentIds']:
+                        games = fetch_tournament_games(tournament_id, series_status=series_status)
+                        if games and games.get('data'):
+                            series_data_raw['tournament_games_data'][tournament_id] = games['data']
+                
                 all_series_data.append(series_data_raw)
     return all_series_data
 
@@ -99,3 +113,44 @@ def apply_year_corrections_to_seasons_list(seasons_list):
     # Re-sort for display
     seasons_list.sort(key=lambda x: x['seriesId'], reverse=True)
     return seasons_list
+
+def process_game_data(series_data):
+    """
+    Processes raw game data for a series to extract player performance on each machine.
+    Returns a dictionary:
+    {
+        player_id: {
+            'game_name': {
+                '1st_place': count,
+                '2nd_place': count,
+                '3rd_place': count,
+                'total_plays': count
+            },
+            ...
+        },
+        ...
+    }
+    """
+    player_game_performance = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+
+    for tournament_id, games_list in series_data.get('tournament_games_data', {}).items():
+        for game in games_list:
+            # Safely get arena name, defaulting to 'Unknown Arena' if not present
+            arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
+            
+            # Matchplay API returns resultPositions as a list of player positions in the game
+            # The index of the position corresponds to the index of the player in playerIds
+            for i, player_id in enumerate(game['playerIds']):
+                position = game['resultPositions'][i]
+                
+                player_game_performance[player_id][arena_name]['total_plays'] += 1
+                if position == 1:
+                    player_game_performance[player_id][arena_name]['1st_place'] += 1
+                elif position == 2:
+                    player_game_performance[player_id][arena_name]['2nd_place'] += 1
+                elif position == 3:
+                    player_game_performance[player_id][arena_name]['3rd_place'] += 1
+    
+    # Convert defaultdict to regular dict for cleaner output if needed, or keep for convenience
+    # This structure is good for aggregation in site_generator
+    return player_game_performance
