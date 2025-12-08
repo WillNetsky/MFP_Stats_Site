@@ -15,9 +15,15 @@ def load_all_series_data(excluded_series_names):
             filepath = os.path.join(DATA_DIR, filename)
             with open(filepath, 'r') as f:
                 series_data_raw = json.load(f)
+                
+                # --- ADD THIS DEBUG PRINT STATEMENT ---
+                current_series_name = series_data_raw['data']['name']
+                print(f"DEBUG: Checking series '{current_series_name}' (ID: {series_data_raw['data']['seriesId']}) against excluded list: {excluded_series_names}")
+                # --- END DEBUG PRINT STATEMENT ---
+
                 # Also filter excluded series during loading, in case they were fetched previously
-                if series_data_raw['data']['name'] in excluded_series_names:
-                    print(f"Skipping excluded series during load: {series_data_raw['data']['name']} (ID: {series_data_raw['data']['seriesId']})")
+                if current_series_name in excluded_series_names:
+                    print(f"Skipping excluded series during load: {current_series_name} (ID: {series_data_raw['data']['seriesId']})")
                     continue
                 all_series_data.append(series_data_raw)
     return all_series_data
@@ -55,7 +61,7 @@ def parse_series_name(series_name):
     
     # Extract Season (remaining significant words)
     season_keywords = ["Fall", "Summer", "Winter", "Spring"]
-    for keyword in season_keywords: # Corrected loop: iterate over season_keywords
+    for keyword in season_keywords:
         if keyword in series_name_without_year:
             season_name = keyword
             break

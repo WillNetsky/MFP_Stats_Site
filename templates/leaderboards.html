@@ -9,15 +9,15 @@
     <h3>Total Raw Points (Top 25)</h3>
     {% if mfp_total_points_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mfp-total-points-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Total Raw Points</th>
-                        <th>Total Adjusted Points</th>
-                        <th>Seasons Played</th>
-                        <th>Total Weeks Attended</th>
+                        <th onclick="sortTable('mfp-total-points-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mfp-total-points-table', 1)">Player</th>
+                        <th onclick="sortTable('mfp-total-points-table', 2, true)">Total Raw Points</th>
+                        <th onclick="sortTable('mfp-total-points-table', 3, true)">Total Adjusted Points</th>
+                        <th onclick="sortTable('mfp-total-points-table', 4, true)">Seasons Played</th>
+                        <th onclick="sortTable('mfp-total-points-table', 5, true)">Total Weeks Attended</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,12 +41,12 @@
     <h3>Most Weekly Wins</h3>
     {% if mfp_weekly_wins_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mfp-weekly-wins-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Weekly Wins</th>
+                        <th onclick="sortTable('mfp-weekly-wins-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mfp-weekly-wins-table', 1)">Player</th>
+                        <th onclick="sortTable('mfp-weekly-wins-table', 2, true)">Weekly Wins</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,15 +67,15 @@
     <h3>Most Top-4 Finishes</h3>
     {% if mfp_top_4_finishes_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mfp-top-4-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>1st Places</th>
-                        <th>2nd Places</th>
-                        <th>3rd Places</th>
-                        <th>4th Places</th>
+                        <th onclick="sortTable('mfp-top-4-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mfp-top-4-table', 1)">Player</th>
+                        <th onclick="sortTable('mfp-top-4-table', 2, true)">1st Places</th>
+                        <th onclick="sortTable('mfp-top-4-table', 3, true)">2nd Places</th>
+                        <th onclick="sortTable('mfp-top-4-table', 4, true)">3rd Places</th>
+                        <th onclick="sortTable('mfp-top-4-table', 5, true)">4th Places</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,14 +99,14 @@
     <h3>Best Season Score (Winning Scores and Above)</h3>
     {% if mfp_best_season_score_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mfp-best-season-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Score</th>
-                        <th>Season</th>
-                        <th>Place</th>
+                        <th onclick="sortTable('mfp-best-season-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mfp-best-season-table', 1)">Player</th>
+                        <th onclick="sortTable('mfp-best-season-table', 2, true)">Score</th>
+                        <th onclick="sortTable('mfp-best-season-table', 3)">Season</th>
+                        <th onclick="sortTable('mfp-best-season-table', 4, true)">Place</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,16 +129,16 @@
     <h3>Most Improved Player</h3>
     {% if mfp_most_improved_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mfp-most-improved-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Improvement (%)</th>
-                        <th>Season 1</th>
-                        <th>Score 1</th>
-                        <th>Season 2</th>
-                        <th>Score 2</th>
+                        <th onclick="sortTable('mfp-most-improved-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mfp-most-improved-table', 1)">Player</th>
+                        <th onclick="sortTable('mfp-most-improved-table', 2, true)">Improvement (%)</th>
+                        <th onclick="sortTable('mfp-most-improved-table', 3)">Season 1</th>
+                        <th onclick="sortTable('mfp-most-improved-table', 4, true)">Score 1</th>
+                        <th onclick="sortTable('mfp-most-improved-table', 5)">Season 2</th>
+                        <th onclick="sortTable('mfp-most-improved-table', 6, true)">Score 2</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -164,15 +164,15 @@
     <h3>Total Raw Points (Top 25)</h3>
     {% if mflp_total_points_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mflp-total-points-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Total Raw Points</th>
-                        <th>Total Adjusted Points</th>
-                        <th>Seasons Played</th>
-                        <th>Total Weeks Attended</th>
+                        <th onclick="sortTable('mflp-total-points-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mflp-total-points-table', 1)">Player</th>
+                        <th onclick="sortTable('mflp-total-points-table', 2, true)">Total Raw Points</th>
+                        <th onclick="sortTable('mflp-total-points-table', 3, true)">Total Adjusted Points</th>
+                        <th onclick="sortTable('mflp-total-points-table', 4, true)">Seasons Played</th>
+                        <th onclick="sortTable('mflp-total-points-table', 5, true)">Total Weeks Attended</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -196,12 +196,12 @@
     <h3>Most Weekly Wins</h3>
     {% if mflp_weekly_wins_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mflp-weekly-wins-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Weekly Wins</th>
+                        <th onclick="sortTable('mflp-weekly-wins-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mflp-weekly-wins-table', 1)">Player</th>
+                        <th onclick="sortTable('mflp-weekly-wins-table', 2, true)">Weekly Wins</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -222,15 +222,15 @@
     <h3>Most Top-4 Finishes</h3>
     {% if mflp_top_4_finishes_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mflp-top-4-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>1st Places</th>
-                        <th>2nd Places</th>
-                        <th>3rd Places</th>
-                        <th>4th Places</th>
+                        <th onclick="sortTable('mflp-top-4-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mflp-top-4-table', 1)">Player</th>
+                        <th onclick="sortTable('mflp-top-4-table', 2, true)">1st Places</th>
+                        <th onclick="sortTable('mflp-top-4-table', 3, true)">2nd Places</th>
+                        <th onclick="sortTable('mflp-top-4-table', 4, true)">3rd Places</th>
+                        <th onclick="sortTable('mflp-top-4-table', 5, true)">4th Places</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -254,14 +254,14 @@
     <h3>Best Season Score (Winning Scores and Above)</h3>
     {% if mflp_best_season_score_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mflp-best-season-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Score</th>
-                        <th>Season</th>
-                        <th>Place</th>
+                        <th onclick="sortTable('mflp-best-season-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mflp-best-season-table', 1)">Player</th>
+                        <th onclick="sortTable('mflp-best-season-table', 2, true)">Score</th>
+                        <th onclick="sortTable('mflp-best-season-table', 3)">Season</th>
+                        <th onclick="sortTable('mflp-best-season-table', 4, true)">Place</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -284,16 +284,16 @@
     <h3>Most Improved Player</h3>
     {% if mflp_most_improved_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="mflp-most-improved-table">
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Improvement (%)</th>
-                        <th>Season 1</th>
-                        <th>Score 1</th>
-                        <th>Season 2</th>
-                        <th>Score 2</th>
+                        <th onclick="sortTable('mflp-most-improved-table', 0, true)">Rank</th>
+                        <th onclick="sortTable('mflp-most-improved-table', 1)">Player</th>
+                        <th onclick="sortTable('mflp-most-improved-table', 2, true)">Improvement (%)</th>
+                        <th onclick="sortTable('mflp-most-improved-table', 3)">Season 1</th>
+                        <th onclick="sortTable('mflp-most-improved-table', 4, true)">Score 1</th>
+                        <th onclick="sortTable('mflp-most-improved-table', 5)">Season 2</th>
+                        <th onclick="sortTable('mflp-most-improved-table', 6, true)">Score 2</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -318,12 +318,12 @@
     <h2>Perfect Nights (Score of 35)</h2>
     {% if perfect_nights_leaderboard %}
         <div class="table-container">
-            <table>
+            <table id="perfect-nights-table">
                 <thead>
                     <tr>
-                        <th>Player</th>
-                        <th>Season</th>
-                        <th>Week</th>
+                        <th onclick="sortTable('perfect-nights-table', 0)">Player</th>
+                        <th onclick="sortTable('perfect-nights-table', 1)">Season</th>
+                        <th onclick="sortTable('perfect-nights-table', 2)">Week</th>
                     </tr>
                 </thead>
                 <tbody>
