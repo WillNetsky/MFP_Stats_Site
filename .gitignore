@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# IDE-specific files
+.idea/
+*.iml
+
+# Environment variables
+.env
+
+# Generated output directory
+output/
