@@ -1,4 +1,5 @@
 import argparse
+import os # Import os module
 from dotenv import load_dotenv
 
 from api_client import fetch_data, API_KEY, USER_ID
@@ -31,6 +32,10 @@ def main():
     if not API_KEY or not USER_ID or "YOUR_" in API_KEY:
         print("Please create a .env file and add your MATCHPLAY_API_KEY and USER_ID.")
         return
+
+    # --- ADD THIS DEBUG PRINT STATEMENT ---
+    print(f"DEBUG: Current working directory: {os.getcwd()}")
+    # --- END DEBUG PRINT STATEMENT ---
 
     if args.fetch:
         print("--- Starting Data Fetch ---")
