@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nika - Pinball League Stats</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="static/style.css">
+    <script>
+        const themeSwitcher = {
+            // Config
+            _scheme: "auto",
+            menuTarget: "details[role='list']",
+            buttonsTarget: "a[data-theme-switcher]",
+            buttonAttribute: "data-theme-switcher",
+            rootAttribute: "data-theme",
+            localStorageKey: "picoPreferedColorScheme",
+
+            // Init
+            init() {
+                this.scheme = this.schemeFromLocalStorage;
+                this.initSwitchers();
+            },
+
+            // Get scheme from local storage
+            get schemeFromLocalStorage() {
+                if (typeof window.localStorage !== "undefined") {
+                    if (window.localStorage.getItem(this.localStorageKey) !== null) {
+                        return window.localStorage.getItem(this.localStorageKey);
+                    }
+                }
+                return this._scheme;
+            },
+
+            // Prefered scheme
+            get scheme() {
+                return this._scheme;
+            },
+
+            // Set scheme
+            set scheme(scheme) {
+                if (scheme == "auto") {
+                    this._scheme = "auto";
+                } else if (scheme == "dark") {
+                    this._scheme = "dark";
+                } else {
+                    this._scheme = "light";
+                }
+                this.applyScheme();
+                this.schemeToLocalStorage();
+            },
+
+            // Init switchers
+            initSwitchers() {
+                const buttons = document.querySelectorAll(this.buttonsTarget);
+                buttons.forEach((button) => {
+                    button.addEventListener(
+                        "click",
+                        (event) => {
+                            event.preventDefault();
+                            // Set scheme
+                            this.scheme = button.getAttribute(this.buttonAttribute);
+                            // Close dropdown
+                            document.querySelector(this.menuTarget).removeAttribute("open");
+                        },
+                        false
+                    );
+                });
+            },
+
+            // Apply scheme
+            applyScheme() {
+                document.querySelector("html").setAttribute(this.rootAttribute, this.scheme);
+            },
+
+            // Store scheme to local storage
+            schemeToLocalStorage() {
+                if (typeof window.localStorage !== "undefined") {
+                    window.localStorage.setItem(this.localStorageKey, this.scheme);
+                }
+            },
+        };
+
+        // Init
+        themeSwitcher.init();
+    </script>
+</head>
+<body>
+    <nav class="container-fluid">
+    <ul>
+        <li><a href="index.html"><strong>Pinball Stats</strong></a></li>
+    </ul>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="seasons.html">Seasons</a></li>
+        <li><a href="players.html">Players</a></li>
+        <li><a href="leaderboards.html">Leaderboards</a></li>
+    </ul>
+    <ul>
+        <li>
+            <details role="list" dir="rtl">
+                <summary aria-haspopup="listbox" role="link">Theme</summary>
+                <ul role="listbox">
+                    <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+                    <li><a href="#" data-theme-switcher="light">Light</a></li>
+                    <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+                </ul>
+            </details>
+        </li>
+    </ul>
+</nav>
+    <main class="container">
+        
+    <h1>Nika</h1>
+    <p>IFPA Number: N/A</p>
+
+    <h2>MFPinball Seasons</h2>
+    
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Season</th>
+                        <th>League</th>
+                        <th>Final Position</th>
+                        <th>Trophy</th>
+                        <th>Total Adjusted Points</th>
+                        <th>Total Raw Points</th>
+                        <th>Weeks Played</th>
+                        <th>Avg Points/Week</th>
+                        <th>Best Week</th>
+                        <th>2nd Best</th>
+                        <th>3rd Best</th>
+                        <th>4th Best</th>
+                        <th>5th Best</th>
+                        <th>6th Best</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        
+                        <tr class="">
+                            <td>2019</td>
+                            <td>Fall</td>
+                            <td><a href="season_1194.html">MFPinball</a></td>
+                            <td>56</td>
+                            <td></td>
+                            <td>17</td>
+                            <td>17</td>
+                            <td>1</td>
+                            <td>17</td>
+                            
+                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                            
+                                <td></td>
+                            
+                                <td></td>
+                            
+                                <td></td>
+                            
+                                <td></td>
+                            
+                                <td></td>
+                            
+                        </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    
+
+    <h2>MFLadies Pinball Seasons</h2>
+    
+        <p>No MFLadies Pinball season data available for this player.</p>
+    
+
+    </main>
+</body>
+</html>
