@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ season.name }}</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}{{ season.name }} - Pinball League Stats{% endblock %}
+
+{% block body_class %}season-page{% endblock %}
+
+{% block content %}
     <h1>{{ season.name }}</h1>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="seasons.html">Seasons</a></li>
-            <li><a href="players.html">Players</a></li>
-            <li><a href="leaderboards.html">Leaderboards</a></li>
-        </ul>
-    </nav>
 
     <p><a href="https://app.matchplay.events/series/{{ season.seriesId }}" target="_blank">View on Matchplay.events</a></p>
     {% if finals_tournament_ids %}
@@ -31,58 +22,61 @@
 
     {% if finals_results %}
         <h2>Finals Results</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Position</th>
-                    <th>Player</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for result in finals_results %}
+        <div class="table-container">
+            <table role="grid">
+                <thead>
                     <tr>
-                        <td>{{ result.position }}</td>
-                        <td><a href="player_{{ result.playerId }}.html">{{ result.name }}</a></td>
+                        <th>Position</th>
+                        <th>Player</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for result in finals_results %}
+                        <tr>
+                            <td>{{ result.position }}</td>
+                            <td><a href="player_{{ result.playerId }}.html">{{ result.name }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
 
     <h2>Player Performance in {{ season.name }}</h2>
     {% if season_players_data %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Player</th>
-                    <th>Overall Final Position</th> {# Renamed column header #}
-                    <th>Total Adjusted Points</th>
-                    <th>Total Raw Points</th>
-                    <th>Weeks Played</th>
-                    <th>Avg Points/Week</th>
-                    {% for i in range(1, 11) %}
-                        <th>Week {{ i }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for player_data in season_players_data %}
+        <div class="table-container">
+            <table role="grid">
+                <thead>
                     <tr>
-                        <td><a href="player_{{ player_data.playerId }}.html">{{ player_data.name }}</a></td>
-                        <td>{{ player_data.overall_final_position }}</td> {# Display new overall_final_position #}
-                        <td>{{ player_data.total_adjusted_points | format_number }}</td>
-                        <td>{{ player_data.total_raw_points | format_number }}</td>
-                        <td>{{ player_data.weekly_scores | select('ne', 'N/A') | list | length }}</td>
-                        <td>{{ player_data.average_points_per_week | format_number }}</td>
-                        {% for score in player_data.weekly_scores %}
-                            <td>{{ score | score_color_code | safe }}</td>
+                        <th>Player</th>
+                        <th>Overall Final Position</th> {# Renamed column header #}
+                        <th>Total Adjusted Points</th>
+                        <th>Total Raw Points</th>
+                        <th>Weeks Played</th>
+                        <th>Avg Points/Week</th>
+                        {% for i in range(1, 11) %}
+                            <th>Week {{ i }}</th>
                         {% endfor %}
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for player_data in season_players_data %}
+                        <tr>
+                            <td><a href="player_{{ player_data.playerId }}.html">{{ player_data.name }}</a></td>
+                            <td>{{ player_data.overall_final_position }}</td> {# Display new overall_final_position #}
+                            <td>{{ player_data.total_adjusted_points | format_number }}</td>
+                            <td>{{ player_data.total_raw_points | format_number }}</td>
+                            <td>{{ player_data.weekly_scores | select('ne', 'N/A') | list | length }}</td>
+                            <td>{{ player_data.average_points_per_week | format_number }}</td>
+                            {% for score in player_data.weekly_scores %}
+                                <td>{{ score | score_color_code | safe }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <p>No player performance data available for this season.</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}
