@@ -5,7 +5,7 @@ import json
 from copy import deepcopy
 from collections import defaultdict
 
-from data_processor import load_all_series_data, load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data
+from data_processor import load_all_series_data, load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data, find_almost_perfect_nights
 from api_client import fetch_finals_results
 from config import OUTPUT_DIR, TEMPLATES_DIR, MIN_WEEKS_FOR_IMPROVEMENT, STATIC_DIR
 
@@ -65,6 +65,51 @@ def format_number_filter(value):
     except (ValueError, TypeError):
         return value
 
+def get_qualification_threshold(year_str, season_name):
+    """
+    Determines the minimum number of weeks a player must play to qualify for a season.
+    - 6 weeks for Winter 2022 and beyond.
+    - 5 weeks before Winter 2022.
+    """
+    if year_str == "N/A":
+        return 5 # Conservative default if year is unknown
+
+    year = int(year_str)
+    
+    # Define the cutoff point: Winter 2022
+    cutoff_year = 2022
+    cutoff_season = "Winter"
+    
+    # Define a rough chronological order for seasons within a year for comparison
+    # This assumes a typical yearly cycle. Adjust if your league's seasons are different.
+    # "League" and "Season" are treated as general season names that would likely fall after specific named seasons.
+    season_order_map = {
+        "Winter": 0,
+        "Spring": 1,
+        "Summer": 2,
+        "Fall": 3,
+        "League": 4, 
+        "Season": 5
+    }
+
+    if year > cutoff_year:
+        return 6
+    elif year == cutoff_year:
+        current_season_rank = season_order_map.get(season_name, -1)
+        cutoff_season_rank = season_order_map.get(cutoff_season, -1)
+        
+        if current_season_rank != -1 and cutoff_season_rank != -1:
+            if current_season_rank >= cutoff_season_rank:
+                return 6
+            else: # e.g., Fall 2022 (rank 3) is before Winter 2022 (rank 0) in this map
+                return 5
+        else:
+            # If season name is not in our map for 2022, default to 6 weeks for safety
+            # This handles cases like "2022 League" which should probably be 6 weeks.
+            return 6
+    else: # year < cutoff_year
+        return 5
+
 def generate_seasons_page(env, all_series_data):
     """Generates the seasons.html page, separated by league type."""
     print("Generating seasons.html...")
@@ -74,6 +119,9 @@ def generate_seasons_page(env, all_series_data):
     mflp_seasons_raw = []
     finals_mapping = load_finals_mapping()
     all_years = set()
+
+    # Map seriesId to its full raw data for easy lookup
+    series_data_map = {s['data']['seriesId']: s for s in all_series_data}
 
     for series_data_raw in all_series_data:
         series = series_data_raw['data']
@@ -94,7 +142,9 @@ def generate_seasons_page(env, all_series_data):
             'first_place_player': None,
             'second_place_player': None,
             'third_place_player': None,
-            'fourth_place_player': None
+            'fourth_place_player': None,
+            'qualified_players_count': 0, # Initialize here
+            'qualification_threshold': 0 # Initialize here
         }
 
         if "MFPinball" in league_name_parsed or "MFP" in league_name_parsed:
@@ -106,42 +156,60 @@ def generate_seasons_page(env, all_series_data):
     mfp_seasons = apply_year_corrections_to_seasons_list(mfp_seasons_raw)
     mflp_seasons = apply_year_corrections_to_seasons_list(mflp_seasons_raw)
 
-    # Now, with corrected years, determine finals status and top 4 players
-    for season in mfp_seasons + mflp_seasons: # Iterate through all seasons
-        league_name = season['league_name']
-        year = season['year']
-        season_name = season['season_name']
-        series_id = season['seriesId']
-        all_years.add(year)
+    # Now, with corrected years, determine finals status and top 4 players and qualified players count
+    for season_list in [mfp_seasons, mflp_seasons]:
+        for season_entry in season_list:
+            league_name = season_entry['league_name']
+            year = season_entry['year']
+            season_name = season_entry['season_name']
+            series_id = season_entry['seriesId']
+            all_years.add(year)
 
-        # Determine finals status
-        finals_tournament_ids = None
-        if league_name in finals_mapping and year != "N/A" and season_name != "N/A":
-            key = f"{season_name} {year}"
-            finals_tournament_ids = finals_mapping[league_name].get(key)
-        
-        season['has_finals'] = "Yes" if finals_tournament_ids else "No"
-        
-        # Extract top 4 players from the original series data
-        original_series_data_for_top4 = next((s for s in all_series_data if s['data']['seriesId'] == series_id), None)
-        if original_series_data_for_top4:
-            series_details = original_series_data_for_top4['data']
-            player_map = {p['playerId']: p['name'] for p in series_details['players']}
+            # Determine finals status
+            finals_tournament_ids = None
+            if league_name in finals_mapping and year != "N/A" and season_name != "N/A":
+                key = f"{season_name} {year}"
+                finals_tournament_ids = finals_mapping[league_name].get(key)
             
-            top_players_standings = []
-            if season['has_finals'] == "Yes" and finals_tournament_ids:
-                finals_standings = fetch_finals_results(finals_tournament_ids)
-                if finals_standings:
-                    for result in finals_standings:
-                        top_players_standings.append({
-                            'playerId': result['playerId'],
-                            'name': player_map.get(result['playerId'], 'Unknown Player'),
-                            'position': result['position']
-                        })
-                    top_players_standings.sort(key=lambda x: x['position']) # Ensure sorted by position
+            season_entry['has_finals'] = "Yes" if finals_tournament_ids else "No"
+            
+            # Extract top 4 players from the original series data
+            original_series_data_for_top4 = series_data_map.get(series_id) # Use the map for lookup
+            if original_series_data_for_top4:
+                series_details = original_series_data_for_top4['data']
+                player_map = {p['playerId']: p['name'] for p in series_details['players']}
+                
+                top_players_standings = []
+                if season_entry['has_finals'] == "Yes" and finals_tournament_ids:
+                    finals_standings = fetch_finals_results(finals_tournament_ids)
+                    if finals_standings:
+                        for result in finals_standings:
+                            top_players_standings.append({
+                                'playerId': result['playerId'],
+                                'name': player_map.get(result['playerId'], 'Unknown Player'),
+                                'position': result['position']
+                            })
+                        top_players_standings.sort(key=lambda x: x['position']) # Ensure sorted by position
+                    else:
+                        # Fallback to qualifying standings if finals data is empty
+                        print(f"WARNING: Finals data for Season: {season_entry['seriesName']} (ID: {series_id}) is empty. Falling back to qualifying standings.")
+                        standings_with_avg = []
+                        for standing in series_details['standings']:
+                            player_id = standing['playerId']
+                            total_raw_points = 0
+                            weeks_played = 0
+                            if 'tournamentPoints' in series_details:
+                                for tournament_id_str, player_points_map in series_details['tournamentPoints'].items():
+                                    if str(player_id) in player_points_map:
+                                        total_raw_points += float(player_points_map[str(player_id)])
+                                        weeks_played += 1
+                            
+                            avg_score = total_raw_points / weeks_played if weeks_played > 0 else 0
+                            standings_with_avg.append({**standing, 'avg_score': avg_score})
+
+                        top_players_standings = sorted(standings_with_avg, key=lambda x: (x['position'], -x['avg_score']))
                 else:
-                    # Fallback to qualifying standings if finals data is empty
-                    print(f"WARNING: Finals data for Season: {season['seriesName']} (ID: {series_id}) is empty. Falling back to qualifying standings.")
+                    # Use qualifying standings with tie-breaking for seasons without finals
                     standings_with_avg = []
                     for standing in series_details['standings']:
                         player_id = standing['playerId']
@@ -157,36 +225,34 @@ def generate_seasons_page(env, all_series_data):
                         standings_with_avg.append({**standing, 'avg_score': avg_score})
 
                     top_players_standings = sorted(standings_with_avg, key=lambda x: (x['position'], -x['avg_score']))
-            else:
-                # Use qualifying standings with tie-breaking for seasons without finals
-                standings_with_avg = []
-                for standing in series_details['standings']:
-                    player_id = standing['playerId']
-                    total_raw_points = 0
+
+                # Assign top 4 players to season_entry
+                for i, player_data in enumerate(top_players_standings[:4]):
+                    player_id = player_data['playerId']
+                    player_name = player_map.get(player_id, 'Unknown Player')
+                    if i == 0:
+                        season_entry['first_place_player'] = {'playerId': player_id, 'name': player_name}
+                    elif i == 1:
+                        season_entry['second_place_player'] = {'playerId': player_id, 'name': player_name}
+                    elif i == 2:
+                            season_entry['third_place_player'] = {'playerId': player_id, 'name': player_name}
+                    elif i == 3:
+                        season_entry['fourth_place_player'] = {'playerId': player_id, 'name': player_name}
+
+                # Calculate qualified players count and store qualification threshold
+                qualification_threshold = get_qualification_threshold(year, season_name)
+                season_entry['qualification_threshold'] = qualification_threshold
+                qualified_player_ids = set()
+                for player_info in series_details['players']:
+                    player_id = player_info['playerId']
                     weeks_played = 0
                     if 'tournamentPoints' in series_details:
                         for tournament_id_str, player_points_map in series_details['tournamentPoints'].items():
                             if str(player_id) in player_points_map:
-                                total_raw_points += float(player_points_map[str(player_id)])
                                 weeks_played += 1
-                    
-                    avg_score = total_raw_points / weeks_played if weeks_played > 0 else 0
-                    standings_with_avg.append({**standing, 'avg_score': avg_score})
-
-                top_players_standings = sorted(standings_with_avg, key=lambda x: (x['position'], -x['avg_score']))
-
-            # Assign top 4 players to season_entry
-            for i, player_data in enumerate(top_players_standings[:4]):
-                player_id = player_data['playerId']
-                player_name = player_map.get(player_id, 'Unknown Player')
-                if i == 0:
-                    season['first_place_player'] = {'playerId': player_id, 'name': player_name}
-                elif i == 1:
-                    season['second_place_player'] = {'playerId': player_id, 'name': player_name}
-                elif i == 2:
-                        season['third_place_player'] = {'playerId': player_id, 'name': player_name}
-                elif i == 3:
-                    season['fourth_place_player'] = {'playerId': player_id, 'name': player_name}
+                    if weeks_played >= qualification_threshold:
+                        qualified_player_ids.add(player_id)
+                season_entry['qualified_players_count'] = len(qualified_player_ids)
 
 
     # Re-sort for display (newest first) - already done in apply_year_corrections_to_seasons_list
@@ -484,6 +550,7 @@ def generate_player_pages(env, all_series_data):
             f.write(player_template.render(
                 player=player,
                 mfp_seasons=data['mfp_seasons'],
+                mflp_seasons=data['mflp_seasons'],
                 mfp_chart_data=json.dumps(mfp_chart_data), # Pass as JSON string
                 mflp_chart_data=json.dumps(mflp_chart_data), # Pass as JSON string
                 game_performance=data['game_performance'] # Pass game performance data
@@ -508,6 +575,9 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
     # Track all winning scores to determine the global minimum winning score
     all_winning_scores = []
     all_perfect_nights = [] # Consolidated list for perfect nights
+
+    # Call the new function to find almost perfect nights
+    all_almost_perfect_nights = find_almost_perfect_nights(all_series_data)
 
     # Create a temporary list of season entries to apply year corrections consistently
     temp_season_entries = []
@@ -846,7 +916,8 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
             combined_top_4_finishes_leaderboard=combined_top_4_finishes_leaderboard,
             combined_best_season_score_leaderboard=combined_best_season_score_leaderboard,
             combined_most_improved_leaderboard=combined_most_improved_leaderboard,
-            all_perfect_nights=all_perfect_nights # Pass the consolidated list
+            all_perfect_nights=all_perfect_nights, # Pass the consolidated list
+            all_almost_perfect_nights=all_almost_perfect_nights # Pass the new list
         ))
     print("Generated leaderboards.html")
 

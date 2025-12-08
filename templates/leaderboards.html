@@ -444,6 +444,34 @@
         <p>No perfect nights recorded yet.</p>
     {% endif %}
 
+    <h2>Almost Perfect Nights (4 Wins in 5 Games)</h2>
+    {% if all_almost_perfect_nights %}
+        <div class="table-container">
+            <table id="almost-perfect-nights-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('almost-perfect-nights-table', 0)">Player</th>
+                        <th onclick="sortTable('almost-perfect-nights-table', 1)">Season</th>
+                        <th onclick="sortTable('almost-perfect-nights-table', 2)">Week</th>
+                        <th onclick="sortTable('almost-perfect-nights-table', 3, true)">Wins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in all_almost_perfect_nights %}
+                        <tr>
+                            <td><a href="player_{{ entry.playerId }}.html">{{ entry.name }}</a></td>
+                            <td><a href="season_{{ entry.seriesId }}.html">{{ entry.seriesName }}</a></td>
+                            <td>Week {{ entry.week_num }}</td>
+                            <td>{{ entry.wins }}/{{ entry.total_games }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No almost perfect nights recorded yet.</p>
+    {% endif %}
+
     <script>
         function showLeaderboard(league) {
             // Hide all leaderboard sets

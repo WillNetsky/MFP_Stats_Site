@@ -154,3 +154,52 @@ def process_game_data(series_data):
     # Convert defaultdict to regular dict for cleaner output if needed, or keep for convenience
     # This structure is good for aggregation in site_generator
     return player_game_performance
+
+def find_almost_perfect_nights(all_series_data):
+    """
+    Identifies instances where a player won 4 out of 5 games in a single weekly tournament.
+    Returns a list of dictionaries, each representing an "almost perfect" night.
+    """
+    almost_perfect_nights = []
+
+    for series_data_raw in all_series_data:
+        series = series_data_raw['data']
+        series_id = series['seriesId']
+        series_name = series['name']
+        
+        # Create a mapping from tournamentId to week number for this series
+        tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series.get('tournamentIds', []))}
+        
+        # Create a player ID to name map for this series
+        player_name_map = {p['playerId']: p['name'] for p in series.get('players', [])}
+
+        for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
+            tournament_id = int(tournament_id_str)
+            
+            # We are looking for tournaments with exactly 5 games
+            if len(games_list) == 5:
+                player_wins_in_tournament = defaultdict(int)
+                
+                # Count wins for each player in this 5-game tournament
+                for game in games_list:
+                    # Ensure 'resultPositions' and 'playerIds' exist and are valid
+                    if 'resultPositions' in game and 'playerIds' in game and 1 in game['resultPositions']:
+                        winner_index = game['resultPositions'].index(1)
+                        winner_id = game['playerIds'][winner_index]
+                        player_wins_in_tournament[winner_id] += 1
+                
+                # Check if any player had exactly 4 wins
+                for player_id, win_count in player_wins_in_tournament.items():
+                    if win_count == 4:
+                        # Found an almost perfect night!
+                        almost_perfect_nights.append({
+                            'playerId': player_id,
+                            'name': player_name_map.get(player_id, 'Unknown Player'),
+                            'seriesId': series_id,
+                            'seriesName': series_name,
+                            'tournamentId': tournament_id,
+                            'week_num': tournament_id_to_week_num.get(tournament_id, 'N/A'),
+                            'wins': win_count,
+                            'total_games': 5
+                        })
+    return almost_perfect_nights

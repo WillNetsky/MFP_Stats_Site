@@ -28,6 +28,8 @@
                         <th onclick="sortTable('mfp-seasons-table', 6)">2nd Place</th>
                         <th onclick="sortTable('mfp-seasons-table', 7)">3rd Place</th>
                         <th onclick="sortTable('mfp-seasons-table', 8)">4th Place</th>
+                        <th onclick="sortTable('mfp-seasons-table', 9, true)">Qualified Players</th>
+                        <th onclick="sortTable('mfp-seasons-table', 10, true)">Qualifying Weeks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +44,8 @@
                             <td>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
                             <td>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
                             <td>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{{ season.qualified_players_count }}</td>
+                            <td>{{ season.qualification_threshold }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -66,6 +70,8 @@
                         <th onclick="sortTable('mflp-seasons-table', 6)">2nd Place</th>
                         <th onclick="sortTable('mflp-seasons-table', 7)">3rd Place</th>
                         <th onclick="sortTable('mflp-seasons-table', 8)">4th Place</th>
+                        <th onclick="sortTable('mflp-seasons-table', 9, true)">Qualified Players</th>
+                        <th onclick="sortTable('mflp-seasons-table', 10, true)">Qualifying Weeks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,6 +86,8 @@
                             <td>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
                             <td>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
                             <td>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{{ season.qualified_players_count }}</td>
+                            <td>{{ season.qualification_threshold }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

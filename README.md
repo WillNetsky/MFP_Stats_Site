@@ -48,8 +48,25 @@ The project is organized into modular Python scripts:
 *   **Templates:** The HTML structure and content can be customized by editing the Jinja2 templates located in the `templates/` directory.
 *   **Static Assets:** Update CSS styles or add new static files in the `static/` directory.
 
-## Future Enhancements
+## To Do
 
-*   **Head-to-Head Statistics:** Develop a feature to compare two players' historical performance against each other.
-*   **Advanced Filtering:** Add more sophisticated filtering options for seasons and players.
-*   **Improved Mobile Table Display:** Further optimize table presentation for very small screens.
+* Player Data
+   * Add a line for average (20) when tracking weekly scores on the graph
+   * Ability to change the statistic graphed
+   * Overlay another player on your graph
+
+* Weekly Data
+  * Players stats by game (arena)
+  * Games won (and 2nd, 3rd, 4th)
+  * 28 and then not perfect
+
+* Season Data
+  * Racing bar chart
+  * Finals displayed as bracket with the actual results
+  * toggle between week # scores and nth best scores
+* Seasons.html
+  * IFPA wpprs given to winner (likely need to manually document this, or document the ifpa ids)
+  * Chart of number of players with WPPRS overlayed
+* Leaderboards
+  * Biggest week to week drop (and raise)
+  * Most games won (weekly data)

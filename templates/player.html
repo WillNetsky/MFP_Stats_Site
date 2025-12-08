@@ -6,6 +6,35 @@
 
 {% block head %}
     {{ super() }}
+    <style>
+        .chart-wrapper {
+            margin-bottom: 20px;
+        }
+        .chart-toggle-button {
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            background-color: var(--primary);
+            color: var(--primary-inverse);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .chart-toggle-button:hover {
+            opacity: 0.9;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%; /* Take full width of its parent */
+            max-width: 600px; /* Max width for the chart */
+            height: 300px; /* Fixed height for the chart */
+            margin: 0 auto; /* Center the chart */
+        }
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -14,8 +43,11 @@
 
     <h2>MFPinball Seasons</h2>
     {% if mfp_seasons %}
-        <div class="chart-container">
-            <canvas id="mfpPerformanceChart"></canvas>
+        <div class="chart-wrapper">
+            <button class="chart-toggle-button" onclick="toggleChart('mfpPerformanceChartContainer')">Toggle MFPinball Performance Chart</button>
+            <div id="mfpPerformanceChartContainer" class="chart-container" style="display: none;">
+                <canvas id="mfpPerformanceChart"></canvas>
+            </div>
         </div>
         <div class="table-container">
             <table id="mfp-player-seasons-table">
@@ -65,8 +97,11 @@
 
     <h2>MFLadies Pinball Seasons</h2>
     {% if mflp_seasons %}
-        <div class="chart-container">
-            <canvas id="mflpPerformanceChart"></canvas>
+        <div class="chart-wrapper">
+            <button class="chart-toggle-button" onclick="toggleChart('mflpPerformanceChartContainer')">Toggle MFLadies Pinball Performance Chart</button>
+            <div id="mflpPerformanceChartContainer" class="chart-container" style="display: none;">
+                <canvas id="mflpPerformanceChart"></canvas>
+            </div>
         </div>
         <div class="table-container">
             <table id="mflp-player-seasons-table">
@@ -144,7 +179,17 @@
         <p>No game performance data available for this player.</p>
     {% endif %}
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        function toggleChart(chartContainerId) {
+            const chartContainer = document.getElementById(chartContainerId);
+            if (chartContainer.style.display === 'none') {
+                chartContainer.style.display = 'block';
+            } else {
+                chartContainer.style.display = 'none';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // MFPinball Chart
             const mfpChartData = {{ mfp_chart_data | safe }};
@@ -162,10 +207,19 @@
                             borderColor: 'rgb(75, 192, 192)',
                             tension: 0.1,
                             fill: false
+                        },
+                        {
+                            label: 'Average (20)',
+                            data: Array(mfpLabels.length).fill(20), // Constant line at 20
+                            borderColor: 'rgb(255, 205, 86)', // Yellow/Orange color
+                            borderDash: [5, 5], // Dashed line
+                            pointRadius: 0, // No points on this line
+                            fill: false
                         }]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false, // Important for fixed height
                         scales: {
                             y: {
                                 min: 0,
@@ -202,10 +256,19 @@
                             borderColor: 'rgb(255, 99, 132)',
                             tension: 0.1,
                             fill: false
+                        },
+                        {
+                            label: 'Average (20)',
+                            data: Array(mflpLabels.length).fill(20), // Constant line at 20
+                            borderColor: 'rgb(255, 205, 86)', // Yellow/Orange color
+                            borderDash: [5, 5], // Dashed line
+                            pointRadius: 0, // No points on this line
+                            fill: false
                         }]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false, // Important for fixed height
                         scales: {
                             y: {
                                 min: 0,
