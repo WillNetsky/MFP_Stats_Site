@@ -6,6 +6,7 @@
     <title>Players - Pinball League Stats</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
         const themeSwitcher = {
             // Config
@@ -85,7 +86,7 @@
         themeSwitcher.init();
     </script>
 </head>
-<body>
+<body class="">
     <nav class="container-fluid">
     <ul>
         <li><a href="index.html"><strong>Pinball Stats</strong></a></li>
@@ -1527,5 +1528,86 @@
     </script>
 
     </main>
+
+    <script>
+        function sortTable(tableId, n, isNumeric = false) {
+            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById(tableId);
+            switching = true;
+            // Set the sorting direction to ascending:
+            dir = "asc";
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                    let xContent = x.innerHTML;
+                    let yContent = y.innerHTML;
+
+                    // Handle potential HTML spans for coloring (e.g., score_color_code filter)
+                    if (x.firstElementChild && x.firstElementChild.tagName === 'SPAN') {
+                        xContent = x.firstElementChild.textContent;
+                    }
+                    if (y.firstElementChild && y.firstElementChild.tagName === 'SPAN') {
+                        yContent = y.firstElementChild.textContent;
+                    }
+
+                    // Convert to number if isNumeric is true
+                    if (isNumeric) {
+                        xContent = parseFloat(xContent.replace(/[^0-9.-]+/g,"")); // Remove non-numeric chars except . and -
+                        yContent = parseFloat(yContent.replace(/[^0-9.-]+/g,""));
+                        // Handle NaN from parseFloat if content is not a valid number
+                        if (isNaN(xContent)) xContent = dir === "asc" ? -Infinity : Infinity;
+                        if (isNaN(yContent)) yContent = dir === "asc" ? -Infinity : Infinity;
+                    } else {
+                        xContent = xContent.toLowerCase();
+                        yContent = yContent.toLowerCase();
+                    }
+
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (dir == "asc") {
+                        if (xContent > yContent) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (xContent < yContent) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
