@@ -50,7 +50,6 @@ The project is organized into modular Python scripts:
 
 ## Future Enhancements
 
-*   **Player Performance Graphs:** Integrate a JavaScript charting library (e.g., Chart.js) to visualize player performance trends over seasons.
 *   **Head-to-Head Statistics:** Develop a feature to compare two players' historical performance against each other.
 *   **Advanced Filtering:** Add more sophisticated filtering options for seasons and players.
 *   **Improved Mobile Table Display:** Further optimize table presentation for very small screens.
