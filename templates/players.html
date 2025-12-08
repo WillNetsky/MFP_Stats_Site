@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Players - Pinball League Stats{% endblock %}
+
+{% block content %}
+    <h1>Players</h1>
+
+    <input type="search" id="player-search" placeholder="Search for a player..." onkeyup="filterPlayers()">
+
+    <ul id="player-list">
+        {% for player in players %}
+            <li><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function filterPlayers() {
+            // Get input element and filter value
+            let input = document.getElementById('player-search');
+            let filter = input.value.toUpperCase();
+
+            // Get ul and li elements
+            let ul = document.getElementById("player-list");
+            let li = ul.getElementsByTagName('li');
+
+            // Loop through all list items, and hide those who don't match the search query
+            for (let i = 0; i < li.length; i++) {
+                let a = li[i].getElementsByTagName("a")[0];
+                let txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+{% endblock %}

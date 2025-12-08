@@ -1,0 +1,374 @@
+{
+    "data": {
+        "seriesId": 1005,
+        "name": "Monterey Flipper Ladies Pinball 2019 Spring Season",
+        "status": "completed",
+        "organizerId": 60,
+        "test": false,
+        "removedResults": 5,
+        "playoffsCutoffs": [],
+        "scoring": "points",
+        "estimatedTgp": null,
+        "organizer": {
+            "userId": 60,
+            "name": "Cary Carmichael",
+            "firstName": "Cary",
+            "lastName": "Carmichael",
+            "ifpaId": 19422,
+            "role": "organizer",
+            "flag": "",
+            "location": "Seaside, CA",
+            "pronouns": "he",
+            "initials": "",
+            "ratingsOptOut": false,
+            "statsOptOut": false,
+            "videoOptOut": false,
+            "profileOptOut": false,
+            "historyOptOut": false,
+            "historyOnlyCompleted": false,
+            "avatar": null,
+            "banner": null,
+            "tournamentAvatar": null,
+            "createdAt": "2015-05-31T19:59:43.000000Z"
+        },
+        "standings": [
+            {
+                "playerId": 13710,
+                "position": 1,
+                "points": 228,
+                "pointsAdjusted": 145,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 74016,
+                "position": 2,
+                "points": 252,
+                "pointsAdjusted": 143,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 71359,
+                "position": 3,
+                "points": 192,
+                "pointsAdjusted": 122,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 97321,
+                "position": 4,
+                "points": 177,
+                "pointsAdjusted": 119,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 95694,
+                "position": 5,
+                "points": 185,
+                "pointsAdjusted": 117,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 50534,
+                "position": 6,
+                "points": 163,
+                "pointsAdjusted": 106,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 73340,
+                "position": 7,
+                "points": 168,
+                "pointsAdjusted": 105,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 105184,
+                "position": 8,
+                "points": 121,
+                "pointsAdjusted": 79,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 98430,
+                "position": 9,
+                "points": 53,
+                "pointsAdjusted": 53,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 106791,
+                "position": 10,
+                "points": 24,
+                "pointsAdjusted": 24,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 73342,
+                "position": 11,
+                "points": 17,
+                "pointsAdjusted": 17,
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            }
+        ],
+        "tournamentPoints": {
+            "33146": {
+                "13710": "32.00",
+                "50534": "23.00",
+                "97321": "23.00",
+                "95694": "20.00",
+                "98430": "20.00",
+                "74016": "17.00",
+                "71359": "17.00",
+                "73340": "14.00",
+                "105184": "14.00"
+            },
+            "33147": {
+                "13710": "32.00",
+                "74016": "26.00",
+                "73340": "23.00",
+                "97321": "20.00",
+                "71359": "20.00",
+                "95694": "17.00",
+                "50534": "17.00",
+                "98430": "14.00",
+                "105184": "11.00"
+            },
+            "33148": {
+                "74016": "33.00",
+                "95694": "23.00",
+                "71359": "21.00",
+                "13710": "21.00",
+                "73340": "19.00",
+                "97321": "19.00",
+                "106791": "13.00",
+                "105184": "11.00"
+            },
+            "33149": {
+                "97321": "29.00",
+                "73340": "26.00",
+                "74016": "23.00",
+                "71359": "23.00",
+                "13710": "20.00",
+                "50534": "20.00",
+                "95694": "17.00",
+                "105184": "11.00",
+                "106791": "11.00"
+            },
+            "33150": {
+                "13710": "29.00",
+                "74016": "23.00",
+                "50534": "23.00",
+                "97321": "20.00",
+                "73340": "17.00",
+                "71359": "8.00"
+            },
+            "33151": {
+                "74016": "29.00",
+                "71359": "26.00",
+                "95694": "20.00",
+                "73340": "17.00",
+                "50534": "17.00",
+                "105184": "11.00"
+            },
+            "33152": {
+                "71359": "31.00",
+                "95694": "23.00",
+                "13710": "23.00",
+                "74016": "23.00",
+                "98430": "19.00",
+                "97321": "19.00",
+                "105184": "13.00",
+                "50534": "9.00"
+            },
+            "33153": {
+                "74016": "29.00",
+                "95694": "29.00",
+                "97321": "21.00",
+                "71359": "21.00",
+                "13710": "19.00",
+                "50534": "17.00",
+                "73340": "15.00",
+                "105184": "9.00"
+            },
+            "33154": {
+                "13710": "29.00",
+                "50534": "23.00",
+                "74016": "23.00",
+                "95694": "22.00",
+                "73340": "17.00",
+                "105184": "15.00",
+                "71359": "11.00"
+            },
+            "33155": {
+                "97321": "26.00",
+                "74016": "26.00",
+                "105184": "26.00",
+                "13710": "23.00",
+                "73340": "20.00",
+                "73342": "17.00",
+                "71359": "14.00",
+                "50534": "14.00",
+                "95694": "14.00"
+            }
+        },
+        "playerLabels": [],
+        "players": [
+            {
+                "playerId": 13710,
+                "name": "Nikki Carmichael",
+                "ifpaId": 36495,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 2642,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 50534,
+                "name": "Sneha Kolar",
+                "ifpaId": 53912,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 4762,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 71359,
+                "name": "Ikela Lagapa",
+                "ifpaId": 64547,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 10713,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 73340,
+                "name": "Krystal Estrada",
+                "ifpaId": 68995,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 12749,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 73342,
+                "name": "Jaclyn Tingco",
+                "ifpaId": 68996,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 8185,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 74016,
+                "name": "Lucy Cachux",
+                "ifpaId": 63096,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 6940,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 95694,
+                "name": "Tasha Lindstrom",
+                "ifpaId": 72110,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 10212,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 97321,
+                "name": "BeeOtch Westrum",
+                "ifpaId": 71348,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 10235,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 98430,
+                "name": "Denise Salazar",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 105184,
+                "name": "Carla Nierlich",
+                "ifpaId": 74320,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 106791,
+                "name": "Harley Jensen",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            }
+        ],
+        "tournamentIds": [
+            33146,
+            33147,
+            33148,
+            33149,
+            33150,
+            33151,
+            33152,
+            33153,
+            33154,
+            33155
+        ],
+        "rsvpConfiguration": null
+    }
+}

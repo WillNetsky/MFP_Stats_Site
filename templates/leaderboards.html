@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}All-Time Leaderboards - Pinball League Stats{% endblock %}
+
+{% block content %}
+    <h1>All-Time Leaderboards</h1>
+
+    <h2>MFPinball Leaderboards</h2>
+    <h3>Total Raw Points (Top 25)</h3>
+    {% if mfp_total_points_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Total Raw Points</th>
+                        <th>Total Adjusted Points</th>
+                        <th>Seasons Played</th>
+                        <th>Total Weeks Attended</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mfp_total_points_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.total_raw_points|round(2) }}</td>
+                            <td>{{ player.total_adjusted_points|round(2) }}</td>
+                            <td>{{ player.seasons_played_count }}</td>
+                            <td>{{ player.total_weeks_played }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFPinball total raw points leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Most Weekly Wins</h3>
+    {% if mfp_weekly_wins_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Weekly Wins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mfp_weekly_wins_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.weekly_wins }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFPinball weekly wins leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Most Top-4 Finishes</h3>
+    {% if mfp_top_4_finishes_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>1st Places</th>
+                        <th>2nd Places</th>
+                        <th>3rd Places</th>
+                        <th>4th Places</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mfp_top_4_finishes_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.top_4_finishes[1] }}</td>
+                            <td>{{ player.top_4_finishes[2] }}</td>
+                            <td>{{ player.top_4_finishes[3] }}</td>
+                            <td>{{ player.top_4_finishes[4] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFPinball top-4 finishes leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Best Season Score (Winning Scores and Above)</h3>
+    {% if mfp_best_season_score_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Score</th>
+                        <th>Season</th>
+                        <th>Place</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mfp_best_season_score_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.best_season_score.score|round(2) }}</td>
+                            <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
+                            <td>{{ player.best_season_score.final_position }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFPinball best season score leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Most Improved Player</h3>
+    {% if mfp_most_improved_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Improvement (%)</th>
+                        <th>Season 1</th>
+                        <th>Score 1</th>
+                        <th>Season 2</th>
+                        <th>Score 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in mfp_most_improved_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
+                            <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
+                            <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
+                            <td>{{ entry.season1.summary_stats.total_adjusted_points|round(2) }}</td>
+                            <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
+                            <td>{{ entry.season2.summary_stats.total_adjusted_points|round(2) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFPinball most improved player data available.</p>
+    {% endif %}
+
+    <h2>MFLadies Pinball Leaderboards</h2>
+    <h3>Total Raw Points (Top 25)</h3>
+    {% if mflp_total_points_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Total Raw Points</th>
+                        <th>Total Adjusted Points</th>
+                        <th>Seasons Played</th>
+                        <th>Total Weeks Attended</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mflp_total_points_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.total_raw_points|round(2) }}</td>
+                            <td>{{ player.total_adjusted_points|round(2) }}</td>
+                            <td>{{ player.seasons_played_count }}</td>
+                            <td>{{ player.total_weeks_played }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFLadies Pinball total raw points leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Most Weekly Wins</h3>
+    {% if mflp_weekly_wins_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Weekly Wins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mflp_weekly_wins_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.weekly_wins }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFLadies Pinball most weekly wins leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Most Top-4 Finishes</h3>
+    {% if mflp_top_4_finishes_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>1st Places</th>
+                        <th>2nd Places</th>
+                        <th>3rd Places</th>
+                        <th>4th Places</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mflp_top_4_finishes_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.top_4_finishes[1] }}</td>
+                            <td>{{ player.top_4_finishes[2] }}</td>
+                            <td>{{ player.top_4_finishes[3] }}</td>
+                            <td>{{ player.top_4_finishes[4] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFLadies Pinball top-4 finishes leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Best Season Score (Winning Scores and Above)</h3>
+    {% if mflp_best_season_score_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Score</th>
+                        <th>Season</th>
+                        <th>Place</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in mflp_best_season_score_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                            <td>{{ player.best_season_score.score|round(2) }}</td>
+                            <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
+                            <td>{{ player.best_season_score.final_position }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFLadies Pinball best season score leaderboard data available.</p>
+    {% endif %}
+
+    <h3>Most Improved Player</h3>
+    {% if mflp_most_improved_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Improvement (%)</th>
+                        <th>Season 1</th>
+                        <th>Score 1</th>
+                        <th>Season 2</th>
+                        <th>Score 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in mflp_most_improved_leaderboard %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
+                            <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
+                            <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
+                            <td>{{ entry.season1.summary_stats.total_adjusted_points|round(2) }}</td>
+                            <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
+                            <td>{{ entry.season2.summary_stats.total_adjusted_points|round(2) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFLadies Pinball most improved player data available.</p>
+    {% endif %}
+
+    <h2>Perfect Nights (Score of 35)</h2>
+    {% if perfect_nights_leaderboard %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Season</th>
+                        <th>Week</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in perfect_nights_leaderboard %}
+                        <tr>
+                            <td><a href="player_{{ entry.playerId }}.html">{{ entry.name }}</a></td>
+                            <td><a href="season_{{ entry.seriesId }}.html">{{ entry.seriesName }}</a></td>
+                            <td>Week {{ entry.week_num }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No perfect nights recorded yet.</p>
+    {% endif %}
+{% endblock %}

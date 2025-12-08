@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pinball League Stats{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="static/style.css">
+    <script>
+        const themeSwitcher = {
+            // Config
+            _scheme: "auto",
+            menuTarget: "details[role='list']",
+            buttonsTarget: "a[data-theme-switcher]",
+            buttonAttribute: "data-theme-switcher",
+            rootAttribute: "data-theme",
+            localStorageKey: "picoPreferedColorScheme",
+
+            // Init
+            init() {
+                this.scheme = this.schemeFromLocalStorage;
+                this.initSwitchers();
+            },
+
+            // Get scheme from local storage
+            get schemeFromLocalStorage() {
+                if (typeof window.localStorage !== "undefined") {
+                    if (window.localStorage.getItem(this.localStorageKey) !== null) {
+                        return window.localStorage.getItem(this.localStorageKey);
+                    }
+                }
+                return this._scheme;
+            },
+
+            // Prefered scheme
+            get scheme() {
+                return this._scheme;
+            },
+
+            // Set scheme
+            set scheme(scheme) {
+                if (scheme == "auto") {
+                    this._scheme = "auto";
+                } else if (scheme == "dark") {
+                    this._scheme = "dark";
+                } else {
+                    this._scheme = "light";
+                }
+                this.applyScheme();
+                this.schemeToLocalStorage();
+            },
+
+            // Init switchers
+            initSwitchers() {
+                const buttons = document.querySelectorAll(this.buttonsTarget);
+                buttons.forEach((button) => {
+                    button.addEventListener(
+                        "click",
+                        (event) => {
+                            event.preventDefault();
+                            // Set scheme
+                            this.scheme = button.getAttribute(this.buttonAttribute);
+                            // Close dropdown
+                            document.querySelector(this.menuTarget).removeAttribute("open");
+                        },
+                        false
+                    );
+                });
+            },
+
+            // Apply scheme
+            applyScheme() {
+                document.querySelector("html").setAttribute(this.rootAttribute, this.scheme);
+            },
+
+            // Store scheme to local storage
+            schemeToLocalStorage() {
+                if (typeof window.localStorage !== "undefined") {
+                    window.localStorage.setItem(this.localStorageKey, this.scheme);
+                }
+            },
+        };
+
+        // Init
+        themeSwitcher.init();
+    </script>
+</head>
+<body>
+    {% include '_navbar.html' %}
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

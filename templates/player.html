@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}{{ player.name }} - Pinball League Stats{% endblock %}
+
+{% block content %}
+    <h1>{{ player.name }}</h1>
+    <p>IFPA Number: {{ player.ifpaId if player.ifpaId else 'N/A' }}</p>
+
+    <h2>MFPinball Seasons</h2>
+    {% if mfp_seasons %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Season</th>
+                        <th>League</th>
+                        <th>Final Position</th>
+                        <th>Trophy</th>
+                        <th>Total Adjusted Points</th>
+                        <th>Total Raw Points</th>
+                        <th>Weeks Played</th>
+                        <th>Avg Points/Week</th>
+                        <th>Best Week</th>
+                        <th>2nd Best</th>
+                        <th>3rd Best</th>
+                        <th>4th Best</th>
+                        <th>5th Best</th>
+                        <th>6th Best</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season_data in mfp_seasons %}
+                        {% set pos = season_data.summary_stats.final_position %}
+                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% endif %}">
+                            <td>{{ season_data.year }}</td>
+                            <td>{{ season_data.season_name }}</td>
+                            <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
+                            <td>{{ pos }}</td>
+                            <td>{% if pos is number and pos <= 4 %}<span class="trophy-icon"></span>{% endif %}</td>
+                            <td>{{ season_data.summary_stats.total_adjusted_points | format_number }}</td>
+                            <td>{{ season_data.summary_stats.total_raw_points | format_number }}</td>
+                            <td>{{ season_data.summary_stats.weeks_played }}</td>
+                            <td>{{ season_data.summary_stats.average_points_per_week | format_number }}</td>
+                            {% for score in season_data.summary_stats.top_6_scores %}
+                                <td>{{ score | score_color_code | safe }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFPinball season data available for this player.</p>
+    {% endif %}
+
+    <h2>MFLadies Pinball Seasons</h2>
+    {% if mflp_seasons %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Season</th>
+                        <th>League</th>
+                        <th>Final Position</th>
+                        <th>Trophy</th>
+                        <th>Total Adjusted Points</th>
+                        <th>Total Raw Points</th>
+                        <th>Weeks Played</th>
+                        <th>Avg Points/Week</th>
+                        <th>Best Week</th>
+                        <th>2nd Best</th>
+                        <th>3rd Best</th>
+                        <th>4th Best</th>
+                        <th>5th Best</th>
+                        <th>6th Best</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season_data in mflp_seasons %}
+                        {% set pos = season_data.summary_stats.final_position %}
+                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% endif %}">
+                            <td>{{ season_data.year }}</td>
+                            <td>{{ season_data.season_name }}</td>
+                            <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
+                            <td>{{ pos }}</td>
+                            <td>{% if pos is number and pos <= 4 %}<span class="trophy-icon"></span>{% endif %}</td>
+                            <td>{{ season_data.summary_stats.total_adjusted_points | format_number }}</td>
+                            <td>{{ season_data.summary_stats.total_raw_points | format_number }}</td>
+                            <td>{{ season_data.summary_stats.weeks_played }}</td>
+                            <td>{{ season_data.summary_stats.average_points_per_week | format_number }}</td>
+                            {% for score in season_data.summary_stats.top_6_scores %}
+                                <td>{{ score | score_color_code | safe }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFLadies Pinball season data available for this player.</p>
+    {% endif %}
+{% endblock %}

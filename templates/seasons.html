@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Seasons - Pinball League Stats{% endblock %}
+
+{% block content %}
+    <h1>Seasons</h1>
+
+    <label for="year-filter">Filter by Year:</label>
+    <select id="year-filter" onchange="filterSeasons()">
+        <option value="all">All Years</option>
+        {% for year in years %}
+            <option value="{{ year }}">{{ year }}</option>
+        {% endfor %}
+    </select>
+
+    <h2>MFPinball Leagues</h2>
+    {% if mfp_seasons %}
+        <div class="table-container">
+            <table id="mfp-seasons-table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Season</th>
+                        <th>League</th>
+                        <th>Status</th>
+                        <th>Finals</th>
+                        <th>1st Place</th>
+                        <th>2nd Place</th>
+                        <th>3rd Place</th>
+                        <th>4th Place</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in mfp_seasons %}
+                        <tr class="season-row" data-year="{{ season.year }}">
+                            <td>{{ season.year }}</td>
+                            <td>{{ season.season_name }}</td>
+                            <td><a href="season_{{ season.seriesId }}.html">{{ season.league_name }}</a></td>
+                            <td>{{ season.status }}</td>
+                            <td>{{ season.has_finals }}</td>
+                            <td>{% if season.first_place_player %}<a href="player_{{ season.first_place_player.playerId }}.html">{{ season.first_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFPinball seasons available.</p>
+    {% endif %}
+
+    <h2>MFLadies Pinball Leagues</h2>
+    {% if mflp_seasons %}
+        <div class="table-container">
+            <table id="mflp-seasons-table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Season</th>
+                        <th>League</th>
+                        <th>Status</th>
+                        <th>Finals</th>
+                        <th>1st Place</th>
+                        <th>2nd Place</th>
+                        <th>3rd Place</th>
+                        <th>4th Place</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in mflp_seasons %}
+                        <tr class="season-row" data-year="{{ season.year }}">
+                            <td>{{ season.year }}</td>
+                            <td>{{ season.season_name }}</td>
+                            <td><a href="season_{{ season.seriesId }}.html">{{ season.league_name }}</a></td>
+                            <td>{{ season.status }}</td>
+                            <td>{{ season.has_finals }}</td>
+                            <td>{% if season.first_place_player %}<a href="player_{{ season.first_place_player.playerId }}.html">{{ season.first_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No MFLadies Pinball seasons available.</p>
+    {% endif %}
+
+    <script>
+        function filterSeasons() {
+            let year = document.getElementById('year-filter').value;
+            let rows = document.getElementsByClassName('season-row');
+
+            for (let i = 0; i < rows.length; i++) {
+                if (year === 'all' || rows[i].dataset.year === year) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+{% endblock %}
