@@ -551,7 +551,8 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                         'best_season_score': {'score': 0.0, 'seriesId': None, 'seriesName': None, 'year': None, 'season_name': None, 'final_position': None},
                         'seasons_played_count': 0,
                         'total_weeks_played': 0, # New field
-                        'weekly_wins': 0 # New field
+                        'weekly_wins': 0, # New field
+                        'average_points_per_week': 0.0 # New field
                     }
                 
                 # Update player info (name/ifpaId might be more recent in later series)
@@ -644,6 +645,14 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                     
                     if weekly_winner_id and target_stats_dict and weekly_winner_id in target_stats_dict:
                         target_stats_dict[weekly_winner_id]['weekly_wins'] += 1
+
+    # Calculate average points per week for each player
+    for player_id, stats in mfp_players_stats.items():
+        if stats['total_weeks_played'] > 0:
+            stats['average_points_per_week'] = stats['total_raw_points'] / stats['total_weeks_played']
+    for player_id, stats in mflp_players_stats.items():
+        if stats['total_weeks_played'] > 0:
+            stats['average_points_per_week'] = stats['total_raw_points'] / stats['total_weeks_played']
 
     # Sort perfect nights by seriesId then week_num
     perfect_nights_leaderboard.sort(key=lambda x: (x['seriesId'], x['week_num']))

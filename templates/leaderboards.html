@@ -18,6 +18,7 @@
                         <th onclick="sortTable('mfp-total-points-table', 3, true)">Total Adjusted Points</th>
                         <th onclick="sortTable('mfp-total-points-table', 4, true)">Seasons Played</th>
                         <th onclick="sortTable('mfp-total-points-table', 5, true)">Total Weeks Attended</th>
+                        <th onclick="sortTable('mfp-total-points-table', 6, true)">Points/Week</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,10 +26,11 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.total_raw_points|round(2) }}</td>
-                            <td>{{ player.total_adjusted_points|round(2) }}</td>
+                            <td>{{ player.total_raw_points|int }}</td>
+                            <td>{{ player.total_adjusted_points|int }}</td>
                             <td>{{ player.seasons_played_count }}</td>
                             <td>{{ player.total_weeks_played }}</td>
+                            <td>{{ player.average_points_per_week|format_number }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -114,7 +116,7 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.best_season_score.score|round(2) }}</td>
+                            <td>{{ player.best_season_score.score|int }}</td>
                             <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
                             <td>{{ player.best_season_score.final_position }}</td>
                         </tr>
@@ -148,9 +150,9 @@
                             <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
                             <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
                             <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
-                            <td>{{ entry.season1.summary_stats.total_adjusted_points|round(2) }}</td>
+                            <td>{{ entry.season1.summary_stats.total_adjusted_points|int }}</td>
                             <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
-                            <td>{{ entry.season2.summary_stats.total_adjusted_points|round(2) }}</td>
+                            <td>{{ entry.season2.summary_stats.total_adjusted_points|int }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -173,6 +175,7 @@
                         <th onclick="sortTable('mflp-total-points-table', 3, true)">Total Adjusted Points</th>
                         <th onclick="sortTable('mflp-total-points-table', 4, true)">Seasons Played</th>
                         <th onclick="sortTable('mflp-total-points-table', 5, true)">Total Weeks Attended</th>
+                        <th onclick="sortTable('mflp-total-points-table', 6, true)">Points/Week</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,10 +183,11 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.total_raw_points|round(2) }}</td>
-                            <td>{{ player.total_adjusted_points|round(2) }}</td>
+                            <td>{{ player.total_raw_points|int }}</td>
+                            <td>{{ player.total_adjusted_points|int }}</td>
                             <td>{{ player.seasons_played_count }}</td>
                             <td>{{ player.total_weeks_played }}</td>
+                            <td>{{ player.average_points_per_week|format_number }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -269,7 +273,7 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.best_season_score.score|round(2) }}</td>
+                            <td>{{ player.best_season_score.score|int }}</td>
                             <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
                             <td>{{ player.best_season_score.final_position }}</td>
                         </tr>
@@ -303,9 +307,9 @@
                             <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
                             <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
                             <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
-                            <td>{{ entry.season1.summary_stats.total_adjusted_points|round(2) }}</td>
+                            <td>{{ entry.season1.summary_stats.total_adjusted_points|int }}</td>
                             <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
-                            <td>{{ entry.season2.summary_stats.total_adjusted_points|round(2) }}</td>
+                            <td>{{ entry.season2.summary_stats.total_adjusted_points|int }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
