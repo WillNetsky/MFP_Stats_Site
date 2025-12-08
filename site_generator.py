@@ -748,7 +748,7 @@ def generate_site(excluded_series_names):
         print("Please run the script with fetch_data() enabled to download the data first.")
         return
     
-    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+    env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), TEMPLATES_DIR)))
     env.filters['score_color_code'] = score_color_filter # Register the custom filter
     env.filters['format_number'] = format_number_filter # Register the new filter
 
