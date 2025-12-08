@@ -48,35 +48,6 @@ The project is organized into modular Python scripts:
 *   **Templates:** The HTML structure and content can be customized by editing the Jinja2 templates located in the `templates/` directory.
 *   **Static Assets:** Update CSS styles or add new static files in the `static/` directory.
 
-## Automated Deployment (GitHub Actions & Pages)
-
-The project is configured for automated deployment to GitHub Pages using GitHub Actions.
-
-1.  **GitHub Actions Workflow:**
-    The `.github/workflows/deploy.yml` file defines a workflow that:
-    *   Triggers on pushes to the `main` branch.
-    *   Runs daily at midnight UTC.
-    *   Can be manually triggered from the GitHub Actions tab.
-    *   Checks out the code, sets up Python, installs dependencies, fetches data, generates the static site, and pushes the `output/` directory content to the `gh-pages` branch.
-
-2.  **GitHub Secrets:**
-    For the automated deployment to work, you **must** add your Matchplay API Key and User ID as repository secrets in your GitHub repository:
-    *   Go to your repository on GitHub.
-    *   Navigate to `Settings > Secrets and variables > Actions`.
-    *   Click "New repository secret" and add:
-        *   `MATCHPLAY_API_KEY` (value: your Matchplay API key)
-        *   `USER_ID` (value: your Matchplay User ID)
-
-3.  **Enable GitHub Pages:**
-    After the first successful workflow run (which creates the `gh-pages` branch):
-    *   Go to your repository on GitHub.
-    *   Navigate to `Settings > Pages`.
-    *   Under "Build and deployment", select "Deploy from a branch".
-    *   Choose `gh-pages` as the branch and `/ (root)` as the folder.
-    *   Click "Save".
-
-Your static site will then be published at a URL like `https://your-username.github.io/your-repository-name/`.
-
 ## Future Enhancements
 
 *   **Player Performance Graphs:** Integrate a JavaScript charting library (e.g., Chart.js) to visualize player performance trends over seasons.
