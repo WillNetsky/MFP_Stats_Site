@@ -5,319 +5,488 @@
 {% block content %}
     <h1>All-Time Leaderboards</h1>
 
-    <h2>MFPinball Leaderboards</h2>
-    <h3>Total Raw Points (Top 25)</h3>
-    {% if mfp_total_points_leaderboard %}
-        <div class="table-container">
-            <table id="mfp-total-points-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mfp-total-points-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mfp-total-points-table', 1)">Player</th>
-                        <th onclick="sortTable('mfp-total-points-table', 2, true)">Total Raw Points</th>
-                        <th onclick="sortTable('mfp-total-points-table', 3, true)">Total Adjusted Points</th>
-                        <th onclick="sortTable('mfp-total-points-table', 4, true)">Seasons Played</th>
-                        <th onclick="sortTable('mfp-total-points-table', 5, true)">Total Weeks Attended</th>
-                        <th onclick="sortTable('mfp-total-points-table', 6, true)">Points/Week</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mfp_total_points_leaderboard %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.total_raw_points|int }}</td>
-                            <td>{{ player.total_adjusted_points|int }}</td>
-                            <td>{{ player.seasons_played_count }}</td>
-                            <td>{{ player.total_weeks_played }}</td>
-                            <td>{{ player.average_points_per_week|format_number }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFPinball total raw points leaderboard data available.</p>
-    {% endif %}
+    <div class="toggle-buttons">
+        <button onclick="showLeaderboard('mfp')">MFPinball</button>
+        <button onclick="showLeaderboard('mflp')">MFLadies</button>
+        <button onclick="showLeaderboard('both')">Both</button>
+    </div>
 
-    <h3>Most Weekly Wins</h3>
-    {% if mfp_weekly_wins_leaderboard %}
-        <div class="table-container">
-            <table id="mfp-weekly-wins-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mfp-weekly-wins-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mfp-weekly-wins-table', 1)">Player</th>
-                        <th onclick="sortTable('mfp-weekly-wins-table', 2, true)">Weekly Wins</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mfp_weekly_wins_leaderboard %}
+    <div id="mfp-leaderboards" class="leaderboard-set">
+        <h2>MFPinball Leaderboards</h2>
+        <h3>Total Raw Points (Top 25)</h3>
+        {% if mfp_total_points_leaderboard %}
+            <div class="table-container">
+                <table id="mfp-total-points-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.weekly_wins }}</td>
+                            <th onclick="sortTable('mfp-total-points-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mfp-total-points-table', 1)">Player</th>
+                            <th onclick="sortTable('mfp-total-points-table', 2, true)">Total Raw Points</th>
+                            <th onclick="sortTable('mfp-total-points-table', 3, true)">Total Adjusted Points</th>
+                            <th onclick="sortTable('mfp-total-points-table', 4, true)">Seasons Played</th>
+                            <th onclick="sortTable('mfp-total-points-table', 5, true)">Total Weeks Attended</th>
+                            <th onclick="sortTable('mfp-total-points-table', 6, true)">Points/Week</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFPinball weekly wins leaderboard data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mfp_total_points_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.total_raw_points|int }}</td>
+                                <td>{{ player.total_adjusted_points|int }}</td>
+                                <td>{{ player.seasons_played_count }}</td>
+                                <td>{{ player.total_weeks_played }}</td>
+                                <td>{{ player.average_points_per_week|format_number }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFPinball total raw points leaderboard data available.</p>
+        {% endif %}
 
-    <h3>Most Top-4 Finishes</h3>
-    {% if mfp_top_4_finishes_leaderboard %}
-        <div class="table-container">
-            <table id="mfp-top-4-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mfp-top-4-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mfp-top-4-table', 1)">Player</th>
-                        <th onclick="sortTable('mfp-top-4-table', 2, true)">1st Places</th>
-                        <th onclick="sortTable('mfp-top-4-table', 3, true)">2nd Places</th>
-                        <th onclick="sortTable('mfp-top-4-table', 4, true)">3rd Places</th>
-                        <th onclick="sortTable('mfp-top-4-table', 5, true)">4th Places</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mfp_top_4_finishes_leaderboard %}
+        <h3>Most Weekly Wins</h3>
+        {% if mfp_weekly_wins_leaderboard %}
+            <div class="table-container">
+                <table id="mfp-weekly-wins-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.top_4_finishes[1] }}</td>
-                            <td>{{ player.top_4_finishes[2] }}</td>
-                            <td>{{ player.top_4_finishes[3] }}</td>
-                            <td>{{ player.top_4_finishes[4] }}</td>
+                            <th onclick="sortTable('mfp-weekly-wins-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mfp-weekly-wins-table', 1)">Player</th>
+                            <th onclick="sortTable('mfp-weekly-wins-table', 2, true)">Weekly Wins</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFPinball top-4 finishes leaderboard data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mfp_weekly_wins_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.weekly_wins }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFPinball weekly wins leaderboard data available.</p>
+        {% endif %}
 
-    <h3>Best Season Score (Winning Scores and Above)</h3>
-    {% if mfp_best_season_score_leaderboard %}
-        <div class="table-container">
-            <table id="mfp-best-season-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mfp-best-season-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mfp-best-season-table', 1)">Player</th>
-                        <th onclick="sortTable('mfp-best-season-table', 2, true)">Score</th>
-                        <th onclick="sortTable('mfp-best-season-table', 3)">Season</th>
-                        <th onclick="sortTable('mfp-best-season-table', 4, true)">Place</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mfp_best_season_score_leaderboard %}
+        <h3>Most Top-4 Finishes</h3>
+        {% if mfp_top_4_finishes_leaderboard %}
+            <div class="table-container">
+                <table id="mfp-top-4-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.best_season_score.score|int }}</td>
-                            <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
-                            <td>{{ player.best_season_score.final_position }}</td>
+                            <th onclick="sortTable('mfp-top-4-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mfp-top-4-table', 1)">Player</th>
+                            <th onclick="sortTable('mfp-top-4-table', 2, true)">1st Places</th>
+                            <th onclick="sortTable('mfp-top-4-table', 3, true)">2nd Places</th>
+                            <th onclick="sortTable('mfp-top-4-table', 4, true)">3rd Places</th>
+                            <th onclick="sortTable('mfp-top-4-table', 5, true)">4th Places</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFPinball best season score leaderboard data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mfp_top_4_finishes_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.top_4_finishes[1] }}</td>
+                                <td>{{ player.top_4_finishes[2] }}</td>
+                                <td>{{ player.top_4_finishes[3] }}</td>
+                                <td>{{ player.top_4_finishes[4] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFPinball top-4 finishes leaderboard data available.</p>
+        {% endif %}
 
-    <h3>Most Improved Player</h3>
-    {% if mfp_most_improved_leaderboard %}
-        <div class="table-container">
-            <table id="mfp-most-improved-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mfp-most-improved-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mfp-most-improved-table', 1)">Player</th>
-                        <th onclick="sortTable('mfp-most-improved-table', 2, true)">Improvement (%)</th>
-                        <th onclick="sortTable('mfp-most-improved-table', 3)">Season 1</th>
-                        <th onclick="sortTable('mfp-most-improved-table', 4, true)">Score 1</th>
-                        <th onclick="sortTable('mfp-most-improved-table', 5)">Season 2</th>
-                        <th onclick="sortTable('mfp-most-improved-table', 6, true)">Score 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in mfp_most_improved_leaderboard %}
+        <h3>Best Season Score (Winning Scores and Above)</h3>
+        {% if mfp_best_season_score_leaderboard %}
+            <div class="table-container">
+                <table id="mfp-best-season-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
-                            <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
-                            <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
-                            <td>{{ entry.season1.summary_stats.total_adjusted_points|int }}</td>
-                            <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
-                            <td>{{ entry.season2.summary_stats.total_adjusted_points|int }}</td>
+                            <th onclick="sortTable('mfp-best-season-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mfp-best-season-table', 1)">Player</th>
+                            <th onclick="sortTable('mfp-best-season-table', 2, true)">Score</th>
+                            <th onclick="sortTable('mfp-best-season-table', 3)">Season</th>
+                            <th onclick="sortTable('mfp-best-season-table', 4, true)">Place</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFPinball most improved player data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mfp_best_season_score_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.best_season_score.score|int }}</td>
+                                <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
+                                <td>{{ player.best_season_score.final_position }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFPinball best season score leaderboard data available.</p>
+        {% endif %}
 
-    <h2>MFLadies Pinball Leaderboards</h2>
-    <h3>Total Raw Points (Top 25)</h3>
-    {% if mflp_total_points_leaderboard %}
-        <div class="table-container">
-            <table id="mflp-total-points-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mflp-total-points-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mflp-total-points-table', 1)">Player</th>
-                        <th onclick="sortTable('mflp-total-points-table', 2, true)">Total Raw Points</th>
-                        <th onclick="sortTable('mflp-total-points-table', 3, true)">Total Adjusted Points</th>
-                        <th onclick="sortTable('mflp-total-points-table', 4, true)">Seasons Played</th>
-                        <th onclick="sortTable('mflp-total-points-table', 5, true)">Total Weeks Attended</th>
-                        <th onclick="sortTable('mflp-total-points-table', 6, true)">Points/Week</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mflp_total_points_leaderboard %}
+        <h3>Most Improved Player</h3>
+        {% if mfp_most_improved_leaderboard %}
+            <div class="table-container">
+                <table id="mfp-most-improved-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.total_raw_points|int }}</td>
-                            <td>{{ player.total_adjusted_points|int }}</td>
-                            <td>{{ player.seasons_played_count }}</td>
-                            <td>{{ player.total_weeks_played }}</td>
-                            <td>{{ player.average_points_per_week|format_number }}</td>
+                            <th onclick="sortTable('mfp-most-improved-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mfp-most-improved-table', 1)">Player</th>
+                            <th onclick="sortTable('mfp-most-improved-table', 2, true)">Improvement (%)</th>
+                            <th onclick="sortTable('mfp-most-improved-table', 3)">Season 1</th>
+                            <th onclick="sortTable('mfp-most-improved-table', 4, true)">Score 1</th>
+                            <th onclick="sortTable('mfp-most-improved-table', 5)">Season 2</th>
+                            <th onclick="sortTable('mfp-most-improved-table', 6, true)">Score 2</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFLadies Pinball total raw points leaderboard data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for entry in mfp_most_improved_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
+                                <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
+                                <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
+                                <td>{{ entry.season1.summary_stats.total_adjusted_points|int }}</td>
+                                <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
+                                <td>{{ entry.season2.summary_stats.total_adjusted_points|int }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFPinball most improved player data available.</p>
+        {% endif %}
+    </div>
 
-    <h3>Most Weekly Wins</h3>
-    {% if mflp_weekly_wins_leaderboard %}
-        <div class="table-container">
-            <table id="mflp-weekly-wins-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mflp-weekly-wins-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mflp-weekly-wins-table', 1)">Player</th>
-                        <th onclick="sortTable('mflp-weekly-wins-table', 2, true)">Weekly Wins</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mflp_weekly_wins_leaderboard %}
+    <div id="mflp-leaderboards" class="leaderboard-set" style="display:none;">
+        <h2>MFLadies Pinball Leaderboards</h2>
+        <h3>Total Raw Points (Top 25)</h3>
+        {% if mflp_total_points_leaderboard %}
+            <div class="table-container">
+                <table id="mflp-total-points-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.weekly_wins }}</td>
+                            <th onclick="sortTable('mflp-total-points-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mflp-total-points-table', 1)">Player</th>
+                            <th onclick="sortTable('mflp-total-points-table', 2, true)">Total Raw Points</th>
+                            <th onclick="sortTable('mflp-total-points-table', 3, true)">Total Adjusted Points</th>
+                            <th onclick="sortTable('mflp-total-points-table', 4, true)">Seasons Played</th>
+                            <th onclick="sortTable('mflp-total-points-table', 5, true)">Total Weeks Attended</th>
+                            <th onclick="sortTable('mflp-total-points-table', 6, true)">Points/Week</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFLadies Pinball most weekly wins leaderboard data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mflp_total_points_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.total_raw_points|int }}</td>
+                                <td>{{ player.total_adjusted_points|int }}</td>
+                                <td>{{ player.seasons_played_count }}</td>
+                                <td>{{ player.total_weeks_played }}</td>
+                                <td>{{ player.average_points_per_week|format_number }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFLadies Pinball total raw points leaderboard data available.</p>
+        {% endif %}
 
-    <h3>Most Top-4 Finishes</h3>
-    {% if mflp_top_4_finishes_leaderboard %}
-        <div class="table-container">
-            <table id="mflp-top-4-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mflp-top-4-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mflp-top-4-table', 1)">Player</th>
-                        <th onclick="sortTable('mflp-top-4-table', 2, true)">1st Places</th>
-                        <th onclick="sortTable('mflp-top-4-table', 3, true)">2nd Places</th>
-                        <th onclick="sortTable('mflp-top-4-table', 4, true)">3rd Places</th>
-                        <th onclick="sortTable('mflp-top-4-table', 5, true)">4th Places</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mflp_top_4_finishes_leaderboard %}
+        <h3>Most Weekly Wins</h3>
+        {% if mflp_weekly_wins_leaderboard %}
+            <div class="table-container">
+                <table id="mflp-weekly-wins-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.top_4_finishes[1] }}</td>
-                            <td>{{ player.top_4_finishes[2] }}</td>
-                            <td>{{ player.top_4_finishes[3] }}</td>
-                            <td>{{ player.top_4_finishes[4] }}</td>
+                            <th onclick="sortTable('mflp-weekly-wins-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mflp-weekly-wins-table', 1)">Player</th>
+                            <th onclick="sortTable('mflp-weekly-wins-table', 2, true)">Weekly Wins</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFLadies Pinball top-4 finishes leaderboard data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mflp_weekly_wins_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.weekly_wins }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFLadies Pinball most weekly wins leaderboard data available.</p>
+        {% endif %}
 
-    <h3>Best Season Score (Winning Scores and Above)</h3>
-    {% if mflp_best_season_score_leaderboard %}
-        <div class="table-container">
-            <table id="mflp-best-season-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mflp-best-season-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mflp-best-season-table', 1)">Player</th>
-                        <th onclick="sortTable('mflp-best-season-table', 2, true)">Score</th>
-                        <th onclick="sortTable('mflp-best-season-table', 3)">Season</th>
-                        <th onclick="sortTable('mflp-best-season-table', 4, true)">Place</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for player in mflp_best_season_score_leaderboard %}
+        <h3>Most Top-4 Finishes</h3>
+        {% if mflp_top_4_finishes_leaderboard %}
+            <div class="table-container">
+                <table id="mflp-top-4-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                            <td>{{ player.best_season_score.score|int }}</td>
-                            <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
-                            <td>{{ player.best_season_score.final_position }}</td>
+                            <th onclick="sortTable('mflp-top-4-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mflp-top-4-table', 1)">Player</th>
+                            <th onclick="sortTable('mflp-top-4-table', 2, true)">1st Places</th>
+                            <th onclick="sortTable('mflp-top-4-table', 3, true)">2nd Places</th>
+                            <th onclick="sortTable('mflp-top-4-table', 4, true)">3rd Places</th>
+                            <th onclick="sortTable('mflp-top-4-table', 5, true)">4th Places</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFLadies Pinball best season score leaderboard data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mflp_top_4_finishes_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.top_4_finishes[1] }}</td>
+                                <td>{{ player.top_4_finishes[2] }}</td>
+                                <td>{{ player.top_4_finishes[3] }}</td>
+                                <td>{{ player.top_4_finishes[4] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFLadies Pinball top-4 finishes leaderboard data available.</p>
+        {% endif %}
 
-    <h3>Most Improved Player</h3>
-    {% if mflp_most_improved_leaderboard %}
-        <div class="table-container">
-            <table id="mflp-most-improved-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mflp-most-improved-table', 0, true)">Rank</th>
-                        <th onclick="sortTable('mflp-most-improved-table', 1)">Player</th>
-                        <th onclick="sortTable('mflp-most-improved-table', 2, true)">Improvement (%)</th>
-                        <th onclick="sortTable('mflp-most-improved-table', 3)">Season 1</th>
-                        <th onclick="sortTable('mflp-most-improved-table', 4, true)">Score 1</th>
-                        <th onclick="sortTable('mflp-most-improved-table', 5)">Season 2</th>
-                        <th onclick="sortTable('mflp-most-improved-table', 6, true)">Score 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in mflp_most_improved_leaderboard %}
+        <h3>Best Season Score (Winning Scores and Above)</h3>
+        {% if mflp_best_season_score_leaderboard %}
+            <div class="table-container">
+                <table id="mflp-best-season-table">
+                    <thead>
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
-                            <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
-                            <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
-                            <td>{{ entry.season1.summary_stats.total_adjusted_points|int }}</td>
-                            <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
-                            <td>{{ entry.season2.summary_stats.total_adjusted_points|int }}</td>
+                            <th onclick="sortTable('mflp-best-season-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mflp-best-season-table', 1)">Player</th>
+                            <th onclick="sortTable('mflp-best-season-table', 2, true)">Score</th>
+                            <th onclick="sortTable('mflp-best-season-table', 3)">Season</th>
+                            <th onclick="sortTable('mflp-best-season-table', 4, true)">Place</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% else %}
-        <p>No MFLadies Pinball most improved player data available.</p>
-    {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for player in mflp_best_season_score_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.best_season_score.score|int }}</td>
+                                <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
+                                <td>{{ player.best_season_score.final_position }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFLadies Pinball best season score leaderboard data available.</p>
+        {% endif %}
+
+        <h3>Most Improved Player</h3>
+        {% if mflp_most_improved_leaderboard %}
+            <div class="table-container">
+                <table id="mflp-most-improved-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-most-improved-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('mflp-most-improved-table', 1)">Player</th>
+                            <th onclick="sortTable('mflp-most-improved-table', 2, true)">Improvement (%)</th>
+                            <th onclick="sortTable('mflp-most-improved-table', 3)">Season 1</th>
+                            <th onclick="sortTable('mflp-most-improved-table', 4, true)">Score 1</th>
+                            <th onclick="sortTable('mflp-most-improved-table', 5)">Season 2</th>
+                            <th onclick="sortTable('mflp-most-improved-table', 6, true)">Score 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in mflp_most_improved_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
+                                <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
+                                <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
+                                <td>{{ entry.season1.summary_stats.total_adjusted_points|int }}</td>
+                                <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
+                                <td>{{ entry.season2.summary_stats.total_adjusted_points|int }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No MFLadies Pinball most improved player data available.</p>
+        {% endif %}
+    </div>
+
+    <div id="both-leaderboards" class="leaderboard-set" style="display:none;">
+        <h2>Combined Leaderboards</h2>
+        <h3>Total Raw Points (Top 25)</h3>
+        {% if combined_total_points_leaderboard %}
+            <div class="table-container">
+                <table id="combined-total-points-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-total-points-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('combined-total-points-table', 1)">Player</th>
+                            <th onclick="sortTable('combined-total-points-table', 2, true)">Total Raw Points</th>
+                            <th onclick="sortTable('combined-total-points-table', 3, true)">Total Adjusted Points</th>
+                            <th onclick="sortTable('combined-total-points-table', 4, true)">Seasons Played</th>
+                            <th onclick="sortTable('combined-total-points-table', 5, true)">Total Weeks Attended</th>
+                            <th onclick="sortTable('combined-total-points-table', 6, true)">Points/Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in combined_total_points_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.total_raw_points|int }}</td>
+                                <td>{{ player.total_adjusted_points|int }}</td>
+                                <td>{{ player.seasons_played_count }}</td>
+                                <td>{{ player.total_weeks_played }}</td>
+                                <td>{{ player.average_points_per_week|format_number }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No combined total raw points leaderboard data available.</p>
+        {% endif %}
+
+        <h3>Most Weekly Wins</h3>
+        {% if combined_weekly_wins_leaderboard %}
+            <div class="table-container">
+                <table id="combined-weekly-wins-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-weekly-wins-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('combined-weekly-wins-table', 1)">Player</th>
+                            <th onclick="sortTable('combined-weekly-wins-table', 2, true)">Weekly Wins</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in combined_weekly_wins_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.weekly_wins }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No combined weekly wins leaderboard data available.</p>
+        {% endif %}
+
+        <h3>Most Top-4 Finishes</h3>
+        {% if combined_top_4_finishes_leaderboard %}
+            <div class="table-container">
+                <table id="combined-top-4-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-top-4-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('combined-top-4-table', 1)">Player</th>
+                            <th onclick="sortTable('combined-top-4-table', 2, true)">1st Places</th>
+                            <th onclick="sortTable('combined-top-4-table', 3, true)">2nd Places</th>
+                            <th onclick="sortTable('combined-top-4-table', 4, true)">3rd Places</th>
+                            <th onclick="sortTable('combined-top-4-table', 5, true)">4th Places</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in combined_top_4_finishes_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.top_4_finishes[1] }}</td>
+                                <td>{{ player.top_4_finishes[2] }}</td>
+                                <td>{{ player.top_4_finishes[3] }}</td>
+                                <td>{{ player.top_4_finishes[4] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No combined top-4 finishes leaderboard data available.</p>
+        {% endif %}
+
+        <h3>Best Season Score (Winning Scores and Above)</h3>
+        {% if combined_best_season_score_leaderboard %}
+            <div class="table-container">
+                <table id="combined-best-season-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-best-season-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('combined-best-season-table', 1)">Player</th>
+                            <th onclick="sortTable('combined-best-season-table', 2, true)">Score</th>
+                            <th onclick="sortTable('combined-best-season-table', 3)">Season</th>
+                            <th onclick="sortTable('combined-best-season-table', 4, true)">Place</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in combined_best_season_score_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td>{{ player.best_season_score.score|int }}</td>
+                                <td><a href="season_{{ player.best_season_score.seriesId }}.html">{{ player.best_season_score.seriesName }}</a></td>
+                                <td>{{ player.best_season_score.final_position }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No combined best season score leaderboard data available.</p>
+        {% endif %}
+
+        <h3>Most Improved Player</h3>
+        {% if combined_most_improved_leaderboard %}
+            <div class="table-container">
+                <table id="combined-most-improved-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-most-improved-table', 0, true)">Rank</th>
+                            <th onclick="sortTable('combined-most-improved-table', 1)">Player</th>
+                            <th onclick="sortTable('combined-most-improved-table', 2, true)">Improvement (%)</th>
+                            <th onclick="sortTable('combined-most-improved-table', 3)">Season 1</th>
+                            <th onclick="sortTable('combined-most-improved-table', 4, true)">Score 1</th>
+                            <th onclick="sortTable('combined-most-improved-table', 5)">Season 2</th>
+                            <th onclick="sortTable('combined-most-improved-table', 6, true)">Score 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in combined_most_improved_leaderboard %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
+                                <td>{{ (entry.improvement_percent * 100)|round(2) }}%</td>
+                                <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
+                                <td>{{ entry.season1.summary_stats.total_adjusted_points|int }}</td>
+                                <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
+                                <td>{{ entry.season2.summary_stats.total_adjusted_points|int }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No combined most improved player data available.</p>
+        {% endif %}
+    </div>
 
     <h2>Perfect Nights (Score of 35)</h2>
     {% if perfect_nights_leaderboard %}
@@ -344,4 +513,13 @@
     {% else %}
         <p>No perfect nights recorded yet.</p>
     {% endif %}
+
+    <script>
+        function showLeaderboard(league) {
+            document.getElementById('mfp-leaderboards').style.display = 'none';
+            document.getElementById('mflp-leaderboards').style.display = 'none';
+            document.getElementById('both-leaderboards').style.display = 'none';
+            document.getElementById(league + '-leaderboards').style.display = 'block';
+        }
+    </script>
 {% endblock %}

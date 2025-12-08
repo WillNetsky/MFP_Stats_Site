@@ -1,7 +1,8 @@
 import os
 import shutil
 from jinja2 import Environment, FileSystemLoader
-import json # Import json to dump data for Chart.js
+import json
+from copy import deepcopy
 
 from data_processor import load_all_series_data, load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list
 from api_client import fetch_finals_results
@@ -492,7 +493,8 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
     
     # Track all winning scores to determine the global minimum winning score
     all_winning_scores = []
-    perfect_nights_leaderboard = [] # New list for perfect nights
+    mfp_perfect_nights = []
+    mflp_perfect_nights = []
 
     # Create a temporary list of season entries to apply year corrections consistently
     temp_season_entries = []
@@ -633,7 +635,7 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
 
                         if points == 35.0:
                             player_name = player_map.get(player_id, 'Unknown Player')
-                            perfect_nights_leaderboard.append({
+                            perfect_night_entry = {
                                 'playerId': player_id,
                                 'name': player_name,
                                 'seriesId': series_id,
@@ -641,7 +643,11 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                                 'year': year,
                                 'season_name': season_name_parsed,
                                 'week_num': week_num
-                            })
+                            }
+                            if "MFPinball" in league_name_parsed or "MFP" in league_name_parsed:
+                                mfp_perfect_nights.append(perfect_night_entry)
+                            elif "MFLadies Pinball" in league_name_parsed or "MFLadies" in league_name_parsed:
+                                mflp_perfect_nights.append(perfect_night_entry)
                     
                     if weekly_winner_id and target_stats_dict and weekly_winner_id in target_stats_dict:
                         target_stats_dict[weekly_winner_id]['weekly_wins'] += 1
@@ -655,7 +661,9 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
             stats['average_points_per_week'] = stats['total_raw_points'] / stats['total_weeks_played']
 
     # Sort perfect nights by seriesId then week_num
-    perfect_nights_leaderboard.sort(key=lambda x: (x['seriesId'], x['week_num']))
+    mfp_perfect_nights.sort(key=lambda x: (x['seriesId'], x['week_num']))
+    mflp_perfect_nights.sort(key=lambda x: (x['seriesId'], x['week_num']))
+    combined_perfect_nights = sorted(mfp_perfect_nights + mflp_perfect_nights, key=lambda x: (x['seriesId'], x['week_num']))
 
     # Determine global minimum winning score
     min_winning_score = min(all_winning_scores) if all_winning_scores else 0.0
@@ -684,9 +692,39 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
     mflp_best_season_score_leaderboard = [p for p in mflp_leaderboard_data if p['best_season_score']['score'] >= min_winning_score and isinstance(p['best_season_score']['final_position'], int) and p['best_season_score']['final_position'] <= 10]
     mflp_best_season_score_leaderboard.sort(key=lambda x: x['best_season_score']['score'], reverse=True)
 
+    # --- Combined Leaderboards ---
+    combined_players_stats = deepcopy(mfp_players_stats)
+    for player_id, stats in mflp_players_stats.items():
+        if player_id in combined_players_stats:
+            combined_players_stats[player_id]['total_adjusted_points'] += stats['total_adjusted_points']
+            combined_players_stats[player_id]['total_raw_points'] += stats['total_raw_points']
+            combined_players_stats[player_id]['seasons_played_count'] += stats['seasons_played_count']
+            combined_players_stats[player_id]['total_weeks_played'] += stats['total_weeks_played']
+            combined_players_stats[player_id]['weekly_wins'] += stats['weekly_wins']
+            for i in range(1, 5):
+                combined_players_stats[player_id]['top_4_finishes'][i] += stats['top_4_finishes'][i]
+            if stats['best_season_score']['score'] > combined_players_stats[player_id]['best_season_score']['score']:
+                combined_players_stats[player_id]['best_season_score'] = stats['best_season_score']
+        else:
+            combined_players_stats[player_id] = stats
+    
+    for player_id, stats in combined_players_stats.items():
+        if stats['total_weeks_played'] > 0:
+            stats['average_points_per_week'] = stats['total_raw_points'] / stats['total_weeks_played']
+
+    combined_leaderboard_data = list(combined_players_stats.values())
+    combined_total_points_leaderboard = sorted(combined_leaderboard_data, key=lambda x: x['total_raw_points'], reverse=True)[:25]
+    combined_weekly_wins_leaderboard = sorted([p for p in combined_leaderboard_data if p['weekly_wins'] > 0], key=lambda x: x['weekly_wins'], reverse=True)
+    combined_top_4_finishes_leaderboard = [p for p in combined_leaderboard_data if sum(p['top_4_finishes'].values()) > 0]
+    combined_top_4_finishes_leaderboard.sort(key=lambda x: (x['top_4_finishes'][1], x['top_4_finishes'][2], x['top_4_finishes'][3], x['top_4_finishes'][4]), reverse=True)
+    combined_best_season_score_leaderboard = [p for p in combined_leaderboard_data if p['best_season_score']['score'] >= min_winning_score and isinstance(p['best_season_score']['final_position'], int) and p['best_season_score']['final_position'] <= 10]
+    combined_best_season_score_leaderboard.sort(key=lambda x: x['best_season_score']['score'], reverse=True)
+
+
     # --- Most Improved Player Leaderboards ---
     mfp_most_improved_leaderboard = []
     mflp_most_improved_leaderboard = []
+    combined_most_improved_leaderboard = []
 
     for player_id, player_data in player_categorized_seasons.items():
         player_info = player_data['player_info']
@@ -743,11 +781,41 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
         if best_mflp_improvement['improvement_percent'] > -1:
             mflp_most_improved_leaderboard.append(best_mflp_improvement)
 
+        # Process Combined seasons for improvement
+        all_seasons_sorted = sorted(player_data['mfp_seasons'] + player_data['mflp_seasons'], key=lambda x: x['seriesId'])
+        best_combined_improvement = {'player': player_info, 'improvement_percent': -1, 'season1': None, 'season2': None}
+        for i in range(len(all_seasons_sorted) - 1):
+            season1 = all_seasons_sorted[i]
+            season2 = all_seasons_sorted[i+1]
+            
+            score1 = season1['summary_stats']['total_adjusted_points']
+            score2 = season2['summary_stats']['total_adjusted_points']
+            weeks_played1 = season1['summary_stats']['weeks_played']
+            weeks_played2 = season2['summary_stats']['weeks_played']
+
+            # Apply the new condition: player must have played at least MIN_WEEKS_FOR_IMPROVEMENT in both seasons
+            if (weeks_played1 >= MIN_WEEKS_FOR_IMPROVEMENT and 
+                weeks_played2 >= MIN_WEEKS_FOR_IMPROVEMENT and
+                score1 > 0 and score2 > score1): # Ensure previous score is positive and current is an improvement
+                improvement = (score2 - score1) / score1
+                if improvement > best_combined_improvement['improvement_percent']:
+                    best_combined_improvement.update({
+                        'improvement_percent': improvement,
+                        'season1': season1,
+                        'season2': season2
+                    })
+        if best_combined_improvement['improvement_percent'] > -1:
+            combined_most_improved_leaderboard.append(best_combined_improvement)
+
+
     mfp_most_improved_leaderboard.sort(key=lambda x: x['improvement_percent'], reverse=True)
     mfp_most_improved_leaderboard = mfp_most_improved_leaderboard[:25] # Limit to top 25
     
     mflp_most_improved_leaderboard.sort(key=lambda x: x['improvement_percent'], reverse=True)
     mflp_most_improved_leaderboard = mflp_most_improved_leaderboard[:25] # Limit to top 25
+
+    combined_most_improved_leaderboard.sort(key=lambda x: x['improvement_percent'], reverse=True)
+    combined_most_improved_leaderboard = combined_most_improved_leaderboard[:25]
 
 
     template = env.get_template('leaderboards.html')
@@ -763,7 +831,14 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
             mflp_top_4_finishes_leaderboard=mflp_top_4_finishes_leaderboard,
             mflp_best_season_score_leaderboard=mflp_best_season_score_leaderboard,
             mflp_most_improved_leaderboard=mflp_most_improved_leaderboard,
-            perfect_nights_leaderboard=perfect_nights_leaderboard # Pass perfect nights
+            combined_total_points_leaderboard=combined_total_points_leaderboard,
+            combined_weekly_wins_leaderboard=combined_weekly_wins_leaderboard,
+            combined_top_4_finishes_leaderboard=combined_top_4_finishes_leaderboard,
+            combined_best_season_score_leaderboard=combined_best_season_score_leaderboard,
+            combined_most_improved_leaderboard=combined_most_improved_leaderboard,
+            mfp_perfect_nights=mfp_perfect_nights,
+            mflp_perfect_nights=mflp_perfect_nights,
+            combined_perfect_nights=combined_perfect_nights
         ))
     print("Generated leaderboards.html")
 

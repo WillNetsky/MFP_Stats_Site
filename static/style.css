@@ -86,3 +86,9 @@ thead {
 .season-page .container {
     max-width: 95vw;
 }
+
+.toggle-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
