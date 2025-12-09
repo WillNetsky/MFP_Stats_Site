@@ -88,7 +88,7 @@ thead {
 }
 
 .toggle-buttons {
-    display: flex;
+    display: inline-flex;
     gap: 10px;
     margin-bottom: 20px;
 }

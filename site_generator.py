@@ -239,7 +239,7 @@ def generate_seasons_page(env, all_series_data):
                     elif i == 3:
                         season_entry['fourth_place_player'] = {'playerId': player_id, 'name': player_name}
 
-                # Calculate qualified players count and store qualification threshold
+                # Calculate qualified players count
                 qualification_threshold = get_qualification_threshold(year, season_name)
                 season_entry['qualification_threshold'] = qualification_threshold
                 qualified_player_ids = set()
@@ -503,6 +503,7 @@ def generate_player_pages(env, all_series_data):
                     'total_adjusted_points': player_standing['pointsAdjusted'] if player_standing else 0,
                     'weeks_played': num_weeks_played,
                     'average_points_per_week': round(average_points_per_week, 2),
+                    'best_week_score': top_6_scores[0] if top_6_scores and top_6_scores[0] is not None else 0.0, # Extract best week score
                     'top_6_scores': top_6_scores # List of top 6 scores
                 }
             }
@@ -521,39 +522,40 @@ def generate_player_pages(env, all_series_data):
         # Add aggregated game performance to player data
         data['game_performance'] = dict(all_players_game_performance[player_id])
 
+    # Prepare all_players_chart_data for passing to the template
+    all_players_chart_data = {}
+    for player_id, player_data in player_categorized_seasons.items():
+        all_players_chart_data[player_id] = {
+            'name': player_data['player_info']['name'],
+            'mfp_seasons_data': [],
+            'mflp_seasons_data': []
+        }
+        # Populate mfp_seasons_data
+        sorted_mfp_seasons = sorted(player_data['mfp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
+        for season in sorted_mfp_seasons:
+            all_players_chart_data[player_id]['mfp_seasons_data'].append({
+                'label': f"{season['season_name']} {season['year']}",
+                'stats': season['summary_stats']
+            })
+        # Populate mflp_seasons_data
+        sorted_mflp_seasons = sorted(player_data['mflp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
+        for season in sorted_mflp_seasons:
+            all_players_chart_data[player_id]['mflp_seasons_data'].append({
+                'label': f"{season['season_name']} {season['year']}",
+                'stats': season['summary_stats']
+            })
 
     # Generate individual player pages
     player_template = env.get_template('player.html')
     for player_id, data in player_categorized_seasons.items():
         player = data['player_info']
         
-        # Prepare data for Chart.js
-        mfp_chart_data = []
-        # Sort seasons by year and then by seriesId to ensure chronological order for the graph
-        sorted_mfp_seasons = sorted(data['mfp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
-        for season in sorted_mfp_seasons:
-            mfp_chart_data.append({
-                'label': f"{season['season_name']} {season['year']}",
-                'value': season['summary_stats']['average_points_per_week'] # Changed to average_points_per_week
-            })
-        
-        mflp_chart_data = []
-        # Sort seasons by year and then by seriesId to ensure chronological order for the graph
-        sorted_mflp_seasons = sorted(data['mflp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
-        for season in sorted_mflp_seasons:
-            mflp_chart_data.append({
-                'label': f"{season['season_name']} {season['year']}",
-                'value': season['summary_stats']['average_points_per_week'] # Changed to average_points_per_week
-            })
-
         with open(os.path.join(OUTPUT_DIR, f"player_{player_id}.html"), 'w') as f:
             f.write(player_template.render(
                 player=player,
                 mfp_seasons=data['mfp_seasons'],
                 mflp_seasons=data['mflp_seasons'],
-                mfp_chart_data=json.dumps(mfp_chart_data), # Pass as JSON string
-                mflp_chart_data=json.dumps(mflp_chart_data), # Pass as JSON string
-                game_performance=data['game_performance'] # Pass game performance data
+                game_performance=data['game_performance'], # Pass game performance data
             ))
         print(f"Generated player_{player_id}.html")
 
@@ -563,7 +565,15 @@ def generate_player_pages(env, all_series_data):
         f.write(players_list_template.render(players=players_list))
     print("Generated players.html")
     
-    return player_categorized_seasons
+    return player_categorized_seasons, all_players_chart_data
+
+def generate_charts_page(env, all_players_chart_data):
+    """Generates the charts.html page."""
+    print("Generating charts.html...")
+    template = env.get_template('charts.html')
+    with open(os.path.join(OUTPUT_DIR, 'charts.html'), 'w') as f:
+        f.write(template.render(all_players_chart_data=json.dumps(all_players_chart_data)))
+    print("Generated charts.html")
 
 def generate_leaderboards_page(env, all_series_data, player_categorized_seasons):
     """Generates the all-time leaderboards page, separated by league type."""
@@ -952,5 +962,6 @@ def generate_site(excluded_series_names):
 
     generate_seasons_page(env, all_series_data)
     generate_season_pages(env, all_series_data)
-    player_categorized_seasons = generate_player_pages(env, all_series_data)
+    player_categorized_seasons, all_players_chart_data = generate_player_pages(env, all_series_data)
+    generate_charts_page(env, all_players_chart_data) # New call to generate charts page
     generate_leaderboards_page(env, all_series_data, player_categorized_seasons)

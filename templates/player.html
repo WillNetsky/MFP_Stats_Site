@@ -7,32 +7,59 @@
 {% block head %}
     {{ super() }}
     <style>
-        .chart-wrapper {
-            margin-bottom: 20px;
-        }
-        .chart-toggle-button {
-            margin-bottom: 10px;
-            padding: 8px 15px;
-            background-color: var(--primary);
-            color: var(--primary-inverse);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-        .chart-toggle-button:hover {
-            opacity: 0.9;
-        }
-        .chart-container {
+        /* Styles for the new search box */
+        .search-container {
             position: relative;
-            width: 100%; /* Take full width of its parent */
-            max-width: 600px; /* Max width for the chart */
-            height: 300px; /* Fixed height for the chart */
-            margin: 0 auto; /* Center the chart */
+            display: inline-block;
+            flex-shrink: 1; /* Allow search container to shrink if needed */
+            flex-grow: 1; /* Allow search container to grow and take available space */
+            width: 0; /* Allow search container to shrink as much as possible */
+            min-width: 0; /* Ensure no minimum width prevents shrinking */
         }
-        .chart-container canvas {
-            width: 100% !important;
-            height: 100% !important;
+        .search-container input[type="text"] { /* Target search input specifically */
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--form-element-border-color);
+            background-color: var(--form-element-background-color);
+            color: var(--color);
+            width: 100%; /* Make input take full width of its flex-grown parent */
+        }
+        .search-results {
+            position: absolute;
+            background-color: var(--background-color);
+            border: 1px solid var(--form-element-border-color);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .search-results div {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+        .search-results div:hover {
+            background-color: var(--primary-hover);
+            color: var(--primary-inverse);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 1; /* Allow search input wrapper to shrink */
+            width: auto; /* Allow search input wrapper to take natural width */
+        }
+        .clear-search-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1em;
+            padding: 0 5px;
+            width: 50px;
+        }
+        .clear-search-button:hover {
+            color: var(--primary-hover);
         }
     </style>
 {% endblock %}
@@ -43,12 +70,6 @@
 
     <h2>MFPinball Seasons</h2>
     {% if mfp_seasons %}
-        <div class="chart-wrapper">
-            <button class="chart-toggle-button" onclick="toggleChart('mfpPerformanceChartContainer')">Toggle MFPinball Performance Chart</button>
-            <div id="mfpPerformanceChartContainer" class="chart-container" style="display: none;">
-                <canvas id="mfpPerformanceChart"></canvas>
-            </div>
-        </div>
         <div class="table-container">
             <table id="mfp-player-seasons-table">
                 <thead>
@@ -97,12 +118,6 @@
 
     <h2>MFLadies Pinball Seasons</h2>
     {% if mflp_seasons %}
-        <div class="chart-wrapper">
-            <button class="chart-toggle-button" onclick="toggleChart('mflpPerformanceChartContainer')">Toggle MFLadies Pinball Performance Chart</button>
-            <div id="mflpPerformanceChartContainer" class="chart-container" style="display: none;">
-                <canvas id="mflpPerformanceChart"></canvas>
-            </div>
-        </div>
         <div class="table-container">
             <table id="mflp-player-seasons-table">
                 <thead>
@@ -181,113 +196,27 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        function toggleChart(chartContainerId) {
-            const chartContainer = document.getElementById(chartContainerId);
-            if (chartContainer.style.display === 'none') {
-                chartContainer.style.display = 'block';
-            } else {
-                chartContainer.style.display = 'none';
-            }
-        }
+        // No chart-specific JavaScript needed on this page anymore.
+        // The allPlayersChartData variable is also no longer needed here.
+        // The toggleChart, getStatisticLabel, getChartData, getChartLabels, updateChart,
+        // handleSearchInput, selectOverlayPlayer, clearOverlayPlayer functions are removed.
 
         document.addEventListener('DOMContentLoaded', function() {
-            // MFPinball Chart
-            const mfpChartData = {{ mfp_chart_data | safe }};
-            if (mfpChartData.length > 0) {
-                const mfpLabels = mfpChartData.map(item => item.label);
-                const mfpValues = mfpChartData.map(item => item.value);
-                const mfpCtx = document.getElementById('mfpPerformanceChart').getContext('2d');
-                new Chart(mfpCtx, {
-                    type: 'line',
-                    data: {
-                        labels: mfpLabels,
-                        datasets: [{
-                            label: 'Avg Points/Week (MFPinball)',
-                            data: mfpValues,
-                            borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1,
-                            fill: false
-                        },
-                        {
-                            label: 'Average (20)',
-                            data: Array(mfpLabels.length).fill(20), // Constant line at 20
-                            borderColor: 'rgb(255, 205, 86)', // Yellow/Orange color
-                            borderDash: [5, 5], // Dashed line
-                            pointRadius: 0, // No points on this line
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false, // Important for fixed height
-                        scales: {
-                            y: {
-                                min: 0,
-                                max: 35,
-                                title: {
-                                    display: true,
-                                    text: 'Avg Points/Week'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Season'
-                                }
+            // Hide search results when clicking outside
+            document.addEventListener('click', function(event) {
+                ['mfp', 'mflp'].forEach(leagueType => {
+                    const searchContainer = document.querySelector(`#${leagueType}-overlay-search-input`);
+                    if (searchContainer) { // Check if element exists before trying to access closest
+                        const actualSearchContainer = searchContainer.closest('.search-container');
+                        if (actualSearchContainer && !actualSearchContainer.contains(event.target)) {
+                            const searchResultsDiv = document.getElementById(`${leagueType}-overlay-search-results`);
+                            if (searchResultsDiv) {
+                                searchResultsDiv.style.display = 'none';
                             }
                         }
                     }
                 });
-            }
-
-            // MFLadies Pinball Chart
-            const mflpChartData = {{ mflp_chart_data | safe }};
-            if (mflpChartData.length > 0) {
-                const mflpLabels = mflpChartData.map(item => item.label);
-                const mflpValues = mflpChartData.map(item => item.value);
-                const mflpCtx = document.getElementById('mflpPerformanceChart').getContext('2d');
-                new Chart(mflpCtx, {
-                    type: 'line',
-                    data: {
-                        labels: mflpLabels,
-                        datasets: [{
-                            label: 'Avg Points/Week (MFLadies Pinball)',
-                            data: mflpValues,
-                            borderColor: 'rgb(255, 99, 132)',
-                            tension: 0.1,
-                            fill: false
-                        },
-                        {
-                            label: 'Average (20)',
-                            data: Array(mflpLabels.length).fill(20), // Constant line at 20
-                            borderColor: 'rgb(255, 205, 86)', // Yellow/Orange color
-                            borderDash: [5, 5], // Dashed line
-                            pointRadius: 0, // No points on this line
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false, // Important for fixed height
-                        scales: {
-                            y: {
-                                min: 0,
-                                max: 35,
-                                title: {
-                                    display: true,
-                                    text: 'Avg Points/Week'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Season'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+            });
         });
     </script>
 {% endblock %}

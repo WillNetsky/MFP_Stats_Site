@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block title %}Performance Charts - Pinball League Stats{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        .chart-section {
+            margin-bottom: 20px;
+            border: 1px solid var(--form-element-border-color);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .chart-controls {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap; /* Allow wrapping for better responsiveness */
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+            background-color: var(--card-background-color);
+            border-radius: 4px;
+            overflow-x: auto; /* Allow horizontal scrolling if content overflows */
+        }
+        .chart-controls label {
+            margin-right: 0;
+            white-space: nowrap;
+        }
+        .chart-controls select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--form-element-border-color);
+            background-color: var(--form-element-background-color);
+            color: var(--color);
+            flex-grow: 1; /* Allow select to grow */
+            min-width: 150px; /* Minimum width for select */
+        }
+        .chart-toggle-button {
+            padding: 8px 15px;
+            background-color: var(--primary);
+            color: var(--primary-inverse);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        .chart-toggle-button.active {
+            background-color: var(--primary-hover);
+        }
+        .chart-toggle-button:hover {
+            opacity: 0.9;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px; /* Set max-width on the container */
+            height: 600px; /* Set fixed height on the container */
+            margin: 0 auto;
+        }
+        .chart-container canvas {
+            width: 100%; /* Canvas fills 100% width of container */
+            height: 100%; /* Canvas fills 100% height of container */
+        }
+
+
+        /* Styles for the new search box */
+        .search-container {
+            position: relative;
+            display: inline-block;
+            flex-shrink: 1;
+            flex-grow: 1;
+            min-width: 200px; /* Minimum width for search container */
+        }
+        .search-container input[type="text"] {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--form-element-border-color);
+            background-color: var(--form-element-background-color);
+            color: var(--color);
+            width: 100%;
+        }
+        .search-results {
+            position: absolute;
+            background-color: var(--background-color);
+            border: 1px solid var(--form-element-border-color);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .search-results div {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+        .search-results div:hover {
+            background-color: var(--primary-hover);
+            color: var(--primary-inverse);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .clear-search-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1em;
+            padding: 0 5px;
+            width: 50px;
+        }
+        .clear-search-button:hover {
+            color: var(--primary-hover);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Player Performance Charts</h1>
+
+    <div class="chart-section">
+        <div class="chart-controls">
+            <label for="main-player-search-input">Select Player:</label>
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <input type="text" id="main-player-search-input" placeholder="Search player..." onkeyup="handleSearchInput('main')" onfocus="handleSearchInput('main')" autocomplete="off">
+                    <button class="clear-search-button" onclick="clearSelectedPlayer('main')">✖</button>
+                </div>
+                <div id="main-player-search-results" class="search-results" style="display: none;"></div>
+                <input type="hidden" id="selected-main-player-id" value="">
+            </div>
+
+            <label for="statistic-selector">Statistic:</label>
+            <select id="statistic-selector" onchange="updateChart()">
+                <option value="average_points_per_week">Avg Points/Week</option>
+                <option value="total_raw_points">Total Raw Points</option>
+                <option value="total_adjusted_points">Total Adjusted Points</option>
+                <option value="weeks_played">Weeks Played</option>
+                <option value="best_week_score">Best Week Score</option>
+            </select>
+
+            <label for="overlay-player-search-input">Compare With:</label>
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <input type="text" id="overlay-player-search-input" placeholder="Search player..." onkeyup="handleSearchInput('overlay')" onfocus="handleSearchInput('overlay')" autocomplete="off">
+                    <button class="clear-search-button" onclick="clearSelectedPlayer('overlay')">✖</button>
+                </div>
+                <div id="overlay-player-search-results" class="search-results" style="display: none;"></div>
+                <input type="hidden" id="selected-overlay-player-id" value="">
+            </div>
+
+            <button id="mfp-toggle-button" class="chart-toggle-button active" onclick="toggleLeagueData('mfp')">Show MFPinball Data</button>
+            <button id="mflp-toggle-button" class="chart-toggle-button active" onclick="toggleLeagueData('mflp')">Show MFLadies Data</button>
+        </div>
+        <div id="performanceChartContainer" class="chart-container">
+            <canvas id="performanceChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let performanceChartInstance = null;
+        const allPlayersChartData = {{ all_players_chart_data | default('{}') | safe }};
+        let showMfpData = true;
+        let showMflpData = true;
+
+        function getStatisticLabel(statisticKey) {
+            const labels = {
+                "average_points_per_week": "Avg Points/Week",
+                "total_raw_points": "Total Raw Points",
+                "total_adjusted_points": "Total Adjusted Points",
+                "weeks_played": "Weeks Played",
+                "best_week_score": "Best Week Score"
+            };
+            return labels[statisticKey] || statisticKey;
+        }
+
+        function getChartDataForLeague(leagueType, playerId, statisticKey) {
+            const playerData = allPlayersChartData[playerId];
+            if (!playerData) return [];
+
+            const seasonsData = leagueType === 'mfp' ? playerData.mfp_seasons_data : playerData.mflp_seasons_data;
+            return seasonsData.map(season => season.stats[statisticKey]);
+        }
+
+        function getChartLabelsForLeague(leagueType, playerId) {
+            const playerData = allPlayersChartData[playerId];
+            if (!playerData) return [];
+
+            const seasonsData = leagueType === 'mfp' ? playerData.mfp_seasons_data : playerData.mflp_seasons_data;
+            return seasonsData.map(season => season.label);
+        }
+
+        function updateChart() {
+            const mainPlayerId = document.getElementById('selected-main-player-id').value;
+            const overlayPlayerId = document.getElementById('selected-overlay-player-id').value;
+            const selectedStatistic = document.getElementById('statistic-selector').value;
+            const statisticLabel = getStatisticLabel(selectedStatistic);
+
+            let datasets = [];
+            let combinedLabels = [];
+
+            // Helper to get unique sorted labels from multiple players/leagues
+            function collectAndSortLabels(playerIds, leagueTypes) {
+                let labelsSet = new Set();
+                playerIds.forEach(pId => {
+                    if (allPlayersChartData[pId]) {
+                        leagueTypes.forEach(lType => {
+                            const playerData = allPlayersChartData[pId];
+                            const seasonsData = lType === 'mfp' ? playerData.mfp_seasons_data : playerData.mflp_seasons_data;
+                            seasonsData.forEach(season => labelsSet.add(season.label));
+                        });
+                    }
+                });
+                // Sort labels chronologically (assuming "Season Year" format)
+                return Array.from(labelsSet).sort((a, b) => {
+                    const [seasonA, yearA] = a.split(' ');
+                    const [seasonB, yearB] = b.split(' ');
+                    if (yearA !== yearB) return parseInt(yearA) - parseInt(yearB);
+                    const seasonOrder = {"Winter": 1, "Spring": 2, "Summer": 3, "Fall": 4, "League": 5, "Season": 6}; // Example order
+                    return (seasonOrder[seasonA] || 0) - (seasonOrder[seasonB] || 0);
+                });
+            }
+
+            // Determine which players are active for data retrieval
+            const activePlayerIds = [];
+            if (mainPlayerId) activePlayerIds.push(mainPlayerId);
+            if (overlayPlayerId) activePlayerIds.push(overlayPlayerId);
+
+            // Determine which league types are active
+            const activeLeagueTypes = [];
+            if (showMfpData) activeLeagueTypes.push('mfp');
+            if (showMflpData) activeLeagueTypes.push('mflp');
+
+            if (activePlayerIds.length > 0 && activeLeagueTypes.length > 0) {
+                combinedLabels = collectAndSortLabels(activePlayerIds, activeLeagueTypes);
+            } else if (mainPlayerId && (showMfpData || showMflpData)) {
+                // Fallback for when only main player is selected but no overlay
+                combinedLabels = collectAndSortLabels([mainPlayerId], activeLeagueTypes);
+            }
+
+
+            // Function to get data points aligned with combinedLabels
+            function getAlignedData(leagueType, playerId, statisticKey, labels) {
+                const playerData = allPlayersChartData[playerId];
+                if (!playerData) return Array(labels.length).fill(null);
+
+                const seasonsData = leagueType === 'mfp' ? playerData.mfp_seasons_data : playerData.mflp_seasons_data;
+                const dataMap = new Map(seasonsData.map(s => [s.label, s.stats[statisticKey]]));
+
+                return labels.map(label => dataMap.has(label) ? dataMap.get(label) : null);
+            }
+
+            // Add main player's data
+            if (mainPlayerId && allPlayersChartData[mainPlayerId]) {
+                if (showMfpData) {
+                    datasets.push({
+                        label: `${statisticLabel} (MFP: ${allPlayersChartData[mainPlayerId].name})`,
+                        data: getAlignedData('mfp', mainPlayerId, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+                if (showMflpData) {
+                    datasets.push({
+                        label: `${statisticLabel} (MFLP: ${allPlayersChartData[mainPlayerId].name})`,
+                        data: getAlignedData('mflp', mainPlayerId, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(255, 99, 132)',
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+            }
+
+            // Add overlay player's data
+            if (overlayPlayerId && allPlayersChartData[overlayPlayerId]) {
+                if (showMfpData) {
+                    datasets.push({
+                        label: `${statisticLabel} (MFP: ${allPlayersChartData[overlayPlayerId].name})`,
+                        data: getAlignedData('mfp', overlayPlayerId, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(153, 102, 255)', // Different color for overlay MFP
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+                if (showMflpData) {
+                    datasets.push({
+                        label: `${statisticLabel} (MFLP: ${allPlayersChartData[overlayPlayerId].name})`,
+                        data: getAlignedData('mflp', overlayPlayerId, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(255, 159, 64)', // Different color for overlay MFLP
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+            }
+
+            // Add average line if applicable and there's data to show
+            if ((selectedStatistic === 'average_points_per_week' || selectedStatistic === 'best_week_score') && datasets.length > 0) {
+                datasets.push({
+                    label: 'Average (20)',
+                    data: Array(combinedLabels.length).fill(20), // Constant line at 20
+                    borderColor: 'rgb(255, 205, 86)', // Yellow/Orange color
+                    borderDash: [5, 5], // Dashed line
+                    pointRadius: 0, // No points on this line
+                    fill: false
+                });
+            }
+
+            const chartConfig = {
+                type: 'line',
+                data: {
+                    labels: combinedLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: 0,
+                            title: {
+                                display: true,
+                                text: statisticLabel
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Season'
+                            }
+                        }
+                    }
+                }
+            };
+
+            if (performanceChartInstance) {
+                performanceChartInstance.destroy();
+            }
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            performanceChartInstance = new Chart(ctx, chartConfig);
+        }
+
+        function handleSearchInput(searchType) { // searchType can be 'main' or 'overlay'
+            const searchInputId = `${searchType}-player-search-input`;
+            const searchResultsDivId = `${searchType}-player-search-results`;
+            const searchInput = document.getElementById(searchInputId);
+            const searchResultsDiv = document.getElementById(searchResultsDivId);
+            
+            if (!searchInput) {
+                console.error(`Search input element with ID ${searchInputId} not found.`);
+                return;
+            }
+
+            const searchTerm = searchInput.value.toLowerCase();
+
+            if (searchResultsDiv) searchResultsDiv.innerHTML = '';
+
+            if (searchTerm.length < 2) {
+                if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+                return;
+            }
+
+            const filteredPlayers = Object.entries(allPlayersChartData).filter(([playerId, playerData]) => {
+                const playerName = playerData.name.toLowerCase();
+                // A player is selectable if they have data in either MFP or MFLP
+                const hasAnySeasons = playerData.mfp_seasons_data.length > 0 || playerData.mflp_seasons_data.length > 0;
+
+                // If it's an overlay search, exclude the currently selected main player
+                if (searchType === 'overlay') {
+                    const mainPlayerIdInput = document.getElementById(`selected-main-player-id`);
+                    const mainPlayerId = mainPlayerIdInput ? mainPlayerIdInput.value : '';
+                    if (String(playerId) === String(mainPlayerId)) return false;
+                }
+
+                return playerName.includes(searchTerm) && hasAnySeasons;
+            });
+
+            if (filteredPlayers.length > 0) {
+                filteredPlayers.forEach(([playerId, playerData]) => {
+                    const resultItem = document.createElement('div');
+                    resultItem.textContent = playerData.name;
+                    resultItem.onclick = () => selectPlayer(searchType, playerId, playerData.name);
+                    if (searchResultsDiv) searchResultsDiv.appendChild(resultItem);
+                });
+                if (searchResultsDiv) searchResultsDiv.style.display = 'block';
+            } else {
+                if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+            }
+        }
+
+        function selectPlayer(searchType, playerId, playerName) {
+            const searchInput = document.getElementById(`${searchType}-player-search-input`);
+            const searchResultsDiv = document.getElementById(`${searchType}-player-search-results`);
+            const hiddenPlayerIdInput = document.getElementById(`selected-${searchType}-player-id`);
+
+            if (searchInput) searchInput.value = playerName;
+            if (hiddenPlayerIdInput) hiddenPlayerIdInput.value = playerId;
+            if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+            updateChart();
+        }
+
+        function clearSelectedPlayer(searchType) {
+            const searchInput = document.getElementById(`${searchType}-player-search-input`);
+            const hiddenPlayerIdInput = document.getElementById(`selected-${searchType}-player-id`);
+            const searchResultsDiv = document.getElementById(`${searchType}-player-search-results`);
+
+            if (searchInput) searchInput.value = '';
+            if (hiddenPlayerIdInput) hiddenPlayerIdInput.value = '';
+            if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+            updateChart();
+        }
+
+        function toggleLeagueData(leagueType) {
+            const button = document.getElementById(`${leagueType}-toggle-button`);
+            if (leagueType === 'mfp') {
+                showMfpData = !showMfpData;
+                if (showMfpData) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            } else if (leagueType === 'mflp') {
+                showMflpData = !showMflpData;
+                if (showMflpData) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            }
+            updateChart();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial chart render (empty or with default data)
+            updateChart();
+
+            // Hide search results when clicking outside
+            document.addEventListener('click', function(event) {
+                ['main', 'overlay'].forEach(searchType => {
+                    const searchInput = document.getElementById(`${searchType}-player-search-input`);
+                    if (searchInput) {
+                        const searchContainer = searchInput.closest('.search-container');
+                        if (searchContainer && !searchContainer.contains(event.target)) {
+                            const searchResultsDiv = document.getElementById(`${searchType}-player-search-results`);
+                            if (searchResultsDiv) {
+                                searchResultsDiv.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

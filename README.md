@@ -51,15 +51,14 @@ The project is organized into modular Python scripts:
 ## To Do
 
 * Player Data
-   * Add a line for average (20) when tracking weekly scores on the graph
-   * Ability to change the statistic graphed
-   * Overlay another player on your graph
-
+  * Final position changed to final position (qualiyfing position)
+  * Add trophy emoji to end of position column and remove trophy column
+* Charts
+  * Make chart taller in relation to the buttons
 * Weekly Data
   * Players stats by game (arena)
   * Games won (and 2nd, 3rd, 4th)
   * 28 and then not perfect
-
 * Season Data
   * Racing bar chart
   * Finals displayed as bracket with the actual results
