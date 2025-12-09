@@ -81,7 +81,14 @@ thead {
     font-size: 1.2em;
 }
 
-/* Wider container for player pages */
-.player-page .container {
-    max-width: 1600px;
+/* Wider container for player and season pages */
+.player-page .container,
+.season-page .container {
+    max-width: 95vw;
+}
+
+.toggle-buttons {
+    display: inline-flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }

@@ -95,6 +95,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="seasons.html">Seasons</a></li>
         <li><a href="players.html">Players</a></li>
+        <li><a href="charts.html">Charts</a></li>
         <li><a href="leaderboards.html">Leaderboards</a></li>
     </ul>
     <ul>
@@ -117,9 +118,6 @@
 
     <h2>MFPinball Seasons</h2>
     
-        <div class="chart-container">
-            <canvas id="mfpPerformanceChart"></canvas>
-        </div>
         <div class="table-container">
             <table id="mfp-player-seasons-table">
                 <thead>
@@ -309,87 +307,57 @@
         <p>No MFLadies Pinball season data available for this player.</p>
     
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // MFPinball Chart
-            const mfpChartData = [{"label": "Fall 2017", "value": 13.57}, {"label": "Winter 2017", "value": 18.67}, {"label": "Spring 2018", "value": 19.0}, {"label": "Summer 2018", "value": 17.0}, {"label": "Winter 2018", "value": 16.0}, {"label": "Fall 2019", "value": 25.0}];
-            if (mfpChartData.length > 0) {
-                const mfpLabels = mfpChartData.map(item => item.label);
-                const mfpValues = mfpChartData.map(item => item.value);
-                const mfpCtx = document.getElementById('mfpPerformanceChart').getContext('2d');
-                new Chart(mfpCtx, {
-                    type: 'line',
-                    data: {
-                        labels: mfpLabels,
-                        datasets: [{
-                            label: 'Avg Points/Week (MFPinball)',
-                            data: mfpValues,
-                            borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1,
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                min: 0,
-                                max: 35,
-                                title: {
-                                    display: true,
-                                    text: 'Avg Points/Week'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Season'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+    <h2>Performance by Machine</h2>
+    
+        <div class="table-container">
+            <table id="game-performance-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('game-performance-table', 0)">Machine</th>
+                        <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
+                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        <tr>
+                            <td>Unknown Arena</td>
+                            <td>90</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    
 
-            // MFLadies Pinball Chart
-            const mflpChartData = [];
-            if (mflpChartData.length > 0) {
-                const mflpLabels = mflpChartData.map(item => item.label);
-                const mflpValues = mflpChartData.map(item => item.value);
-                const mflpCtx = document.getElementById('mflpPerformanceChart').getContext('2d');
-                new Chart(mfpCtx, {
-                    type: 'line',
-                    data: {
-                        labels: mflpLabels,
-                        datasets: [{
-                            label: 'Avg Points/Week (MFLadies Pinball)',
-                            data: mflpValues,
-                            borderColor: 'rgb(255, 99, 132)',
-                            tension: 0.1,
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                min: 0,
-                                max: 35,
-                                title: {
-                                    display: true,
-                                    text: 'Avg Points/Week'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Season'
-                                }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // No chart-specific JavaScript needed on this page anymore.
+        // The allPlayersChartData variable is also no longer needed here.
+        // The toggleChart, getStatisticLabel, getChartData, getChartLabels, updateChart,
+        // handleSearchInput, selectOverlayPlayer, clearOverlayPlayer functions are removed.
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide search results when clicking outside
+            document.addEventListener('click', function(event) {
+                ['mfp', 'mflp'].forEach(leagueType => {
+                    const searchContainer = document.querySelector(`#${leagueType}-overlay-search-input`);
+                    if (searchContainer) { // Check if element exists before trying to access closest
+                        const actualSearchContainer = searchContainer.closest('.search-container');
+                        if (actualSearchContainer && !actualSearchContainer.contains(event.target)) {
+                            const searchResultsDiv = document.getElementById(`${leagueType}-overlay-search-results`);
+                            if (searchResultsDiv) {
+                                searchResultsDiv.style.display = 'none';
                             }
                         }
                     }
                 });
-            }
+            });
         });
     </script>
 

@@ -2,19 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MFLPinball Winter Season</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFLPinball Winter Season - Pinball League Stats</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        const themeSwitcher = {
+            // Config
+            _scheme: "auto",
+            menuTarget: "details[role='list']",
+            buttonsTarget: "a[data-theme-switcher]",
+            buttonAttribute: "data-theme-switcher",
+            rootAttribute: "data-theme",
+            localStorageKey: "picoPreferedColorScheme",
+
+            // Init
+            init() {
+                this.scheme = this.schemeFromLocalStorage;
+                this.initSwitchers();
+            },
+
+            // Get scheme from local storage
+            get schemeFromLocalStorage() {
+                if (typeof window.localStorage !== "undefined") {
+                    if (window.localStorage.getItem(this.localStorageKey) !== null) {
+                        return window.localStorage.getItem(this.localStorageKey);
+                    }
+                }
+                return this._scheme;
+            },
+
+            // Prefered scheme
+            get scheme() {
+                return this._scheme;
+            },
+
+            // Set scheme
+            set scheme(scheme) {
+                if (scheme == "auto") {
+                    this._scheme = "auto";
+                } else if (scheme == "dark") {
+                    this._scheme = "dark";
+                } else {
+                    this._scheme = "light";
+                }
+                this.applyScheme();
+                this.schemeToLocalStorage();
+            },
+
+            // Init switchers
+            initSwitchers() {
+                const buttons = document.querySelectorAll(this.buttonsTarget);
+                buttons.forEach((button) => {
+                    button.addEventListener(
+                        "click",
+                        (event) => {
+                            event.preventDefault();
+                            // Set scheme
+                            this.scheme = button.getAttribute(this.buttonAttribute);
+                            // Close dropdown
+                            document.querySelector(this.menuTarget).removeAttribute("open");
+                        },
+                        false
+                    );
+                });
+            },
+
+            // Apply scheme
+            applyScheme() {
+                document.querySelector("html").setAttribute(this.rootAttribute, this.scheme);
+            },
+
+            // Store scheme to local storage
+            schemeToLocalStorage() {
+                if (typeof window.localStorage !== "undefined") {
+                    window.localStorage.setItem(this.localStorageKey, this.scheme);
+                }
+            },
+        };
+
+        // Init
+        themeSwitcher.init();
+    </script>
 </head>
-<body>
+<body class="season-page">
+    <nav class="container-fluid">
+    <ul>
+        <li><a href="index.html"><strong>Pinball Stats</strong></a></li>
+    </ul>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="seasons.html">Seasons</a></li>
+        <li><a href="players.html">Players</a></li>
+        <li><a href="charts.html">Charts</a></li>
+        <li><a href="leaderboards.html">Leaderboards</a></li>
+    </ul>
+    <ul>
+        <li>
+            <details role="list" dir="rtl">
+                <summary aria-haspopup="listbox" role="link">Theme</summary>
+                <ul role="listbox">
+                    <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+                    <li><a href="#" data-theme-switcher="light">Light</a></li>
+                    <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+                </ul>
+            </details>
+        </li>
+    </ul>
+</nav>
+    <main class="container">
+        
     <h1>MFLPinball Winter Season</h1>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="seasons.html">Seasons</a></li>
-            <li><a href="players.html">Players</a></li>
-            <li><a href="leaderboards.html">Leaderboards</a></li>
-        </ul>
-    </nav>
 
     <p><a href="https://app.matchplay.events/series/5199" target="_blank">View on Matchplay.events</a></p>
     
@@ -25,5 +124,88 @@
     
         <p>No player performance data available for this season.</p>
     
+
+    </main>
+
+    <script>
+        function sortTable(tableId, n, isNumeric = false) {
+            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById(tableId);
+            switching = true;
+            // Set the sorting direction to ascending:
+            dir = "asc";
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                    let xContent = x.innerHTML;
+                    let yContent = y.innerHTML;
+
+                    // Handle potential HTML spans for coloring (e.g., score_color_code filter)
+                    if (x.firstElementChild && x.firstElementChild.tagName === 'SPAN') {
+                        xContent = x.firstElementChild.textContent;
+                    }
+                    if (y.firstElementChild && y.firstElementChild.tagName === 'SPAN') {
+                        yContent = y.firstElementChild.textContent;
+                    }
+
+                    // Convert to number if isNumeric is true
+                    if (isNumeric) {
+                        xContent = parseFloat(xContent.replace(/[^0-9.-]+/g,"")); // Remove non-numeric chars except . and -
+                        yContent = parseFloat(yContent.replace(/[^0-9.-]+/g,""));
+                        // Handle NaN from parseFloat if content is not a valid number
+                        if (isNaN(xContent)) xContent = dir === "asc" ? -Infinity : Infinity;
+                        if (isNaN(yContent)) yContent = dir === "asc" ? -Infinity : Infinity;
+                    } else {
+                        xContent = xContent.toLowerCase();
+                        yContent = yContent.toLowerCase();
+                    }
+
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (dir == "asc") {
+                        if (xContent > yContent) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (xContent < yContent) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
