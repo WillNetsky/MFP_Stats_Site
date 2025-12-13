@@ -179,7 +179,30 @@
 
     <h2>Performance by Machine</h2>
     
-        <p>No game performance data available for this player.</p>
+        <div class="table-container">
+            <table id="game-performance-table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('game-performance-table', 0)">Machine</th>
+                        <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
+                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        <tr>
+                            <td>Unknown Arena</td>
+                            <td>4</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    
+                </tbody>
+            </table>
+        </div>
     
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
