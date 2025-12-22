@@ -7,22 +7,21 @@
 {% block head %}
     {{ super() }}
     <style>
-        /* Styles for the new search box */
         .search-container {
             position: relative;
             display: inline-block;
-            flex-shrink: 1; /* Allow search container to shrink if needed */
-            flex-grow: 1; /* Allow search container to grow and take available space */
-            width: 0; /* Allow search container to shrink as much as possible */
-            min-width: 0; /* Ensure no minimum width prevents shrinking */
+            flex-shrink: 1;
+            flex-grow: 1;
+            width: 0;
+            min-width: 0;
         }
-        .search-container input[type="text"] { /* Target search input specifically */
+        .search-container input[type="text"] {
             padding: 5px;
             border-radius: 4px;
             border: 1px solid var(--form-element-border-color);
             background-color: var(--form-element-background-color);
             color: var(--color);
-            width: 100%; /* Make input take full width of its flex-grown parent */
+            width: 100%;
         }
         .search-results {
             position: absolute;
@@ -46,8 +45,8 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            flex-shrink: 1; /* Allow search input wrapper to shrink */
-            width: auto; /* Allow search input wrapper to take natural width */
+            flex-shrink: 1;
+            width: auto;
         }
         .clear-search-button {
             background: none;
@@ -74,21 +73,26 @@
             <table id="mfp-player-seasons-table">
                 <thead>
                     <tr>
-                        <th onclick="sortTable('mfp-player-seasons-table', 0, true)">Year</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 1)">Season</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 2)">League</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 3, true)">Final Position</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 4)">Trophy</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 5, true)">Total Adjusted Points</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 6, true)">Total Raw Points</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 7, true)">Weeks Played</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 8, true)">Avg Points/Week</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 9, true)">Best Week</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 10, true)">2nd Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 11, true)">3rd Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 12, true)">4th Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 13, true)">5th Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 14, true)">6th Best</th>
+                        <th>Year</th>
+                        <th>Season</th>
+                        <th>League</th>
+                        <th>Final Position</th>
+                        <th>Trophy</th>
+                        <th>Total Adjusted Points</th>
+                        <th>Total Raw Points</th>
+                        <th>Weeks Played</th>
+                        <th>1st</th>
+                        <th>2nd</th>
+                        <th>3rd</th>
+                        <th>4th (3rd in 3p)</th>
+                        <th>2nd (3p)</th>
+                        <th>Avg Points/Week</th>
+                        <th>Best Week</th>
+                        <th>2nd Best</th>
+                        <th>3rd Best</th>
+                        <th>4th Best</th>
+                        <th>5th Best</th>
+                        <th>6th Best</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,6 +114,11 @@
                             <td>{{ stats.total_adjusted_points | format_number }}</td>
                             <td>{{ stats.total_raw_points | format_number }}</td>
                             <td>{{ stats.weeks_played }}</td>
+                            <td>{{ stats.game_outcomes['1st'] }}</td>
+                            <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
+                            <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
+                            <td>{{ stats.game_outcomes['4th_combined'] }}</td>
+                            <td>{{ stats.game_outcomes['2nd_3p'] }}</td>
                             <td>{{ stats.average_points_per_week | format_number }}</td>
                             {% for score in stats.top_6_scores %}
                                 <td>{{ score | score_color_code | safe }}</td>
@@ -127,21 +136,26 @@
             <table id="mflp-player-seasons-table">
                 <thead>
                     <tr>
-                        <th onclick="sortTable('mflp-player-seasons-table', 0, true)">Year</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 1)">Season</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 2)">League</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 3, true)">Final Position</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 4)">Trophy</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 5, true)">Total Adjusted Points</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 6, true)">Total Raw Points</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 7, true)">Weeks Played</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 8, true)">Avg Points/Week</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 9, true)">Best Week</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 10, true)">2nd Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 11, true)">3rd Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 12, true)">4th Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 13, true)">5th Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 14, true)">6th Best</th>
+                        <th>Year</th>
+                        <th>Season</th>
+                        <th>League</th>
+                        <th>Final Position</th>
+                        <th>Trophy</th>
+                        <th>Total Adjusted Points</th>
+                        <th>Total Raw Points</th>
+                        <th>Weeks Played</th>
+                        <th>1st</th>
+                        <th>2nd</th>
+                        <th>3rd</th>
+                        <th>4th (3rd in 3p)</th>
+                        <th>2nd (3p)</th>
+                        <th>Avg Points/Week</th>
+                        <th>Best Week</th>
+                        <th>2nd Best</th>
+                        <th>3rd Best</th>
+                        <th>4th Best</th>
+                        <th>5th Best</th>
+                        <th>6th Best</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -163,6 +177,11 @@
                             <td>{{ stats.total_adjusted_points | format_number }}</td>
                             <td>{{ stats.total_raw_points | format_number }}</td>
                             <td>{{ stats.weeks_played }}</td>
+                            <td>{{ stats.game_outcomes['1st'] }}</td>
+                            <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
+                            <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
+                            <td>{{ stats.game_outcomes['4th_combined'] }}</td>
+                            <td>{{ stats.game_outcomes['2nd_3p'] }}</td>
                             <td>{{ stats.average_points_per_week | format_number }}</td>
                             {% for score in stats.top_6_scores %}
                                 <td>{{ score | score_color_code | safe }}</td>
@@ -180,11 +199,11 @@
             <table id="game-performance-table">
                 <thead>
                     <tr>
-                        <th onclick="sortTable('game-performance-table', 0)">Machine</th>
-                        <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
-                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
+                        <th>Machine</th>
+                        <th>Total Plays</th>
+                        <th>1st Place Finishes</th>
+                        <th>2nd Place Finishes</th>
+                        <th>3rd Place Finishes</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,17 +225,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // No chart-specific JavaScript needed on this page anymore.
-        // The allPlayersChartData variable is also no longer needed here.
-        // The toggleChart, getStatisticLabel, getChartData, getChartLabels, updateChart,
-        // handleSearchInput, selectOverlayPlayer, clearOverlayPlayer functions are removed.
-
         document.addEventListener('DOMContentLoaded', function() {
-            // Hide search results when clicking outside
             document.addEventListener('click', function(event) {
                 ['mfp', 'mflp'].forEach(leagueType => {
                     const searchContainer = document.querySelector(`#${leagueType}-overlay-search-input`);
-                    if (searchContainer) { // Check if element exists before trying to access closest
+                    if (searchContainer) {
                         const actualSearchContainer = searchContainer.closest('.search-container');
                         if (actualSearchContainer && !actualSearchContainer.contains(event.target)) {
                             const searchResultsDiv = document.getElementById(`${leagueType}-overlay-search-results`);

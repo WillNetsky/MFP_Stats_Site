@@ -7,11 +7,9 @@ from config import OUTPUT_DIR
 def generate_player_pages(env, all_series_data):
     """Generates individual player pages and a main players list page."""
     unique_players = {}
-    player_categorized_seasons = {} # To store aggregated and categorized data for each player
-    all_players_game_performance = defaultdict(lambda: defaultdict(lambda: defaultdict(int))) # Aggregated game performance
-    finals_mapping = load_finals_mapping()
-
-    # --- Pre-process series to apply year corrections ---
+    player_categorized_seasons = {}
+    all_players_game_performance = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+    
     temp_season_entries = []
     for series_data_raw in all_series_data:
         series = series_data_raw['data']
@@ -28,7 +26,6 @@ def generate_player_pages(env, all_series_data):
     
     corrected_temp_season_entries = apply_year_corrections_to_seasons_list(temp_season_entries)
     corrected_seasons_map = {s['seriesId']: s for s in corrected_temp_season_entries}
-    # ----------------------------------------------------
 
     for series_data_raw in all_series_data:
         series_data = series_data_raw['data']
@@ -39,8 +36,9 @@ def generate_player_pages(env, all_series_data):
         season_name_parsed = corrected_info['season_name']
         league_name_parsed = corrected_info['league_name']
 
-        current_series_game_performance = process_game_data(series_data_raw)
-        for player_id, games in current_series_game_performance.items():
+        game_data = process_game_data(series_data_raw)
+        
+        for player_id, games in game_data['by_machine'].items():
             for game_name, stats in games.items():
                 all_players_game_performance[player_id][game_name]['1st_place'] += stats['1st_place']
                 all_players_game_performance[player_id][game_name]['2nd_place'] += stats['2nd_place']
@@ -48,9 +46,9 @@ def generate_player_pages(env, all_series_data):
                 all_players_game_performance[player_id][game_name]['total_plays'] += stats['total_plays']
 
         finals_tournament_ids = None
-        if league_name_parsed in finals_mapping and year != "N/A" and season_name_parsed != "N/A":
+        if league_name_parsed in load_finals_mapping() and year != "N/A" and season_name_parsed != "N/A":
             key = f"{season_name_parsed} {year}"
-            finals_tournament_ids = finals_mapping[league_name_parsed].get(key)
+            finals_tournament_ids = load_finals_mapping()[league_name_parsed].get(key)
         
         finals_player_positions = {}
         if finals_tournament_ids:
@@ -86,7 +84,9 @@ def generate_player_pages(env, all_series_data):
                         points = float(player_points_map[str(player_id)])
                         weekly_performance_raw.append({'tournament_id': int(tournament_id_str), 'points': points})
                         total_raw_points += points
-            
+
+            player_game_stats = game_data['by_player'].get(player_id, defaultdict(int))
+
             weekly_performance_sorted = sorted(weekly_performance_raw, key=lambda x: x['points'], reverse=True)
             top_6_scores = [week['points'] for week in weekly_performance_sorted[:6]]
             top_6_scores.extend([None] * (6 - len(top_6_scores)))
@@ -109,7 +109,8 @@ def generate_player_pages(env, all_series_data):
                     'weeks_played': num_weeks_played,
                     'average_points_per_week': round(average_points_per_week, 2),
                     'best_week_score': top_6_scores[0] if top_6_scores and top_6_scores[0] is not None else 0.0,
-                    'top_6_scores': top_6_scores
+                    'top_6_scores': top_6_scores,
+                    'game_outcomes': player_game_stats
                 }
             }
 

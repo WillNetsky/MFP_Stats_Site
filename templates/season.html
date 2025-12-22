@@ -54,6 +54,11 @@
                         <th>Total Raw Points</th>
                         <th>Weeks Played</th>
                         <th>Avg Points/Week</th>
+                        <th>1st</th>
+                        <th>2nd</th>
+                        <th>3rd</th>
+                        <th>4th (3rd in 3p)</th>
+                        <th>2nd (3p)</th>
                         {% for i in range(1, 11) %}
                             <th>Week {{ i }}</th>
                         {% endfor %}
@@ -68,6 +73,11 @@
                             <td>{{ player_data.total_raw_points | format_number }}</td>
                             <td>{{ player_data.weekly_scores | select('ne', 'N/A') | list | length }}</td>
                             <td>{{ player_data.average_points_per_week | format_number }}</td>
+                            <td>{{ player_data.game_outcomes['1st'] }}</td>
+                            <td>{{ player_data.game_outcomes['2nd_4p'] }}</td>
+                            <td>{{ player_data.game_outcomes['3rd_4p'] }}</td>
+                            <td>{{ player_data.game_outcomes['4th_combined'] }}</td>
+                            <td>{{ player_data.game_outcomes['2nd_3p'] }}</td>
                             {% for score in player_data.weekly_scores %}
                                 <td>{{ score | score_color_code | safe }}</td>
                             {% endfor %}
