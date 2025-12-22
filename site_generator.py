@@ -1,5 +1,6 @@
 import os
 import shutil
+from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 
 from data_processor import load_all_series_data
@@ -37,6 +38,9 @@ def generate_site(excluded_series_names):
     env.filters['score_color_code'] = score_color_filter # Register the custom filter
     env.filters['format_number'] = format_number_filter # Register the new filter
     env.filters['tojson'] = json_attribute_filter # Register our custom safe JSON filter
+
+    # Add current timestamp to global variables
+    env.globals['last_updated'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     template = env.get_template('index.html')
     with open(os.path.join(OUTPUT_DIR, 'index.html'), 'w') as f:
