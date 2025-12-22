@@ -1,0 +1,179 @@
+{% macro render_leaderboard_tables(
+    league_prefix,
+    total_points_leaderboard,
+    top_4_finishes_leaderboard,
+    top_seasons_leaderboard,
+    most_improved_leaderboard,
+    all_perfect_nights,
+    all_almost_perfect_nights
+) %}
+
+<h2>All-Time Total Points</h2>
+<div class="table-container">
+    <table id="{{ league_prefix }}-total-points-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 0, true)">Rank</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 1)">Player</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 2, true)">Total Raw Points</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 3, true)">Weekly Wins</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 4, true)">Total Games Won</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 5, true)">Total Adjusted Points</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 6, true)">Seasons Played</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 7, true)">Total Weeks Attended</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 8, true)">Points/Week</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in total_points_leaderboard %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                    <td>{{ player.total_raw_points | format_number }}</td>
+                    <td>{{ player.weekly_wins }}</td>
+                    <td>{{ player.total_games_won }}</td>
+                    <td>{{ player.total_adjusted_points | format_number }}</td>
+                    <td>{{ player.seasons_played_count }}</td>
+                    <td>{{ player.total_weeks_played }}</td>
+                    <td>{{ player.average_points_per_week | format_number }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2>Top 4 Finishes</h2>
+<div class="table-container">
+    <table id="{{ league_prefix }}-top-4-finishes-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('{{ league_prefix }}-top-4-finishes-table', 0)">Player</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-4-finishes-table', 1, true)">1st</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-4-finishes-table', 2, true)">2nd</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-4-finishes-table', 3, true)">3rd</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-4-finishes-table', 4, true)">4th</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in top_4_finishes_leaderboard %}
+                <tr>
+                    <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                    <td>{{ player.top_4_finishes[1] }}</td>
+                    <td>{{ player.top_4_finishes[2] }}</td>
+                    <td>{{ player.top_4_finishes[3] }}</td>
+                    <td>{{ player.top_4_finishes[4] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2>Top Season Performances</h2>
+<div class="table-container">
+    <table id="{{ league_prefix }}-top-seasons-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 0)">Player</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 1)">Season</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 2, true)">Score</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 3, true)">Weekly Wins</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 4, true)">1st</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 5, true)">2nd</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 6, true)">3rd</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 7, true)">4th (3rd in 3p)</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 8, true)">2nd (3p)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in top_seasons_leaderboard %}
+                <tr>
+                    <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
+                    <td><a href="season_{{ entry.season.seriesId }}.html">{{ entry.season.seriesName }}</a></td>
+                    <td>{{ entry.score | format_number }}</td>
+                    <td>{{ entry.weekly_wins }}</td>
+                    <td>{{ entry.game_outcomes['1st'] }}</td>
+                    <td>{{ entry.game_outcomes['2nd_4p'] }}</td>
+                    <td>{{ entry.game_outcomes['3rd_4p'] }}</td>
+                    <td>{{ entry.game_outcomes['4th_combined'] }}</td>
+                    <td>{{ entry.game_outcomes['2nd_3p'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2>Most Improved</h2>
+<div class="table-container">
+    <table id="{{ league_prefix }}-most-improved-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('{{ league_prefix }}-most-improved-table', 0)">Player</th>
+                <th onclick="sortTable('{{ league_prefix }}-most-improved-table', 1, true)">Improvement</th>
+                <th onclick="sortTable('{{ league_prefix }}-most-improved-table', 2)">From Season</th>
+                <th onclick="sortTable('{{ league_prefix }}-most-improved-table', 3, true)">From Score</th>
+                <th onclick="sortTable('{{ league_prefix }}-most-improved-table', 4)">To Season</th>
+                <th onclick="sortTable('{{ league_prefix }}-most-improved-table', 5, true)">To Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in most_improved_leaderboard %}
+                <tr>
+                    <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
+                    <td>{{ "%.2f"|format(entry.improvement_percent * 100) }}%</td>
+                    <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
+                    <td>{{ entry.season1.summary_stats.total_adjusted_points | format_number }}</td>
+                    <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
+                    <td>{{ entry.season2.summary_stats.total_adjusted_points | format_number }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2>Perfect Nights (35 Points)</h2>
+<div class="table-container">
+    <table id="{{ league_prefix }}-perfect-nights-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('{{ league_prefix }}-perfect-nights-table', 0)">Player</th>
+                <th onclick="sortTable('{{ league_prefix }}-perfect-nights-table', 1)">Season</th>
+                <th onclick="sortTable('{{ league_prefix }}-perfect-nights-table', 2, true)">Week</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for night in all_perfect_nights %}
+                {% if league_prefix == 'combined' or league_prefix|upper == night.league_type %}
+                    <tr>
+                        <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                        <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                        <td>{{ night.week_num }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2>Almost Perfect Nights (4/5 Wins)</h2>
+<div class="table-container">
+    <table id="{{ league_prefix }}-almost-perfect-nights-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('{{ league_prefix }}-almost-perfect-nights-table', 0)">Player</th>
+                <th onclick="sortTable('{{ league_prefix }}-almost-perfect-nights-table', 1)">Season</th>
+                <th onclick="sortTable('{{ league_prefix }}-almost-perfect-nights-table', 2, true)">Week</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for night in all_almost_perfect_nights %}
+                <tr>
+                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                    <td>{{ night.week_num }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endmacro %}

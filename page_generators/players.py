@@ -56,6 +56,13 @@ def generate_player_pages(env, all_series_data):
             if finals_standings:
                 finals_player_positions = {res['playerId']: res['position'] for res in finals_standings}
 
+        weekly_winners = {}
+        if 'tournamentPoints' in series_data and isinstance(series_data['tournamentPoints'], dict):
+            for tournament_id, player_points_map in series_data['tournamentPoints'].items():
+                if player_points_map:
+                    winner_id = max(player_points_map, key=lambda p_id: float(player_points_map[p_id]))
+                    weekly_winners[tournament_id] = int(winner_id)
+
         for player_info in series_data['players']:
             player_id = player_info['playerId']
             if player_id not in unique_players:
@@ -78,13 +85,14 @@ def generate_player_pages(env, all_series_data):
             weekly_performance_raw = []
             total_raw_points = 0.0
             
-            if 'tournamentPoints' in series_data:
+            if 'tournamentPoints' in series_data and isinstance(series_data['tournamentPoints'], dict):
                 for tournament_id_str, player_points_map in series_data['tournamentPoints'].items():
                     if str(player_id) in player_points_map:
                         points = float(player_points_map[str(player_id)])
                         weekly_performance_raw.append({'tournament_id': int(tournament_id_str), 'points': points})
                         total_raw_points += points
 
+            weekly_wins = sum(1 for winner_id in weekly_winners.values() if winner_id == player_id)
             player_game_stats = game_data['by_player'].get(player_id, defaultdict(int))
 
             weekly_performance_sorted = sorted(weekly_performance_raw, key=lambda x: x['points'], reverse=True)
@@ -107,6 +115,7 @@ def generate_player_pages(env, all_series_data):
                     'total_raw_points': round(total_raw_points, 2),
                     'total_adjusted_points': player_standing['pointsAdjusted'] if player_standing else 0,
                     'weeks_played': num_weeks_played,
+                    'weekly_wins': weekly_wins,
                     'average_points_per_week': round(average_points_per_week, 2),
                     'best_week_score': top_6_scores[0] if top_6_scores and top_6_scores[0] is not None else 0.0,
                     'top_6_scores': top_6_scores,
