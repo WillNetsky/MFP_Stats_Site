@@ -68,8 +68,8 @@
     <h1>{{ player.name }}</h1>
     <p>IFPA Number: {{ player.ifpaId if player.ifpaId else 'N/A' }}</p>
 
-    <h2>MFPinball Seasons</h2>
     {% if mfp_seasons %}
+        <h2>MFPinball Seasons</h2>
         <div class="table-container">
             <table id="mfp-player-seasons-table">
                 <thead>
@@ -119,12 +119,10 @@
                 </tbody>
             </table>
         </div>
-    {% else %}
-        <p>No MFPinball season data available for this player.</p>
     {% endif %}
 
-    <h2>MFLadies Pinball Seasons</h2>
     {% if mflp_seasons %}
+        <h2>MFLadies Pinball Seasons</h2>
         <div class="table-container">
             <table id="mflp-player-seasons-table">
                 <thead>
@@ -174,8 +172,6 @@
                 </tbody>
             </table>
         </div>
-    {% else %}
-        <p>No MFLadies Pinball season data available for this player.</p>
     {% endif %}
 
     <h2>Performance by Machine</h2>
