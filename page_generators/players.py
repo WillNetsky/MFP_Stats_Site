@@ -11,14 +11,34 @@ def generate_player_pages(env, all_series_data):
     all_players_game_performance = defaultdict(lambda: defaultdict(lambda: defaultdict(int))) # Aggregated game performance
     finals_mapping = load_finals_mapping()
 
+    # --- Pre-process series to apply year corrections ---
+    temp_season_entries = []
+    for series_data_raw in all_series_data:
+        series = series_data_raw['data']
+        series_id = series['seriesId']
+        series_name = series['name']
+        year, season_name_parsed, league_name_parsed = parse_series_name(series_name)
+        temp_season_entries.append({
+            'seriesId': series_id,
+            'seriesName': series_name,
+            'year': year,
+            'season_name': season_name_parsed,
+            'league_name': league_name_parsed,
+        })
+    
+    corrected_temp_season_entries = apply_year_corrections_to_seasons_list(temp_season_entries)
+    corrected_seasons_map = {s['seriesId']: s for s in corrected_temp_season_entries}
+    # ----------------------------------------------------
+
     for series_data_raw in all_series_data:
         series_data = series_data_raw['data']
         series_id = series_data['seriesId']
-        series_name = series_data['name']
         
-        year, season_name_parsed, league_name_parsed = parse_series_name(series_name)
+        corrected_info = corrected_seasons_map.get(series_id)
+        year = corrected_info['year']
+        season_name_parsed = corrected_info['season_name']
+        league_name_parsed = corrected_info['league_name']
 
-        # Process game data for the current series
         current_series_game_performance = process_game_data(series_data_raw)
         for player_id, games in current_series_game_performance.items():
             for game_name, stats in games.items():
@@ -27,8 +47,6 @@ def generate_player_pages(env, all_series_data):
                 all_players_game_performance[player_id][game_name]['3rd_place'] += stats['3rd_place']
                 all_players_game_performance[player_id][game_name]['total_plays'] += stats['total_plays']
 
-
-        # Determine if season has finals
         finals_tournament_ids = None
         if league_name_parsed in finals_mapping and year != "N/A" and season_name_parsed != "N/A":
             key = f"{season_name_parsed} {year}"
@@ -50,12 +68,13 @@ def generate_player_pages(env, all_series_data):
                     'mflp_seasons': []
                 }
             
-            # Find player's standing in this season
             player_standing = next((s for s in series_data['standings'] if s['playerId'] == player_id), None)
             
-            # Determine final position
-            final_position = player_standing['position'] if player_standing else 'N/A'
-            if player_id in finals_player_positions:
+            qualifying_position = player_standing['position'] if player_standing else 'N/A'
+            final_position = qualifying_position
+            played_in_finals = player_id in finals_player_positions
+            
+            if played_in_finals:
                 final_position = finals_player_positions[player_id]
 
             weekly_performance_raw = []
@@ -68,32 +87,29 @@ def generate_player_pages(env, all_series_data):
                         weekly_performance_raw.append({'tournament_id': int(tournament_id_str), 'points': points})
                         total_raw_points += points
             
-            # Sort weekly performance from best to worst for display
             weekly_performance_sorted = sorted(weekly_performance_raw, key=lambda x: x['points'], reverse=True)
-            
-            # Extract top 6 scores
             top_6_scores = [week['points'] for week in weekly_performance_sorted[:6]]
-            # Pad with None if less than 6 scores
             top_6_scores.extend([None] * (6 - len(top_6_scores)))
 
-            # Calculate summary statistics for the season
             num_weeks_played = len(weekly_performance_raw)
             average_points_per_week = total_raw_points / num_weeks_played if num_weeks_played > 0 else 0
 
             season_entry = {
                 'seriesId': series_id,
-                'seriesName': series_name,
+                'seriesName': series_data['name'],
                 'year': year,
                 'season_name': season_name_parsed,
                 'league_name': league_name_parsed,
                 'summary_stats': {
                     'final_position': final_position,
+                    'qualifying_position': qualifying_position,
+                    'played_in_finals': played_in_finals,
                     'total_raw_points': round(total_raw_points, 2),
                     'total_adjusted_points': player_standing['pointsAdjusted'] if player_standing else 0,
                     'weeks_played': num_weeks_played,
                     'average_points_per_week': round(average_points_per_week, 2),
-                    'best_week_score': top_6_scores[0] if top_6_scores and top_6_scores[0] is not None else 0.0, # Extract best week score
-                    'top_6_scores': top_6_scores # List of top 6 scores
+                    'best_week_score': top_6_scores[0] if top_6_scores and top_6_scores[0] is not None else 0.0,
+                    'top_6_scores': top_6_scores
                 }
             }
 
@@ -104,14 +120,11 @@ def generate_player_pages(env, all_series_data):
 
     players_list = list(unique_players.values())
     
-    # Apply year correction logic to player's seasons
     for player_id, data in player_categorized_seasons.items():
-        data['mfp_seasons'] = apply_year_corrections_to_seasons_list(data['mfp_seasons'])
-        data['mflp_seasons'] = apply_year_corrections_to_seasons_list(data['mflp_seasons'])
-        # Add aggregated game performance to player data
+        data['mfp_seasons'].sort(key=lambda x: x['seriesId'], reverse=True)
+        data['mflp_seasons'].sort(key=lambda x: x['seriesId'], reverse=True)
         data['game_performance'] = dict(all_players_game_performance[player_id])
 
-    # Prepare all_players_chart_data for passing to the template
     all_players_chart_data = {}
     for player_id, player_data in player_categorized_seasons.items():
         all_players_chart_data[player_id] = {
@@ -119,14 +132,12 @@ def generate_player_pages(env, all_series_data):
             'mfp_seasons_data': [],
             'mflp_seasons_data': []
         }
-        # Populate mfp_seasons_data
         sorted_mfp_seasons = sorted(player_data['mfp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
         for season in sorted_mfp_seasons:
             all_players_chart_data[player_id]['mfp_seasons_data'].append({
                 'label': f"{season['season_name']} {season['year']}",
                 'stats': season['summary_stats']
             })
-        # Populate mflp_seasons_data
         sorted_mflp_seasons = sorted(player_data['mflp_seasons'], key=lambda x: (x['year'] if x['year'] != 'N/A' else '9999', x['seriesId']))
         for season in sorted_mflp_seasons:
             all_players_chart_data[player_id]['mflp_seasons_data'].append({
@@ -134,7 +145,6 @@ def generate_player_pages(env, all_series_data):
                 'stats': season['summary_stats']
             })
 
-    # Generate individual player pages
     player_template = env.get_template('player.html')
     for player_id, data in player_categorized_seasons.items():
         player = data['player_info']
@@ -144,11 +154,10 @@ def generate_player_pages(env, all_series_data):
                 player=player,
                 mfp_seasons=data['mfp_seasons'],
                 mflp_seasons=data['mflp_seasons'],
-                game_performance=data['game_performance'], # Pass game performance data
+                game_performance=data['game_performance'],
             ))
         print(f"Generated player_{player_id}.html")
 
-    # Generate main players list page
     players_list_template = env.get_template('players.html')
     with open(os.path.join(OUTPUT_DIR, 'players.html'), 'w') as f:
         f.write(players_list_template.render(players=players_list))

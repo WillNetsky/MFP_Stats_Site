@@ -93,18 +93,25 @@
                 </thead>
                 <tbody>
                     {% for season_data in mfp_seasons %}
-                        {% set pos = season_data.summary_stats.final_position %}
+                        {% set stats = season_data.summary_stats %}
+                        {% set pos = stats.final_position %}
                         <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
                             <td>{{ season_data.year }}</td>
                             <td>{{ season_data.season_name }}</td>
                             <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
-                            <td>{{ pos }}</td>
+                            <td>
+                                {% if stats.played_in_finals %}
+                                    {{ pos }} ({{ stats.qualifying_position }})
+                                {% else %}
+                                    {{ pos }}
+                                {% endif %}
+                            </td>
                             <td class="trophy-icon"></td>
-                            <td>{{ season_data.summary_stats.total_adjusted_points | format_number }}</td>
-                            <td>{{ season_data.summary_stats.total_raw_points | format_number }}</td>
-                            <td>{{ season_data.summary_stats.weeks_played }}</td>
-                            <td>{{ season_data.summary_stats.average_points_per_week | format_number }}</td>
-                            {% for score in season_data.summary_stats.top_6_scores %}
+                            <td>{{ stats.total_adjusted_points | format_number }}</td>
+                            <td>{{ stats.total_raw_points | format_number }}</td>
+                            <td>{{ stats.weeks_played }}</td>
+                            <td>{{ stats.average_points_per_week | format_number }}</td>
+                            {% for score in stats.top_6_scores %}
                                 <td>{{ score | score_color_code | safe }}</td>
                             {% endfor %}
                         </tr>
@@ -141,18 +148,25 @@
                 </thead>
                 <tbody>
                     {% for season_data in mflp_seasons %}
-                        {% set pos = season_data.summary_stats.final_position %}
+                        {% set stats = season_data.summary_stats %}
+                        {% set pos = stats.final_position %}
                         <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
                             <td>{{ season_data.year }}</td>
                             <td>{{ season_data.season_name }}</td>
                             <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
-                            <td>{{ pos }}</td>
+                            <td>
+                                {% if stats.played_in_finals %}
+                                    {{ pos }} ({{ stats.qualifying_position }})
+                                {% else %}
+                                    {{ pos }}
+                                {% endif %}
+                            </td>
                             <td class="trophy-icon"></td>
-                            <td>{{ season_data.summary_stats.total_adjusted_points | format_number }}</td>
-                            <td>{{ season_data.summary_stats.total_raw_points | format_number }}</td>
-                            <td>{{ season_data.summary_stats.weeks_played }}</td>
-                            <td>{{ season_data.summary_stats.average_points_per_week | format_number }}</td>
-                            {% for score in season_data.summary_stats.top_6_scores %}
+                            <td>{{ stats.total_adjusted_points | format_number }}</td>
+                            <td>{{ stats.total_raw_points | format_number }}</td>
+                            <td>{{ stats.weeks_played }}</td>
+                            <td>{{ stats.average_points_per_week | format_number }}</td>
+                            {% for score in stats.top_6_scores %}
                                 <td>{{ score | score_color_code | safe }}</td>
                             {% endfor %}
                         </tr>

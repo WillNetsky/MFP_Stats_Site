@@ -233,12 +233,6 @@ def generate_season_pages(env, all_series_data):
         # Prepare data for the season standings table
         season_players_data = []
         
-        # Create a dictionary for finals player positions for quick lookup
-        finals_player_positions = {}
-        if finals_results:
-            for result in finals_results:
-                finals_player_positions[result['playerId']] = result['position']
-
         # Iterate through all players in the series to ensure everyone is included
         for player_info in series['players']:
             player_id = player_info['playerId']
@@ -250,14 +244,6 @@ def generate_season_pages(env, all_series_data):
             qualifying_position = player_standing['position'] if player_standing else 'N/A'
             total_adjusted_points = player_standing['pointsAdjusted'] if player_standing else 0.0
             
-            # Determine overall final position
-            overall_final_position = 'N/A'
-            if player_id in finals_player_positions:
-                overall_final_position = finals_player_positions[player_id]
-            elif qualifying_position != 'N/A':
-                # For players who didn't make finals, their final position is their qualifying position
-                overall_final_position = qualifying_position
-
             weekly_scores_raw = []
             total_raw_points = 0.0
             
@@ -288,15 +274,14 @@ def generate_season_pages(env, all_series_data):
                 'playerId': player_id,
                 'name': player_name,
                 'qualifying_position': qualifying_position, # Keep qualifying position separate
-                'overall_final_position': overall_final_position, # New overall final position
                 'total_adjusted_points': total_adjusted_points,
                 'total_raw_points': round(total_raw_points, 2),
                 'average_points_per_week': round(average_points_per_week, 2),
                 'weekly_scores': weekly_scores_ordered # This will be a list of 10 scores
             })
         
-        # Sort season_players_data by overall_final_position
-        season_players_data.sort(key=lambda x: x['overall_final_position'] if isinstance(x['overall_final_position'], int) else float('inf'))
+        # Sort season_players_data by qualifying_position
+        season_players_data.sort(key=lambda x: x['qualifying_position'] if isinstance(x['qualifying_position'], int) else float('inf'))
 
         with open(os.path.join(OUTPUT_DIR, f"season_{series_id}.html"), 'w') as f:
             f.write(template.render(

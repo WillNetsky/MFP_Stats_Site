@@ -49,7 +49,7 @@
                 <thead>
                     <tr>
                         <th>Player</th>
-                        <th>Overall Final Position</th> {# Renamed column header #}
+                        <th>Qualifying Position</th>
                         <th>Total Adjusted Points</th>
                         <th>Total Raw Points</th>
                         <th>Weeks Played</th>
@@ -63,7 +63,7 @@
                     {% for player_data in season_players_data %}
                         <tr>
                             <td><a href="player_{{ player_data.playerId }}.html">{{ player_data.name }}</a></td>
-                            <td>{{ player_data.overall_final_position }}</td> {# Display new overall_final_position #}
+                            <td>{{ player_data.qualifying_position }}</td>
                             <td>{{ player_data.total_adjusted_points | format_number }}</td>
                             <td>{{ player_data.total_raw_points | format_number }}</td>
                             <td>{{ player_data.weekly_scores | select('ne', 'N/A') | list | length }}</td>
