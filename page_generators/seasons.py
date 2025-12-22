@@ -1,7 +1,7 @@
 import os
 from collections import defaultdict
 from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data
-from api_client import fetch_finals_results
+from api_client import fetch_finals_results, fetch_tournament_games
 from config import OUTPUT_DIR
 from page_generators.helpers import get_qualification_threshold
 
@@ -188,19 +188,51 @@ def generate_season_pages(env, all_series_data):
         
         has_finals = "Yes" if finals_tournament_ids else "No"
         
-        finals_results = None
+        finals_data = {}
         if finals_tournament_ids:
-            raw_finals_standings = fetch_finals_results(finals_tournament_ids)
-            if raw_finals_standings:
-                player_name_map_for_finals = {p['playerId']: p['name'] for p in series['players']}
-                finals_results = []
-                for result in raw_finals_standings:
-                    finals_results.append({
-                        'position': result['position'],
-                        'playerId': result['playerId'],
-                        'name': player_name_map_for_finals.get(result['playerId'], 'Unknown Player')
-                    })
-                finals_results.sort(key=lambda x: x['position'])
+            player_name_map = {p['playerId']: p['name'] for p in series['players']}
+            t_ids = finals_tournament_ids if isinstance(finals_tournament_ids, list) else [finals_tournament_ids]
+
+            for i, tid in enumerate(t_ids):
+                round_num = i + 1
+                games_data = fetch_tournament_games(tid, series_status=series['status'])
+
+                if games_data and games_data.get('data'):
+                    groups = defaultdict(lambda: {'arenas': set(), 'players': defaultdict(lambda: {'name': '', 'games': {}, 'total_points': 0})})
+                    tiebreakers = []
+
+                    for game in games_data['data']:
+                        arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
+                        game_set = game.get('set', 0)
+                        
+                        if len(game['playerIds']) == 2:
+                            tiebreakers.append(game)
+                            continue
+
+                        groups[game_set]['arenas'].add(arena_name)
+
+                        for p_idx, player_id in enumerate(game['playerIds']):
+                            groups[game_set]['players'][player_id]['name'] = player_name_map.get(player_id, 'Unknown Player')
+                            points = float(game['resultPoints'][p_idx])
+                            groups[game_set]['players'][player_id]['games'][arena_name] = points
+                            groups[game_set]['players'][player_id]['total_points'] += points
+
+                    round_data = {
+                        'groups': {f'group_{k}': dict(v) for k, v in groups.items()},
+                        'tiebreakers': []
+                    }
+
+                    for game in tiebreakers:
+                        arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
+                        winner_id = game['resultPositions'][0]
+                        loser_id = game['resultPositions'][1]
+                        round_data['tiebreakers'].append({
+                            'winner': player_name_map.get(winner_id, 'Unknown'),
+                            'loser': player_name_map.get(loser_id, 'Unknown'),
+                            'arena': arena_name
+                        })
+
+                    finals_data[f'round_{round_num}'] = round_data
 
         tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series['tournamentIds'])}
         
@@ -257,7 +289,6 @@ def generate_season_pages(env, all_series_data):
                 season_players_data=season_players_data,
                 players=series['players'],
                 has_finals=has_finals,
-                finals_tournament_ids=finals_tournament_ids,
-                finals_results=finals_results
+                finals_data=finals_data
             ))
         print(f"Generated season_{series_id}.html")

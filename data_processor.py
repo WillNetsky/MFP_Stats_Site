@@ -133,7 +133,7 @@ def process_game_data(series_data):
                     if num_players == 4:
                         by_player[player_id]['3rd_4p'] += 1
                     elif num_players == 3:
-                        by_player[player_id]['4th_combined'] += 1 # 3rd in 3p counts as 4th
+                        by_player[player_id]['4th_combined'] += 1
                 elif position == 4:
                     if num_players == 4:
                         by_player[player_id]['4th_combined'] += 1
