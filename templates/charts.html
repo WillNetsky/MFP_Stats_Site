@@ -55,16 +55,14 @@
         }
         .chart-container {
             position: relative;
-            width: 100%;
-            max-width: 1000px; /* Set max-width on the container */
-            height: 600px; /* Set fixed height on the container */
+            width: 90%; /* Changed to percentage width */
+            height: 700px; /* Fixed height */
             margin: 0 auto;
         }
         .chart-container canvas {
             width: 100%; /* Canvas fills 100% width of container */
             height: 100%; /* Canvas fills 100% height of container */
         }
-
 
         /* Styles for the new search box */
         .search-container {
@@ -123,6 +121,9 @@
 {% block content %}
     <h1>Player Performance Charts</h1>
 
+    <!-- Safer data injection using a data attribute -->
+    <div id="chart-data-container" data-chart-data="{{ all_players_chart_data | tojson | e }}" style="display: none;"></div>
+
     <div class="chart-section">
         <div class="chart-controls">
             <label for="main-player-search-input">Select Player:</label>
@@ -158,16 +159,26 @@
             <button id="mflp-toggle-button" class="chart-toggle-button active" onclick="toggleLeagueData('mflp')">Show MFLadies Data</button>
         </div>
         <div id="performanceChartContainer" class="chart-container">
-            <canvas id="performanceChart"></canvas>
+            <canvas id="performanceChart" width="1200" height="700"></canvas>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let performanceChartInstance = null;
-        const allPlayersChartData = {{ all_players_chart_data | default('{}') | safe }};
+        let allPlayersChartData = {}; // Initialize as empty object
         let showMfpData = true;
         let showMflpData = true;
+
+        // Safely parse data from the data attribute
+        try {
+            const chartDataElement = document.getElementById('chart-data-container');
+            if (chartDataElement && chartDataElement.dataset.chartData) {
+                allPlayersChartData = JSON.parse(chartDataElement.dataset.chartData);
+            }
+        } catch (e) {
+            console.error("Failed to parse chart data:", e);
+        }
 
         function getStatisticLabel(statisticKey) {
             const labels = {
@@ -346,6 +357,7 @@
             performanceChartInstance = new Chart(ctx, chartConfig);
         }
 
+        // Moved functions outside DOMContentLoaded to be globally accessible
         function handleSearchInput(searchType) { // searchType can be 'main' or 'overlay'
             const searchInputId = `${searchType}-player-search-input`;
             const searchResultsDivId = `${searchType}-player-search-results`;
@@ -452,7 +464,7 @@
                                 searchResultsDiv.style.display = 'none';
                             }
                         }
-                    });
+                    }
                 });
             });
         });
