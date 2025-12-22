@@ -116,14 +116,8 @@
     <h1>Melissa Dircks</h1>
     <p>IFPA Number: N/A</p>
 
-    <h2>MFPinball Seasons</h2>
-    
-        <p>No MFPinball season data available for this player.</p>
     
 
-    <h2>MFLadies Pinball Seasons</h2>
-    
-        <p>No MFLadies Pinball season data available for this player.</p>
     
 
     <h2>Performance by Machine</h2>
@@ -142,8 +136,40 @@
                 <tbody>
                     
                         <tr>
-                            <td>Unknown Arena</td>
-                            <td>5</td>
+                            <td>Wheel Of Fortune</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>Funhouse</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>AC/DC (Pro)</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>Dragonfist</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>Dialed In!</td>
+                            <td>1</td>
                             <td>0</td>
                             <td>0</td>
                             <td>0</td>
@@ -156,17 +182,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // No chart-specific JavaScript needed on this page anymore.
-        // The allPlayersChartData variable is also no longer needed here.
-        // The toggleChart, getStatisticLabel, getChartData, getChartLabels, updateChart,
-        // handleSearchInput, selectOverlayPlayer, clearOverlayPlayer functions are removed.
-
         document.addEventListener('DOMContentLoaded', function() {
-            // Hide search results when clicking outside
             document.addEventListener('click', function(event) {
                 ['mfp', 'mflp'].forEach(leagueType => {
                     const searchContainer = document.querySelector(`#${leagueType}-overlay-search-input`);
-                    if (searchContainer) { // Check if element exists before trying to access closest
+                    if (searchContainer) {
                         const actualSearchContainer = searchContainer.closest('.search-container');
                         if (actualSearchContainer && !actualSearchContainer.contains(event.target)) {
                             const searchResultsDiv = document.getElementById(`${leagueType}-overlay-search-results`);
@@ -181,6 +201,10 @@
     </script>
 
     </main>
+
+    <footer class="container">
+        <small>Last updated: 2025-12-22 08:40:01</small>
+    </footer>
 
     <script>
         function sortTable(tableId, n, isNumeric = false) {
