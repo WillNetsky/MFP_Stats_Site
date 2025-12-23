@@ -154,7 +154,7 @@
     </table>
 </div>
 
-<h2>Almost Perfect Nights (4/5 Wins)</h2>
+<h2>Almost Perfect Nights (Won first 4, lost last)</h2>
 <div class="table-container">
     <table id="{{ league_prefix }}-almost-perfect-nights-table">
         <thead>
@@ -166,11 +166,13 @@
         </thead>
         <tbody>
             {% for night in all_almost_perfect_nights %}
-                <tr>
-                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
-                    <td>{{ night.week_num }}</td>
-                </tr>
+                {% if league_prefix == 'combined' or league_prefix|upper == night.league_type %}
+                    <tr>
+                        <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                        <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                        <td>{{ night.week_num }}</td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>

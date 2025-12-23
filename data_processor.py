@@ -150,7 +150,7 @@ def process_game_data(series_data):
 
 def find_almost_perfect_nights(all_series_data):
     """
-    Identifies instances where a player won 4 out of 5 games in a single weekly tournament.
+    Identifies instances where a player won the first 4 games of a league night and then did not win the last one.
     """
     almost_perfect_nights = []
 
@@ -159,30 +159,51 @@ def find_almost_perfect_nights(all_series_data):
         series_id = series['seriesId']
         series_name = series['name']
         
+        year, season_name, league_name = parse_series_name(series_name)
+        league_type = 'Combined'
+        if league_name == "MFPinball":
+            league_type = 'MFP'
+        elif league_name == "MFLadies Pinball":
+            league_type = 'MFLP'
+        
         tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series.get('tournamentIds', []))}
         player_name_map = {p['playerId']: p['name'] for p in series.get('players', [])}
 
         for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
             tournament_id = int(tournament_id_str)
             
-            if len(games_list) == 5:
-                player_wins_in_tournament = defaultdict(int)
-                
-                for game in games_list:
-                    if 'resultPositions' in game and 'playerIds' in game and game['resultPositions']:
-                        winner_id = game['resultPositions'][0]
-                        player_wins_in_tournament[winner_id] += 1
-                
-                for player_id, win_count in player_wins_in_tournament.items():
-                    if win_count == 4:
-                        almost_perfect_nights.append({
-                            'playerId': player_id,
-                            'name': player_name_map.get(player_id, 'Unknown Player'),
-                            'seriesId': series_id,
-                            'seriesName': series_name,
-                            'tournamentId': tournament_id,
-                            'week_num': tournament_id_to_week_num.get(tournament_id, 'N/A'),
-                            'wins': win_count,
-                            'total_games': 5
-                        })
+            # Group games by player
+            player_games = defaultdict(list)
+            for game in games_list:
+                if 'playerIds' in game:
+                    for pid in game['playerIds']:
+                        player_games[pid].append(game)
+            
+            for player_id, p_games in player_games.items():
+                if len(p_games) == 5:
+                    # Sort by roundId, then startedAt, then gameId
+                    p_games.sort(key=lambda x: (x.get('roundId', 0), x.get('startedAt', ''), x.get('gameId', 0)))
+                    
+                    won_first_4 = True
+                    for i in range(4):
+                        game = p_games[i]
+                        if not ('resultPositions' in game and game['resultPositions'] and game['resultPositions'][0] == player_id):
+                            won_first_4 = False
+                            break
+                    
+                    if won_first_4:
+                        # Check if lost 5th
+                        last_game = p_games[4]
+                        if 'resultPositions' in last_game and last_game['resultPositions'] and last_game['resultPositions'][0] != player_id:
+                            almost_perfect_nights.append({
+                                'playerId': player_id,
+                                'name': player_name_map.get(player_id, 'Unknown Player'),
+                                'seriesId': series_id,
+                                'seriesName': series_name,
+                                'tournamentId': tournament_id,
+                                'week_num': tournament_id_to_week_num.get(tournament_id, 'N/A'),
+                                'wins': 4,
+                                'total_games': 5,
+                                'league_type': league_type
+                            })
     return almost_perfect_nights
