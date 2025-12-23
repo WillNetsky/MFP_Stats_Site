@@ -7,6 +7,8 @@ def score_color_filter(score):
     Jinja2 filter to color-code scores based on value.
     5 (worst) -> Red, 20 -> White, 34 -> Green, 35 -> Gold.
     'N/A' or None -> Blank.
+    
+    Returns a span with a data-score attribute so CSS can handle theming.
     """
     if score is None or score == 'N/A' or score == '-':
         return "" # Blank out if no score
@@ -16,30 +18,9 @@ def score_color_filter(score):
     except ValueError:
         return str(score) # Return as is if not a number
 
-    color = ""
-    if score_val == 35:
-        color = "gold"
-    elif score_val <= 5: # Treat 5 and below as pure red
-        color = "rgb(255,0,0)"
-    elif score_val >= 34: # Treat 34 and above (but not 35) as pure green
-        color = "rgb(0,128,0)"
-    elif 5 < score_val < 20:
-        # Interpolate from Red (255,0,0) at 5 to White (255,255,255) at 20
-        t = (score_val - 5) / 15.0 # Scale to 0-1 over the range 5-20
-        r = 255
-        g = int(255 * t)
-        b = int(255 * t)
-        color = f"rgb({r},{g},{b})"
-    elif 20 <= score_val < 34:
-        # Interpolate from White (255,255,255) at 20 to Green (0,128,0) at 34
-        t = (score_val - 20) / 14.0 # Scale to 0-1 over the range 20-34
-        r = int(255 * (1 - t))
-        g = int(255 * (1 - t) + 128 * t)
-        b = int(255 * (1 - t))
-        color = f"rgb({r},{g},{b})"
-    
-    # Return a span with inline style for background color
-    return f'<span style="background-color: {color}; padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">{int(score_val) if score_val == int(score_val) else score_val}</span>'
+    # Instead of inline styles, we return a span with a class and data attribute
+    # This allows CSS to handle the coloring for both light and dark modes
+    return f'<span class="score-badge" data-score="{score_val}">{int(score_val) if score_val == int(score_val) else score_val}</span>'
 
 def format_number_filter(value):
     """

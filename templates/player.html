@@ -193,7 +193,7 @@
         </div>
     {% endif %}
 
-    <h2>Performance by Machine</h2>
+    <h2>Performance by Machine (Since {{ arena_cutoff_date }})</h2>
     {% if game_performance %}
         <div class="table-container">
             <table id="game-performance-table">
@@ -220,7 +220,7 @@
             </table>
         </div>
     {% else %}
-        <p>No game performance data available for this player.</p>
+        <p>No game performance data available for this player since {{ arena_cutoff_date }}.</p>
     {% endif %}
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

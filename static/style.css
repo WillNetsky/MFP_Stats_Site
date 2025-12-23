@@ -115,3 +115,14 @@ thead {
     gap: 10px;
     margin-bottom: 20px;
 }
+
+/* Score Badge Styling */
+.score-badge {
+    padding: 2px 5px;
+    border-radius: 3px;
+    display: inline-block;
+    min-width: 25px;
+    text-align: center;
+    color: black; /* Default text color for badges */
+    font-weight: bold;
+}

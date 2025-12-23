@@ -1,8 +1,12 @@
 import os
 from collections import defaultdict
+from datetime import datetime
 from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data
 from api_client import fetch_finals_results
 from config import OUTPUT_DIR
+
+# Define the cutoff date for arena data
+ARENA_DATA_CUTOFF_DATE = datetime(2024, 1, 1) # Winter 2024 starts roughly here
 
 def generate_player_pages(env, all_series_data):
     """Generates individual player pages and a main players list page."""
@@ -22,6 +26,7 @@ def generate_player_pages(env, all_series_data):
             'year': year,
             'season_name': season_name_parsed,
             'league_name': league_name_parsed,
+            'original_series_data': series_data_raw
         })
     
     corrected_temp_season_entries = apply_year_corrections_to_seasons_list(temp_season_entries)
@@ -36,14 +41,36 @@ def generate_player_pages(env, all_series_data):
         season_name_parsed = corrected_info['season_name']
         league_name_parsed = corrected_info['league_name']
 
+        # Determine if this series should be included in arena stats based on date
+        # We use the 'year' and 'season_name' to approximate a date if exact start date isn't available
+        # Or we can check series_data['startDate'] if available.
+        # Let's try to parse startDate first.
+        include_in_arena_stats = False
+        if 'startDate' in series_data and series_data['startDate']:
+            try:
+                start_date = datetime.strptime(series_data['startDate'].split('T')[0], "%Y-%m-%d")
+                if start_date >= ARENA_DATA_CUTOFF_DATE:
+                    include_in_arena_stats = True
+            except ValueError:
+                pass
+        
+        # Fallback if startDate is missing or parsing fails, use the corrected year
+        if not include_in_arena_stats and year != "N/A":
+             try:
+                 if int(year) >= 2024:
+                     include_in_arena_stats = True
+             except ValueError:
+                 pass
+
         game_data = process_game_data(series_data_raw)
         
-        for player_id, games in game_data['by_machine'].items():
-            for game_name, stats in games.items():
-                all_players_game_performance[player_id][game_name]['1st_place'] += stats['1st_place']
-                all_players_game_performance[player_id][game_name]['2nd_place'] += stats['2nd_place']
-                all_players_game_performance[player_id][game_name]['3rd_place'] += stats['3rd_place']
-                all_players_game_performance[player_id][game_name]['total_plays'] += stats['total_plays']
+        if include_in_arena_stats:
+            for player_id, games in game_data['by_machine'].items():
+                for game_name, stats in games.items():
+                    all_players_game_performance[player_id][game_name]['1st_place'] += stats['1st_place']
+                    all_players_game_performance[player_id][game_name]['2nd_place'] += stats['2nd_place']
+                    all_players_game_performance[player_id][game_name]['3rd_place'] += stats['3rd_place']
+                    all_players_game_performance[player_id][game_name]['total_plays'] += stats['total_plays']
 
         finals_tournament_ids = None
         if league_name_parsed in load_finals_mapping() and year != "N/A" and season_name_parsed != "N/A":
@@ -165,6 +192,7 @@ def generate_player_pages(env, all_series_data):
                 mfp_seasons=data['mfp_seasons'],
                 mflp_seasons=data['mflp_seasons'],
                 game_performance=data['game_performance'],
+                arena_cutoff_date=ARENA_DATA_CUTOFF_DATE.strftime("%B %Y")
             ))
         print(f"Generated player_{player_id}.html")
 
