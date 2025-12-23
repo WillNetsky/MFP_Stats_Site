@@ -17,12 +17,6 @@
             rootAttribute: "data-theme",
             localStorageKey: "picoPreferedColorScheme",
 
-            // Init
-            init() {
-                this.scheme = this.schemeFromLocalStorage;
-                this.initSwitchers();
-            },
-
             // Get scheme from local storage
             get schemeFromLocalStorage() {
                 if (typeof window.localStorage !== "undefined") {
@@ -71,7 +65,8 @@
 
             // Apply scheme
             applyScheme() {
-                document.querySelector("html").setAttribute(this.rootAttribute, this.scheme);
+                document.documentElement.setAttribute(this.rootAttribute, this.scheme);
+                updateScoreColors(); // Update score colors when theme changes
             },
 
             // Store scheme to local storage
@@ -82,9 +77,81 @@
             },
         };
 
+        // Function to update score colors based on theme
+        function updateScoreColors() {
+            const badges = document.querySelectorAll('.score-badge');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+            badges.forEach(badge => {
+                const score = parseFloat(badge.getAttribute('data-score'));
+                if (isNaN(score)) return;
+
+                let r, g, b;
+
+                if (score === 35) {
+                    // Gold
+                    r = 255; g = 215; b = 0;
+                } else if (score <= 5) {
+                    // Red
+                    r = 255; g = 0; b = 0;
+                } else if (score >= 34) {
+                    // Green
+                    r = 0; g = 128; b = 0;
+                } else if (score < 20) {
+                    // Red to White (or Dark Grey in dark mode)
+                    const t = (score - 5) / 15.0;
+                    if (isDark) {
+                        // Interpolate Red (255,0,0) to Dark Grey (50,50,50)
+                        r = 255 + (50 - 255) * t;
+                        g = 0 + (50 - 0) * t;
+                        b = 0 + (50 - 0) * t;
+                    } else {
+                        // Interpolate Red (255,0,0) to White (255,255,255)
+                        r = 255;
+                        g = int(255 * t); // This logic was slightly off in python, let's fix it here
+                        // Python: g = int(255 * t), b = int(255 * t) -> Red to White
+                        g = Math.floor(255 * t);
+                        b = Math.floor(255 * t);
+                    }
+                } else {
+                    // White (or Dark Grey) to Green
+                    const t = (score - 20) / 14.0;
+                    if (isDark) {
+                        // Interpolate Dark Grey (50,50,50) to Green (0,128,0)
+                        r = 50 + (0 - 50) * t;
+                        g = 50 + (128 - 50) * t;
+                        b = 50 + (0 - 50) * t;
+                    } else {
+                        // Interpolate White (255,255,255) to Green (0,128,0)
+                        r = Math.floor(255 * (1 - t));
+                        g = Math.floor(255 * (1 - t) + 128 * t);
+                        b = Math.floor(255 * (1 - t));
+                    }
+                }
+
+                badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+
+                // Adjust text color for contrast
+                // Simple check: if background is dark, text white, else black
+                // Calculate luminance
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                if (luminance > 0.5) {
+                    badge.style.color = 'black';
+                } else {
+                    badge.style.color = 'white';
+                }
+            });
+        }
+
         // Init
-        themeSwitcher.init();
+        themeSwitcher.scheme = themeSwitcher.schemeFromLocalStorage;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            themeSwitcher.initSwitchers();
+            updateScoreColors(); // Initial color update
+        });
     </script>
+    
 </head>
 <body class="season-page">
     <nav class="container-fluid">
@@ -174,25 +241,25 @@
                             <td>5</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(18,137,18); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">33</span></td>
+                                <td><span class="score-badge" data-score="33.0">33</span></td>
                             
                         </tr>
                     
@@ -209,25 +276,25 @@
                             <td>3</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(18,137,18); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">33</span></td>
+                                <td><span class="score-badge" data-score="33.0">33</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                         </tr>
                     
@@ -244,25 +311,25 @@
                             <td>5</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(218,236,218); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">22</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
                         </tr>
                     
@@ -279,25 +346,25 @@
                             <td>6</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(145,200,145); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">26</span></td>
+                                <td><span class="score-badge" data-score="26.0">26</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -314,25 +381,25 @@
                             <td>8</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -349,25 +416,25 @@
                             <td>3</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
-                            
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                         </tr>
                     
@@ -384,25 +451,25 @@
                             <td>8</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
                         </tr>
                     
@@ -419,25 +486,25 @@
                             <td>4</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
-                            
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                         </tr>
                     
@@ -454,25 +521,25 @@
                             <td>8</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(218,236,218); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">22</span></td>
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(54,155,54); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">31</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
+                            
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
                             
                         </tr>
                     
@@ -489,25 +556,25 @@
                             <td>2</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
                         </tr>
                     
@@ -524,25 +591,25 @@
                             <td>7</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
                         </tr>
                     
@@ -561,23 +628,23 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                         </tr>
                     
@@ -594,25 +661,25 @@
                             <td>4</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                         </tr>
                     
@@ -629,25 +696,25 @@
                             <td>5</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(91,173,91); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">29</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                         </tr>
                     
@@ -670,19 +737,19 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                         </tr>
                     
@@ -699,25 +766,25 @@
                             <td>11</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,255,255); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">20</span></td>
+                                <td><span class="score-badge" data-score="20.0">20</span></td>
                             
                         </tr>
                     
@@ -734,25 +801,25 @@
                             <td>8</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
                         </tr>
                     
@@ -769,25 +836,25 @@
                             <td>11</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(218,236,218); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">22</span></td>
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                         </tr>
                     
@@ -804,25 +871,25 @@
                             <td>8</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                         </tr>
                     
@@ -841,23 +908,23 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                         </tr>
                     
@@ -876,21 +943,21 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,255,255); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">20</span></td>
+                                <td><span class="score-badge" data-score="20.0">20</span></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
                                 <td></td>
                             
@@ -909,25 +976,25 @@
                             <td>8</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -944,25 +1011,25 @@
                             <td>10</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
-                                <td><span style="background-color: rgb(218,236,218); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">22</span></td>
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -979,25 +1046,25 @@
                             <td>7</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(218,236,218); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">22</span></td>
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -1014,25 +1081,25 @@
                             <td>10</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                         </tr>
                     
@@ -1053,19 +1120,19 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
@@ -1084,25 +1151,25 @@
                             <td>9</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(218,236,218); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">22</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                         </tr>
                     
@@ -1119,25 +1186,25 @@
                             <td>17</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,255,255); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">20</span></td>
+                                <td><span class="score-badge" data-score="20.0">20</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -1154,25 +1221,25 @@
                             <td>8</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
-                            
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
-                            
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                         </tr>
                     
@@ -1189,25 +1256,25 @@
                             <td>5</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,17,17); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">6</span></td>
+                                <td><span class="score-badge" data-score="6.0">6</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
                         </tr>
                     
@@ -1226,23 +1293,23 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
-                            
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
-                            
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
-                            
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                         </tr>
                     
@@ -1259,25 +1326,25 @@
                             <td>14</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                         </tr>
                     
@@ -1294,25 +1361,25 @@
                             <td>13</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -1329,25 +1396,25 @@
                             <td>15</td>
                             <td>3</td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                         </tr>
                     
@@ -1364,25 +1431,25 @@
                             <td>15</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                         </tr>
                     
@@ -1401,23 +1468,23 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                         </tr>
                     
@@ -1434,25 +1501,25 @@
                             <td>17</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                         </tr>
                     
@@ -1469,11 +1536,9 @@
                             <td>6</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
@@ -1481,13 +1546,15 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                         </tr>
                     
@@ -1504,23 +1571,23 @@
                             <td>14</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -1541,23 +1608,23 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                         </tr>
                     
@@ -1574,23 +1641,23 @@
                             <td>13</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,85,85); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">10</span></td>
+                                <td><span class="score-badge" data-score="10.0">10</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -1611,23 +1678,23 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,119,119); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">12</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="12.0">12</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                         </tr>
                     
@@ -1644,23 +1711,23 @@
                             <td>7</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
@@ -1681,17 +1748,17 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
                                 <td></td>
                             
@@ -1722,17 +1789,17 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                         </tr>
                     
@@ -1757,15 +1824,15 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
@@ -1796,11 +1863,11 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(127,191,127); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">27</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
@@ -1829,15 +1896,15 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                         </tr>
                     
@@ -1854,25 +1921,25 @@
                             <td>29</td>
                             <td>5</td>
                             
-                                <td><span style="background-color: rgb(255,34,34); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">7</span></td>
+                                <td><span class="score-badge" data-score="7.0">7</span></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
-                                <td><span style="background-color: rgb(255,34,34); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">7</span></td>
+                                <td><span class="score-badge" data-score="7.0">7</span></td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,51,51); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">8</span></td>
+                                <td><span class="score-badge" data-score="8.0">8</span></td>
                             
-                                <td><span style="background-color: rgb(255,34,34); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">7</span></td>
+                                <td><span class="score-badge" data-score="7.0">7</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,0,0); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">5</span></td>
+                                <td><span class="score-badge" data-score="5.0">5</span></td>
                             
                         </tr>
                     
@@ -1897,15 +1964,15 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
@@ -1924,11 +1991,9 @@
                             <td>10</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
@@ -1936,11 +2001,13 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -1967,13 +2034,13 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -1994,19 +2061,19 @@
                             <td>9</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,119,119); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">12</span></td>
+                                <td><span class="score-badge" data-score="12.0">12</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
@@ -2029,11 +2096,9 @@
                             <td>7</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(255,255,255); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">20</span></td>
+                                <td><span class="score-badge" data-score="20.0">20</span></td>
                             
-                                <td><span style="background-color: rgb(255,85,85); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">10</span></td>
-                            
-                                <td></td>
+                                <td><span class="score-badge" data-score="10.0">10</span></td>
                             
                                 <td></td>
                             
@@ -2041,11 +2106,13 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
@@ -2064,11 +2131,11 @@
                             <td>4</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -2103,7 +2170,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
                                 <td></td>
                             
@@ -2115,9 +2182,9 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                         </tr>
                     
@@ -2144,11 +2211,11 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
@@ -2183,11 +2250,11 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(200,227,200); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">23</span></td>
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                         </tr>
                     
@@ -2206,7 +2273,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,221,221); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">18</span></td>
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
                             
                                 <td></td>
                             
@@ -2214,7 +2281,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
@@ -2249,11 +2316,11 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,255,255); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">20</span></td>
+                                <td><span class="score-badge" data-score="20.0">20</span></td>
                             
                                 <td></td>
                             
@@ -2274,7 +2341,7 @@
                             <td>5</td>
                             <td>2</td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
                                 <td></td>
                             
@@ -2292,7 +2359,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                         </tr>
                     
@@ -2309,7 +2376,7 @@
                             <td>1</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
@@ -2344,7 +2411,7 @@
                             <td>1</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
@@ -2393,7 +2460,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(163,209,163); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">25</span></td>
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td></td>
                             
@@ -2420,11 +2487,11 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,68,68); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">9</span></td>
+                                <td><span class="score-badge" data-score="9.0">9</span></td>
                             
                                 <td></td>
                             
@@ -2461,9 +2528,9 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,119,119); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">12</span></td>
+                                <td><span class="score-badge" data-score="12.0">12</span></td>
                             
-                                <td><span style="background-color: rgb(255,119,119); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">12</span></td>
+                                <td><span class="score-badge" data-score="12.0">12</span></td>
                             
                                 <td></td>
                             
@@ -2488,7 +2555,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(182,218,182); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">24</span></td>
+                                <td><span class="score-badge" data-score="24.0">24</span></td>
                             
                                 <td></td>
                             
@@ -2535,9 +2602,9 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                         </tr>
                     
@@ -2566,7 +2633,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -2599,7 +2666,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -2626,7 +2693,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
@@ -2661,7 +2728,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
@@ -2710,7 +2777,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
@@ -2729,9 +2796,9 @@
                             <td>5</td>
                             <td>0</td>
                             
-                                <td><span style="background-color: rgb(255,0,0); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">2</span></td>
+                                <td><span class="score-badge" data-score="2.0">2</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
@@ -2778,7 +2845,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
@@ -2809,7 +2876,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td></td>
                             
@@ -2842,7 +2909,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
                                 <td></td>
                             
@@ -2869,7 +2936,7 @@
                             <td>2</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
                                 <td></td>
                             
@@ -2918,7 +2985,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
@@ -2949,7 +3016,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                                 <td></td>
                             
@@ -2992,7 +3059,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                         </tr>
                     
@@ -3009,7 +3076,7 @@
                             <td>1</td>
                             <td>1</td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
                                 <td></td>
                             
@@ -3062,7 +3129,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
                         </tr>
                     
@@ -3087,7 +3154,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,119,119); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">12</span></td>
+                                <td><span class="score-badge" data-score="12.0">12</span></td>
                             
                                 <td></td>
                             
@@ -3128,7 +3195,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,102,102); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">11</span></td>
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
                                 <td></td>
                             
@@ -3151,7 +3218,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,85,85); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">10</span></td>
+                                <td><span class="score-badge" data-score="10.0">10</span></td>
                             
                                 <td></td>
                             
@@ -3198,7 +3265,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,51,51); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">8</span></td>
+                                <td><span class="score-badge" data-score="8.0">8</span></td>
                             
                                 <td></td>
                             
@@ -3227,7 +3294,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,51,51); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">8</span></td>
+                                <td><span class="score-badge" data-score="8.0">8</span></td>
                             
                                 <td></td>
                             
@@ -3260,7 +3327,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,51,51); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">8</span></td>
+                                <td><span class="score-badge" data-score="8.0">8</span></td>
                             
                                 <td></td>
                             
@@ -3305,7 +3372,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,34,34); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">7</span></td>
+                                <td><span class="score-badge" data-score="7.0">7</span></td>
                             
                                 <td></td>
                             
@@ -3330,7 +3397,7 @@
                             
                                 <td></td>
                             
-                                <td><span style="background-color: rgb(255,17,17); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">6</span></td>
+                                <td><span class="score-badge" data-score="6.0">6</span></td>
                             
                                 <td></td>
                             
@@ -3354,7 +3421,7 @@
     </main>
 
     <footer class="container">
-        <small>Last updated: 2025-12-22 08:40:01</small>
+        <small>Last updated: 2025-12-23 08:39:06</small>
     </footer>
 
     <script>

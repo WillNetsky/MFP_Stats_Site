@@ -17,12 +17,6 @@
             rootAttribute: "data-theme",
             localStorageKey: "picoPreferedColorScheme",
 
-            // Init
-            init() {
-                this.scheme = this.schemeFromLocalStorage;
-                this.initSwitchers();
-            },
-
             // Get scheme from local storage
             get schemeFromLocalStorage() {
                 if (typeof window.localStorage !== "undefined") {
@@ -71,7 +65,8 @@
 
             // Apply scheme
             applyScheme() {
-                document.querySelector("html").setAttribute(this.rootAttribute, this.scheme);
+                document.documentElement.setAttribute(this.rootAttribute, this.scheme);
+                updateScoreColors(); // Update score colors when theme changes
             },
 
             // Store scheme to local storage
@@ -82,9 +77,138 @@
             },
         };
 
+        // Function to update score colors based on theme
+        function updateScoreColors() {
+            const badges = document.querySelectorAll('.score-badge');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+            badges.forEach(badge => {
+                const score = parseFloat(badge.getAttribute('data-score'));
+                if (isNaN(score)) return;
+
+                let r, g, b;
+
+                if (score === 35) {
+                    // Gold
+                    r = 255; g = 215; b = 0;
+                } else if (score <= 5) {
+                    // Red
+                    r = 255; g = 0; b = 0;
+                } else if (score >= 34) {
+                    // Green
+                    r = 0; g = 128; b = 0;
+                } else if (score < 20) {
+                    // Red to White (or Dark Grey in dark mode)
+                    const t = (score - 5) / 15.0;
+                    if (isDark) {
+                        // Interpolate Red (255,0,0) to Dark Grey (50,50,50)
+                        r = 255 + (50 - 255) * t;
+                        g = 0 + (50 - 0) * t;
+                        b = 0 + (50 - 0) * t;
+                    } else {
+                        // Interpolate Red (255,0,0) to White (255,255,255)
+                        r = 255;
+                        g = int(255 * t); // This logic was slightly off in python, let's fix it here
+                        // Python: g = int(255 * t), b = int(255 * t) -> Red to White
+                        g = Math.floor(255 * t);
+                        b = Math.floor(255 * t);
+                    }
+                } else {
+                    // White (or Dark Grey) to Green
+                    const t = (score - 20) / 14.0;
+                    if (isDark) {
+                        // Interpolate Dark Grey (50,50,50) to Green (0,128,0)
+                        r = 50 + (0 - 50) * t;
+                        g = 50 + (128 - 50) * t;
+                        b = 50 + (0 - 50) * t;
+                    } else {
+                        // Interpolate White (255,255,255) to Green (0,128,0)
+                        r = Math.floor(255 * (1 - t));
+                        g = Math.floor(255 * (1 - t) + 128 * t);
+                        b = Math.floor(255 * (1 - t));
+                    }
+                }
+
+                badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+
+                // Adjust text color for contrast
+                // Simple check: if background is dark, text white, else black
+                // Calculate luminance
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                if (luminance > 0.5) {
+                    badge.style.color = 'black';
+                } else {
+                    badge.style.color = 'white';
+                }
+            });
+        }
+
         // Init
-        themeSwitcher.init();
+        themeSwitcher.scheme = themeSwitcher.schemeFromLocalStorage;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            themeSwitcher.initSwitchers();
+            updateScoreColors(); // Initial color update
+        });
     </script>
+    
+    
+    <style>
+        .search-container {
+            position: relative;
+            display: inline-block;
+            flex-shrink: 1;
+            flex-grow: 1;
+            width: 0;
+            min-width: 0;
+        }
+        .search-container input[type="text"] {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--form-element-border-color);
+            background-color: var(--form-element-background-color);
+            color: var(--color);
+            width: 100%;
+        }
+        .search-results {
+            position: absolute;
+            background-color: var(--background-color);
+            border: 1px solid var(--form-element-border-color);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .search-results div {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+        .search-results div:hover {
+            background-color: var(--primary-hover);
+            color: var(--primary-inverse);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 1;
+            width: auto;
+        }
+        .clear-search-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1em;
+            padding: 0 5px;
+            width: 50px;
+        }
+        .clear-search-button:hover {
+            color: var(--primary-hover);
+        }
+    </style>
+
 </head>
 <body class="player-page">
     <nav class="container-fluid">
@@ -170,15 +294,15 @@
                             <td>4</td>
                             <td>12.2</td>
                             
-                                <td><span style="background-color: rgb(236,245,236); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">21</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
-                                <td><span style="background-color: rgb(255,153,153); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">14</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span style="background-color: rgb(255,136,136); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">13</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span style="background-color: rgb(255,51,51); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">8</span></td>
+                                <td><span class="score-badge" data-score="8.0">8</span></td>
                             
-                                <td><span style="background-color: rgb(255,0,0); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">5</span></td>
+                                <td><span class="score-badge" data-score="5.0">5</span></td>
                             
                                 <td></td>
                             
@@ -206,17 +330,17 @@
                             <td>3</td>
                             <td>14</td>
                             
-                                <td><span style="background-color: rgb(255,255,255); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">20</span></td>
+                                <td><span class="score-badge" data-score="20.0">20</span></td>
                             
-                                <td><span style="background-color: rgb(255,238,238); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">19</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,204,204); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">17</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span style="background-color: rgb(255,187,187); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">16</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
-                                <td><span style="background-color: rgb(255,170,170); padding: 2px 5px; border-radius: 3px; display: inline-block; min-width: 25px; text-align: center;">15</span></td>
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
                             
                         </tr>
                     
@@ -225,288 +349,9 @@
         </div>
     
 
-    <h2>Performance by Machine</h2>
+    <h2>Performance by Machine (Since January 2024)</h2>
     
-        <div class="table-container">
-            <table id="game-performance-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('game-performance-table', 0)">Machine</th>
-                        <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
-                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                        <tr>
-                            <td>Pabst Can Crusher</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Rick And Morty</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>The Walking Cora</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>2</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Star Trek</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Big Buck Hunter</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Evel Knievel</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>2</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>NBA Fastbreak</td>
-                            <td>4</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Family Guy</td>
-                            <td>4</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Congo</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Godzilla</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>James Bond Dr.No (Pro)</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Future Spa</td>
-                            <td>3</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Sky Jump</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Jurassic Park (Premium)</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Tron</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Dirty Harry</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Dolly Parton</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>The Walking Dead</td>
-                            <td>3</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Funhouse</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Transformers</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Dragonfist</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>World Cup Soccer</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>3</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Dialed In!</td>
-                            <td>4</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Paragon</td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Godzilla (Premium/LE)</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>No Fear: Dangerous Sports</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>2</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Seawitch</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Junk Yard</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Deadpool (Premium)</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>1</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Surf Champ</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Teenage Mutant Ninja Turtles</td>
-                            <td>2</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>Cherry Bell</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>2</td>
-                            <td>0</td>
-                        </tr>
-                    
-                        <tr>
-                            <td>The Big Lebowksi</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    
-                </tbody>
-            </table>
-        </div>
+        <p>No game performance data available for this player since January 2024.</p>
     
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -532,7 +377,7 @@
     </main>
 
     <footer class="container">
-        <small>Last updated: 2025-12-22 08:40:01</small>
+        <small>Last updated: 2025-12-23 08:39:06</small>
     </footer>
 
     <script>
