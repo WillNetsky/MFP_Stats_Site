@@ -17,7 +17,6 @@
                     <div class="column">
                         <h3>{{ "Semi-Finals" if loop.index == 1 else "Finals" if loop.index == 2 else "Round " ~ loop.index }}</h3>
                         {% for group_name, group_data in round_data.groups.items() %}
-                            <h4>{{ group_name | replace('_', ' ') | title }}</h4>
                             <table role="grid">
                                 <thead>
                                     <tr>
