@@ -11,7 +11,7 @@ STATIC_DIR = "static"
 EXCLUDED_SERIES_NAMES = [
     "The Beforefore Times",
     "Tuesday Night Strikes Winter 2020",
-    "MFPinball 2019 Spring Season (clone)"
+    "MFPinball 2019 Spring Season  (clone)"
 ]
 
 # -- Leaderboard Configuration --
