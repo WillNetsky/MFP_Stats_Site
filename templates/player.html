@@ -60,6 +60,81 @@
         .clear-search-button:hover {
             color: var(--primary-hover);
         }
+
+        /* Chart specific styles */
+        .chart-section {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            border: 1px solid var(--form-element-border-color);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .chart-controls {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+            background-color: var(--card-background-color);
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .chart-controls label {
+            margin-right: 0;
+            white-space: nowrap;
+        }
+        .chart-controls select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--form-element-border-color);
+            background-color: var(--form-element-background-color);
+            color: var(--color);
+            flex-grow: 1;
+            min-width: 150px;
+        }
+        .chart-toggle-button {
+            padding: 8px 15px;
+            background-color: var(--primary);
+            color: var(--primary-inverse);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+        .chart-toggle-button.active {
+            background-color: var(--primary-hover);
+        }
+        .chart-toggle-button:hover {
+            opacity: 0.9;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            margin: 0 auto;
+        }
+        .chart-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Side-by-side buttons */
+        .toggle-buttons-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Filter controls for machine performance */
+        .filter-controls {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
     </style>
 {% endblock %}
 
@@ -193,46 +268,417 @@
         </div>
     {% endif %}
 
-    <h2>Performance by Machine (Since {{ arena_cutoff_date }})</h2>
-    {% if game_performance %}
-        <div class="table-container">
-            <table id="game-performance-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('game-performance-table', 0)">Machine</th>
-                        <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
-                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for game_name, stats in game_performance.items() %}
-                        <tr>
-                            <td>{{ game_name }}</td>
-                            <td>{{ stats.total_plays }}</td>
-                            <td>{{ stats['1st_place'] }}</td>
-                            <td>{{ stats['2nd_place'] }}</td>
-                            <td>{{ stats['3rd_place'] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <h2>Performance by Machine</h2>
+    <div class="filter-controls">
+        <label for="start-year-filter">Starting Year:</label>
+        <select id="start-year-filter" onchange="updateMachinePerformanceTable()">
+            <option value="2024" selected>2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="all">All Time</option>
+        </select>
+    </div>
+
+    <!-- Data injection for machine performance -->
+    <div id="machine-performance-data" data-machine-perf="{{ game_performance | tojson | e }}" style="display: none;"></div>
+
+    <div class="table-container">
+        <table id="game-performance-table">
+            <thead>
+                <tr>
+                    <th onclick="sortTable('game-performance-table', 0)">Machine</th>
+                    <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
+                    <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
+                    <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
+                    <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
+                </tr>
+            </thead>
+            <tbody id="game-performance-body">
+                <!-- Populated by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Player Performance Chart Section -->
+    <details>
+        <summary>Performance Charts</summary>
+        <div class="chart-section">
+            <!-- Data injection -->
+            <div id="player-chart-data" data-chart-data="{{ player_chart_data | tojson | e }}" style="display: none;"></div>
+            <div id="all-players-chart-data" data-chart-data="{{ all_players_chart_data | tojson | e }}" style="display: none;"></div>
+            <input type="hidden" id="selected-main-player-id" value="{{ player.playerId }}">
+
+            <div class="chart-controls">
+                <label for="statistic-selector">Statistic:</label>
+                <select id="statistic-selector" onchange="updatePlayerChart()">
+                    <option value="average_points_per_week">Avg Points/Week</option>
+                    <option value="total_raw_points">Total Raw Points</option>
+                    <option value="total_adjusted_points">Total Adjusted Points</option>
+                    <option value="weeks_played">Weeks Played</option>
+                    <option value="best_week_score">Best Week Score</option>
+                </select>
+
+                <label for="overlay-player-search-input">Compare With:</label>
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="overlay-player-search-input" placeholder="Search player..." onkeyup="handleSearchInput('overlay')" onfocus="handleSearchInput('overlay')" autocomplete="off">
+                        <button class="clear-search-button" onclick="clearSelectedPlayer('overlay')">✖</button>
+                    </div>
+                    <div id="overlay-player-search-results" class="search-results" style="display: none;"></div>
+                    <input type="hidden" id="selected-overlay-player-id" value="">
+                </div>
+
+                <div class="toggle-buttons-group">
+                    <button id="mfp-toggle-button" class="chart-toggle-button active" onclick="toggleLeagueData('mfp')">MFPinball</button>
+                    <button id="mflp-toggle-button" class="chart-toggle-button active" onclick="toggleLeagueData('mflp')">MFLadies</button>
+                </div>
+            </div>
+            <div id="performanceChartContainer" class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
         </div>
-    {% else %}
-        <p>No game performance data available for this player since {{ arena_cutoff_date }}.</p>
-    {% endif %}
+    </details>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        let performanceChartInstance = null;
+        let playerChartData = {};
+        let allPlayersChartData = {};
+        let showMfpData = true;
+        let showMflpData = true;
+        let machinePerformanceData = {};
+
+        try {
+            const chartDataElement = document.getElementById('player-chart-data');
+            if (chartDataElement && chartDataElement.dataset.chartData) {
+                playerChartData = JSON.parse(chartDataElement.dataset.chartData);
+            }
+            const allChartDataElement = document.getElementById('all-players-chart-data');
+            if (allChartDataElement && allChartDataElement.dataset.chartData) {
+                allPlayersChartData = JSON.parse(allChartDataElement.dataset.chartData);
+            }
+            const machinePerfElement = document.getElementById('machine-performance-data');
+            if (machinePerfElement && machinePerfElement.dataset.machinePerf) {
+                machinePerformanceData = JSON.parse(machinePerfElement.dataset.machinePerf);
+            }
+        } catch (e) {
+            console.error("Failed to parse data:", e);
+        }
+
+        function updateMachinePerformanceTable() {
+            const startYearSelect = document.getElementById('start-year-filter');
+            const startYearVal = startYearSelect.value;
+            const startYear = startYearVal === 'all' ? 0 : parseInt(startYearVal);
+
+            const tbody = document.getElementById('game-performance-body');
+            tbody.innerHTML = '';
+
+            // Aggregate data based on filter
+            const aggregatedStats = {};
+
+            for (const [gameName, yearsData] of Object.entries(machinePerformanceData)) {
+                let totalPlays = 0;
+                let firsts = 0;
+                let seconds = 0;
+                let thirds = 0;
+
+                for (const [yearStr, stats] of Object.entries(yearsData)) {
+                    const year = parseInt(yearStr);
+                    if (year >= startYear) {
+                        totalPlays += stats.total_plays;
+                        firsts += stats['1st_place'];
+                        seconds += stats['2nd_place'];
+                        thirds += stats['3rd_place'];
+                    }
+                }
+
+                if (totalPlays > 0) {
+                    aggregatedStats[gameName] = {
+                        total_plays: totalPlays,
+                        '1st_place': firsts,
+                        '2nd_place': seconds,
+                        '3rd_place': thirds
+                    };
+                }
+            }
+
+            // Sort by total plays descending (default)
+            // Or we can just convert to array and let the user sort using the table headers
+            const sortedGames = Object.entries(aggregatedStats).sort((a, b) => b[1].total_plays - a[1].total_plays);
+
+            if (sortedGames.length === 0) {
+                const row = tbody.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 5;
+                cell.textContent = "No game performance data available for this period.";
+                return;
+            }
+
+            for (const [gameName, stats] of sortedGames) {
+                const row = tbody.insertRow();
+                row.insertCell().textContent = gameName;
+                row.insertCell().textContent = stats.total_plays;
+                row.insertCell().textContent = stats['1st_place'];
+                row.insertCell().textContent = stats['2nd_place'];
+                row.insertCell().textContent = stats['3rd_place'];
+            }
+        }
+
+        function getStatisticLabel(statisticKey) {
+            const labels = {
+                "average_points_per_week": "Avg Points/Week",
+                "total_raw_points": "Total Raw Points",
+                "total_adjusted_points": "Total Adjusted Points",
+                "weeks_played": "Weeks Played",
+                "best_week_score": "Best Week Score"
+            };
+            return labels[statisticKey] || statisticKey;
+        }
+
+        function updatePlayerChart() {
+            const mainPlayerId = document.getElementById('selected-main-player-id').value;
+            const overlayPlayerId = document.getElementById('selected-overlay-player-id').value;
+            const selectedStatistic = document.getElementById('statistic-selector').value;
+            const statisticLabel = getStatisticLabel(selectedStatistic);
+
+            let datasets = [];
+            let labelsSet = new Set();
+
+            // Helper to get unique sorted labels from multiple players/leagues
+            function collectAndSortLabels(playerIds, leagueTypes) {
+                let labelsSet = new Set();
+                playerIds.forEach(pId => {
+                    if (allPlayersChartData[pId]) {
+                        leagueTypes.forEach(lType => {
+                            const playerData = allPlayersChartData[pId];
+                            const seasonsData = lType === 'mfp' ? playerData.mfp_seasons_data : playerData.mflp_seasons_data;
+                            seasonsData.forEach(season => labelsSet.add(season.label));
+                        });
+                    }
+                });
+                // Sort labels chronologically (assuming "Season Year" format)
+                return Array.from(labelsSet).sort((a, b) => {
+                    const [seasonA, yearA] = a.split(' ');
+                    const [seasonB, yearB] = b.split(' ');
+                    if (yearA !== yearB) return parseInt(yearA) - parseInt(yearB);
+                    const seasonOrder = {"Winter": 1, "Spring": 2, "Summer": 3, "Fall": 4, "League": 5, "Season": 6};
+                    return (seasonOrder[seasonA] || 0) - (seasonOrder[seasonB] || 0);
+                });
+            }
+
+            // Determine which players are active for data retrieval
+            const activePlayerIds = [];
+            if (mainPlayerId) activePlayerIds.push(mainPlayerId);
+            if (overlayPlayerId) activePlayerIds.push(overlayPlayerId);
+
+            // Determine which league types are active
+            const activeLeagueTypes = [];
+            if (showMfpData) activeLeagueTypes.push('mfp');
+            if (showMflpData) activeLeagueTypes.push('mflp');
+
+            let combinedLabels = [];
+            if (activePlayerIds.length > 0 && activeLeagueTypes.length > 0) {
+                combinedLabels = collectAndSortLabels(activePlayerIds, activeLeagueTypes);
+            }
+
+            function getAlignedData(leagueData, statisticKey, labels) {
+                if (!leagueData) return [];
+                const dataMap = new Map(leagueData.map(s => [s.label, s.stats[statisticKey]]));
+                return labels.map(label => dataMap.has(label) ? dataMap.get(label) : null);
+            }
+
+            // Add main player's data
+            if (mainPlayerId && allPlayersChartData[mainPlayerId]) {
+                if (showMfpData) {
+                    datasets.push({
+                        label: `MFP: ${allPlayersChartData[mainPlayerId].name}`,
+                        data: getAlignedData(allPlayersChartData[mainPlayerId].mfp_seasons_data, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+                if (showMflpData) {
+                    datasets.push({
+                        label: `MFLP: ${allPlayersChartData[mainPlayerId].name}`,
+                        data: getAlignedData(allPlayersChartData[mainPlayerId].mflp_seasons_data, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(255, 99, 132)',
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+            }
+
+            // Add overlay player's data
+            if (overlayPlayerId && allPlayersChartData[overlayPlayerId]) {
+                if (showMfpData) {
+                    datasets.push({
+                        label: `MFP: ${allPlayersChartData[overlayPlayerId].name}`,
+                        data: getAlignedData(allPlayersChartData[overlayPlayerId].mfp_seasons_data, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(153, 102, 255)',
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+                if (showMflpData) {
+                    datasets.push({
+                        label: `MFLP: ${allPlayersChartData[overlayPlayerId].name}`,
+                        data: getAlignedData(allPlayersChartData[overlayPlayerId].mflp_seasons_data, selectedStatistic, combinedLabels),
+                        borderColor: 'rgb(255, 159, 64)',
+                        tension: 0.1,
+                        fill: false
+                    });
+                }
+            }
+
+            // Add average line if applicable
+            if ((selectedStatistic === 'average_points_per_week' || selectedStatistic === 'best_week_score') && datasets.length > 0) {
+                datasets.push({
+                    label: 'Average (20)',
+                    data: Array(combinedLabels.length).fill(20),
+                    borderColor: 'rgb(255, 205, 86)',
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: false
+                });
+            }
+
+            const chartConfig = {
+                type: 'line',
+                data: {
+                    labels: combinedLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: 0,
+                            title: {
+                                display: true,
+                                text: statisticLabel
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Season'
+                            }
+                        }
+                    }
+                }
+            };
+
+            if (performanceChartInstance) {
+                performanceChartInstance.destroy();
+            }
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            performanceChartInstance = new Chart(ctx, chartConfig);
+        }
+
+        // ... (handleSearchInput, selectPlayer, clearSelectedPlayer, toggleLeagueData functions remain the same) ...
+        function handleSearchInput(searchType) { // searchType can be 'main' or 'overlay'
+            const searchInputId = `${searchType}-player-search-input`;
+            const searchResultsDivId = `${searchType}-player-search-results`;
+            const searchInput = document.getElementById(searchInputId);
+            const searchResultsDiv = document.getElementById(searchResultsDivId);
+
+            if (!searchInput) {
+                console.error(`Search input element with ID ${searchInputId} not found.`);
+                return;
+            }
+
+            const searchTerm = searchInput.value.toLowerCase();
+
+            if (searchResultsDiv) searchResultsDiv.innerHTML = '';
+
+            if (searchTerm.length < 2) {
+                if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+                return;
+            }
+
+            const filteredPlayers = Object.entries(allPlayersChartData).filter(([playerId, playerData]) => {
+                const playerName = playerData.name.toLowerCase();
+                // A player is selectable if they have data in either MFP or MFLP
+                const hasAnySeasons = playerData.mfp_seasons_data.length > 0 || playerData.mflp_seasons_data.length > 0;
+
+                // If it's an overlay search, exclude the currently selected main player
+                if (searchType === 'overlay') {
+                    const mainPlayerIdInput = document.getElementById(`selected-main-player-id`);
+                    const mainPlayerId = mainPlayerIdInput ? mainPlayerIdInput.value : '';
+                    if (String(playerId) === String(mainPlayerId)) return false;
+                }
+
+                return playerName.includes(searchTerm) && hasAnySeasons;
+            });
+
+            if (filteredPlayers.length > 0) {
+                filteredPlayers.forEach(([playerId, playerData]) => {
+                    const resultItem = document.createElement('div');
+                    resultItem.textContent = playerData.name;
+                    resultItem.onclick = () => selectPlayer(searchType, playerId, playerData.name);
+                    if (searchResultsDiv) searchResultsDiv.appendChild(resultItem);
+                });
+                if (searchResultsDiv) searchResultsDiv.style.display = 'block';
+            } else {
+                if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+            }
+        }
+
+        function selectPlayer(searchType, playerId, playerName) {
+            const searchInput = document.getElementById(`${searchType}-player-search-input`);
+            const searchResultsDiv = document.getElementById(`${searchType}-player-search-results`);
+            const hiddenPlayerIdInput = document.getElementById(`selected-${searchType}-player-id`);
+
+            if (searchInput) searchInput.value = playerName;
+            if (hiddenPlayerIdInput) hiddenPlayerIdInput.value = playerId;
+            if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+            updatePlayerChart(); // Call updatePlayerChart instead of updateChart
+        }
+
+        function clearSelectedPlayer(searchType) {
+            const searchInput = document.getElementById(`${searchType}-player-search-input`);
+            const hiddenPlayerIdInput = document.getElementById(`selected-${searchType}-player-id`);
+            const searchResultsDiv = document.getElementById(`${searchType}-player-search-results`);
+
+            if (searchInput) searchInput.value = '';
+            if (hiddenPlayerIdInput) hiddenPlayerIdInput.value = '';
+            if (searchResultsDiv) searchResultsDiv.style.display = 'none';
+            updatePlayerChart(); // Call updatePlayerChart instead of updateChart
+        }
+
+        function toggleLeagueData(leagueType) {
+            const button = document.getElementById(`${leagueType}-toggle-button`);
+            if (leagueType === 'mfp') {
+                showMfpData = !showMfpData;
+                button.classList.toggle('active', showMfpData);
+            } else if (leagueType === 'mflp') {
+                showMflpData = !showMflpData;
+                button.classList.toggle('active', showMflpData);
+            }
+            updatePlayerChart();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            // Initial chart render
+            updatePlayerChart();
+
+            // Initial machine performance table render
+            updateMachinePerformanceTable();
+
+            // Hide search results when clicking outside
             document.addEventListener('click', function(event) {
-                ['mfp', 'mflp'].forEach(leagueType => {
-                    const searchContainer = document.querySelector(`#${leagueType}-overlay-search-input`);
-                    if (searchContainer) {
-                        const actualSearchContainer = searchContainer.closest('.search-container');
-                        if (actualSearchContainer && !actualSearchContainer.contains(event.target)) {
-                            const searchResultsDiv = document.getElementById(`${leagueType}-overlay-search-results`);
+                ['main', 'overlay'].forEach(searchType => {
+                    const searchInput = document.getElementById(`${searchType}-player-search-input`);
+                    if (searchInput) {
+                        const searchContainer = searchInput.closest('.search-container');
+                        if (searchContainer && !searchContainer.contains(event.target)) {
+                            const searchResultsDiv = document.getElementById(`${searchType}-player-search-results`);
                             if (searchResultsDiv) {
                                 searchResultsDiv.style.display = 'none';
                             }
@@ -240,6 +686,17 @@
                     }
                 });
             });
+
+            // Re-render chart when details is opened to ensure correct sizing
+            const details = document.querySelector('details');
+            if (details) {
+                details.addEventListener('toggle', function() {
+                    if (this.open) {
+                        // Small delay to allow layout to settle
+                        setTimeout(updatePlayerChart, 10);
+                    }
+                });
+            }
         });
     </script>
 {% endblock %}

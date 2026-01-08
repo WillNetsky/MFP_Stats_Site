@@ -45,32 +45,36 @@ def generate_player_pages(env, all_series_data):
         # We use the 'year' and 'season_name' to approximate a date if exact start date isn't available
         # Or we can check series_data['startDate'] if available.
         # Let's try to parse startDate first.
-        include_in_arena_stats = False
+        series_start_date = None
         if 'startDate' in series_data and series_data['startDate']:
             try:
-                start_date = datetime.strptime(series_data['startDate'].split('T')[0], "%Y-%m-%d")
-                if start_date >= ARENA_DATA_CUTOFF_DATE:
-                    include_in_arena_stats = True
+                series_start_date = datetime.strptime(series_data['startDate'].split('T')[0], "%Y-%m-%d")
             except ValueError:
                 pass
         
         # Fallback if startDate is missing or parsing fails, use the corrected year
-        if not include_in_arena_stats and year != "N/A":
+        if not series_start_date and year != "N/A":
              try:
-                 if int(year) >= 2024:
-                     include_in_arena_stats = True
+                 # Assume Jan 1st of the year
+                 series_start_date = datetime(int(year), 1, 1)
              except ValueError:
                  pass
 
         game_data = process_game_data(series_data_raw)
         
-        if include_in_arena_stats:
+        # Store game performance with date info
+        if series_start_date:
             for player_id, games in game_data['by_machine'].items():
                 for game_name, stats in games.items():
-                    all_players_game_performance[player_id][game_name]['1st_place'] += stats['1st_place']
-                    all_players_game_performance[player_id][game_name]['2nd_place'] += stats['2nd_place']
-                    all_players_game_performance[player_id][game_name]['3rd_place'] += stats['3rd_place']
-                    all_players_game_performance[player_id][game_name]['total_plays'] += stats['total_plays']
+                    # We store stats keyed by year to allow filtering later
+                    year_key = series_start_date.year
+                    if year_key not in all_players_game_performance[player_id][game_name]:
+                         all_players_game_performance[player_id][game_name][year_key] = defaultdict(int)
+                    
+                    all_players_game_performance[player_id][game_name][year_key]['1st_place'] += stats['1st_place']
+                    all_players_game_performance[player_id][game_name][year_key]['2nd_place'] += stats['2nd_place']
+                    all_players_game_performance[player_id][game_name][year_key]['3rd_place'] += stats['3rd_place']
+                    all_players_game_performance[player_id][game_name][year_key]['total_plays'] += stats['total_plays']
 
         finals_tournament_ids = None
         if league_name_parsed in load_finals_mapping() and year != "N/A" and season_name_parsed != "N/A":
@@ -146,7 +150,7 @@ def generate_player_pages(env, all_series_data):
                     'average_points_per_week': round(average_points_per_week, 2),
                     'best_week_score': top_6_scores[0] if top_6_scores and top_6_scores[0] is not None else 0.0,
                     'top_6_scores': top_6_scores,
-                    'game_outcomes': player_game_stats
+                    'game_outcomes': dict(player_game_stats)
                 }
             }
 
@@ -160,7 +164,22 @@ def generate_player_pages(env, all_series_data):
     for player_id, data in player_categorized_seasons.items():
         data['mfp_seasons'].sort(key=lambda x: x['seriesId'], reverse=True)
         data['mflp_seasons'].sort(key=lambda x: x['seriesId'], reverse=True)
-        data['game_performance'] = dict(all_players_game_performance[player_id])
+        
+        # Convert the year-based game performance to a flat structure for the template, 
+        # but keep the year data available for filtering.
+        # We'll pass the raw year-based dict to the template and let JS handle the filtering/aggregation.
+        # However, to avoid breaking existing logic, we can pre-calculate the "default" view (since 2024).
+        # Actually, passing the full data structure to JS is better for dynamic filtering.
+        # But we need to be careful about JSON serialization of defaultdicts again.
+        
+        # Let's convert defaultdicts to dicts for serialization
+        serializable_game_perf = {}
+        for game_name, years_data in all_players_game_performance[player_id].items():
+            serializable_game_perf[game_name] = {}
+            for year_key, stats in years_data.items():
+                serializable_game_perf[game_name][year_key] = dict(stats)
+        
+        data['game_performance'] = serializable_game_perf
 
     all_players_chart_data = {}
     for player_id, player_data in player_categorized_seasons.items():
@@ -186,13 +205,18 @@ def generate_player_pages(env, all_series_data):
     for player_id, data in player_categorized_seasons.items():
         player = data['player_info']
         
+        # Pass the specific player's chart data to the template
+        player_chart_data = all_players_chart_data.get(player_id, {})
+
         with open(os.path.join(OUTPUT_DIR, f"player_{player_id}.html"), 'w') as f:
             f.write(player_template.render(
                 player=player,
                 mfp_seasons=data['mfp_seasons'],
                 mflp_seasons=data['mflp_seasons'],
                 game_performance=data['game_performance'],
-                arena_cutoff_date=ARENA_DATA_CUTOFF_DATE.strftime("%B %Y")
+                arena_cutoff_date=ARENA_DATA_CUTOFF_DATE.strftime("%B %Y"),
+                player_chart_data=player_chart_data, # Pass chart data
+                all_players_chart_data=all_players_chart_data # Pass all data for comparison
             ))
         print(f"Generated player_{player_id}.html")
 
