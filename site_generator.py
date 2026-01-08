@@ -10,6 +10,7 @@ from page_generators.seasons import generate_seasons_page, generate_season_pages
 from page_generators.players import generate_player_pages
 from page_generators.charts import generate_charts_page
 from page_generators.leaderboards import generate_leaderboards_page
+from page_generators.frivolities import generate_frivolities_page
 
 def generate_site(excluded_series_names):
     """Generates the static HTML site."""
@@ -52,3 +53,4 @@ def generate_site(excluded_series_names):
     player_categorized_seasons, all_players_chart_data = generate_player_pages(env, all_series_data)
     generate_charts_page(env, all_players_chart_data) # New call to generate charts page
     generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
+    generate_frivolities_page(env, all_series_data)

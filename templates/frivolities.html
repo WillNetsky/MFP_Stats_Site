@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Frivolities - Pinball League Stats{% endblock %}
+
+{% block content %}
+    <h1>Frivolities</h1>
+
+    <details>
+        <summary>MFPinball</summary>
+        <div class="tab-content" id="content-mfp">
+            <h2>Perfect Nights (35 Points)</h2>
+            <div class="table-container">
+                <table id="mfp-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_perfect_nights %}
+                            {% if night.league_type == 'MFP' %}
+                                <tr>
+                                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td>{{ night.week_num }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Almost Perfect Nights (Won first 4, lost last)</h2>
+            <div class="table-container">
+                <table id="mfp-almost-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-almost-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-almost-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-almost-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_almost_perfect_nights %}
+                            {% if night.league_type == 'MFP' %}
+                                <tr>
+                                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td>{{ night.week_num }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+
+    <details>
+        <summary>MFLadies</summary>
+        <div class="tab-content" id="content-mflp">
+            <h2>Perfect Nights (35 Points)</h2>
+            <div class="table-container">
+                <table id="mflp-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_perfect_nights %}
+                            {% if night.league_type == 'MFLP' %}
+                                <tr>
+                                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td>{{ night.week_num }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Almost Perfect Nights (Won first 4, lost last)</h2>
+            <div class="table-container">
+                <table id="mflp-almost-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-almost-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-almost-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-almost-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_almost_perfect_nights %}
+                            {% if night.league_type == 'MFLP' %}
+                                <tr>
+                                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td>{{ night.week_num }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+
+    <details>
+        <summary>Combined</summary>
+        <div class="tab-content" id="content-combined">
+            <h2>Perfect Nights (35 Points)</h2>
+            <div class="table-container">
+                <table id="combined-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_perfect_nights %}
+                            <tr>
+                                <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                <td>{{ night.week_num }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Almost Perfect Nights (Won first 4, lost last)</h2>
+            <div class="table-container">
+                <table id="combined-almost-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-almost-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-almost-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-almost-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_almost_perfect_nights %}
+                            <tr>
+                                <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                <td>{{ night.week_num }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+{% endblock %}
