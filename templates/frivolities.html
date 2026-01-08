@@ -79,6 +79,38 @@
                     </tbody>
                 </table>
             </div>
+
+            <h2>Biggest Drops</h2>
+            <div class="table-container">
+                <table id="mfp-biggest-drops-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 2, true)">From Week</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 3, true)">Points</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 4, true)">To Week</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 5, true)">Points</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 6, true)">Drop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drop in all_biggest_drops %}
+                            {% if drop.league_type == 'MFP' %}
+                                <tr>
+                                    <td><a href="player_{{ drop.playerId }}.html">{{ drop.name }}</a></td>
+                                    <td><a href="season_{{ drop.seriesId }}.html">{{ drop.seriesName }}</a></td>
+                                    <td>{{ drop.week_from }}</td>
+                                    <td>{{ drop.points_from | format_number }}</td>
+                                    <td>{{ drop.week_to }}</td>
+                                    <td>{{ drop.points_to | format_number }}</td>
+                                    <td>{{ drop.drop | format_number }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </details>
 
@@ -156,6 +188,38 @@
                     </tbody>
                 </table>
             </div>
+
+            <h2>Biggest Drops</h2>
+            <div class="table-container">
+                <table id="mflp-biggest-drops-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 2, true)">From Week</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 3, true)">Points</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 4, true)">To Week</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 5, true)">Points</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 6, true)">Drop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drop in all_biggest_drops %}
+                            {% if drop.league_type == 'MFLP' %}
+                                <tr>
+                                    <td><a href="player_{{ drop.playerId }}.html">{{ drop.name }}</a></td>
+                                    <td><a href="season_{{ drop.seriesId }}.html">{{ drop.seriesName }}</a></td>
+                                    <td>{{ drop.week_from }}</td>
+                                    <td>{{ drop.points_from | format_number }}</td>
+                                    <td>{{ drop.week_to }}</td>
+                                    <td>{{ drop.points_to | format_number }}</td>
+                                    <td>{{ drop.drop | format_number }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </details>
 
@@ -222,6 +286,36 @@
                                 <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
                                 <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
                                 <td>{{ night.week_num }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Biggest Drops</h2>
+            <div class="table-container">
+                <table id="combined-biggest-drops-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-biggest-drops-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 2, true)">From Week</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 3, true)">Points</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 4, true)">To Week</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 5, true)">Points</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 6, true)">Drop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drop in all_biggest_drops %}
+                            <tr>
+                                <td><a href="player_{{ drop.playerId }}.html">{{ drop.name }}</a></td>
+                                <td><a href="season_{{ drop.seriesId }}.html">{{ drop.seriesName }}</a></td>
+                                <td>{{ drop.week_from }}</td>
+                                <td>{{ drop.points_from | format_number }}</td>
+                                <td>{{ drop.week_to }}</td>
+                                <td>{{ drop.points_to | format_number }}</td>
+                                <td>{{ drop.drop | format_number }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

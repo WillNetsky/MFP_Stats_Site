@@ -268,3 +268,73 @@ def find_wooden_nickels(all_series_data):
                             'league_type': league_type
                         })
     return wooden_nickels
+
+def find_biggest_drops(all_series_data):
+    """
+    Identifies the biggest week-to-week point drops for players within a season.
+    """
+    biggest_drops = []
+
+    for series_data_raw in all_series_data:
+        series = series_data_raw['data']
+        series_id = series['seriesId']
+        series_name = series['name']
+        
+        year, season_name, league_name = parse_series_name(series_name)
+        league_type = 'Combined'
+        if league_name == "MFPinball":
+            league_type = 'MFP'
+        elif league_name == "MFLadies Pinball":
+            league_type = 'MFLP'
+        
+        tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series.get('tournamentIds', []))}
+        player_name_map = {p['playerId']: p['name'] for p in series.get('players', [])}
+
+        if 'tournamentPoints' in series and series['tournamentPoints']:
+            # Organize points by player and week
+            player_weekly_points = defaultdict(list)
+            
+            for tournament_id_str, player_points_map_val in series['tournamentPoints'].items():
+                current_tournament_id = int(tournament_id_str)
+                week_num = tournament_id_to_week_num.get(current_tournament_id)
+                if week_num is None:
+                    continue
+
+                if isinstance(player_points_map_val, dict):
+                    for player_id_str, points_str in player_points_map_val.items():
+                        points = float(points_str)
+                        player_id = int(player_id_str)
+                        player_weekly_points[player_id].append({'week': week_num, 'points': points})
+
+            # Calculate drops
+            for player_id, weeks_data in player_weekly_points.items():
+                # Sort by week number
+                weeks_data.sort(key=lambda x: x['week'])
+                
+                for i in range(len(weeks_data) - 1):
+                    week1 = weeks_data[i]
+                    week2 = weeks_data[i+1]
+                    
+                    # Check if weeks are consecutive
+                    if week2['week'] == week1['week'] + 1:
+                        drop = week1['points'] - week2['points']
+                        if drop > 0:
+                            player_name = player_name_map.get(player_id, 'Unknown Player')
+                            biggest_drops.append({
+                                'playerId': player_id,
+                                'name': player_name,
+                                'seriesId': series_id,
+                                'seriesName': series_name,
+                                'year': year,
+                                'season_name': season_name,
+                                'week_from': week1['week'],
+                                'points_from': week1['points'],
+                                'week_to': week2['week'],
+                                'points_to': week2['points'],
+                                'drop': drop,
+                                'league_type': league_type
+                            })
+    
+    # Sort by drop amount descending
+    biggest_drops.sort(key=lambda x: x['drop'], reverse=True)
+    return biggest_drops
