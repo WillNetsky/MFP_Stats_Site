@@ -1,0 +1,3654 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frivolities - Pinball League Stats</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        // Function to update score colors (simplified for light theme only)
+        function updateScoreColors() {
+            const badges = document.querySelectorAll('.score-badge');
+
+            badges.forEach(badge => {
+                const score = parseFloat(badge.getAttribute('data-score'));
+                if (isNaN(score)) return;
+
+                let r, g, b;
+
+                if (score === 35) {
+                    // Gold
+                    r = 255; g = 215; b = 0;
+                } else if (score <= 5) {
+                    // Red
+                    r = 255; g = 0; b = 0;
+                } else if (score >= 34) {
+                    // Green
+                    r = 0; g = 128; b = 0;
+                } else if (score < 20) {
+                    // Red to White
+                    const t = (score - 5) / 15.0;
+                    r = 255;
+                    g = Math.floor(255 * t);
+                    b = Math.floor(255 * t);
+                } else {
+                    // White to Green
+                    const t = (score - 20) / 14.0;
+                    r = Math.floor(255 * (1 - t));
+                    g = Math.floor(255 * (1 - t) + 128 * t);
+                    b = Math.floor(255 * (1 - t));
+                }
+
+                badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+
+                // Adjust text color for contrast
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                if (luminance > 0.5) {
+                    badge.style.color = 'black';
+                } else {
+                    badge.style.color = 'white';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateScoreColors(); // Initial color update
+        });
+    </script>
+    
+</head>
+<body class="">
+    <nav class="container-fluid">
+    <ul>
+        <li><a href="index.html"><strong>MFP Stats</strong></a></li>
+    </ul>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="seasons.html">Seasons</a></li>
+        <li><a href="players.html">Players</a></li>
+        <li><a href="charts.html">Charts</a></li>
+        <li><a href="leaderboards.html">Leaderboards</a></li>
+        <li><a href="frivolities.html">Frivolities</a></li>
+    </ul>
+</nav>
+    <main class="container">
+        
+    <h1>Frivolities</h1>
+
+    <details>
+        <summary>MFPinball</summary>
+        <div class="tab-content" id="content-mfp">
+            <h2>Perfect Nights (35 Points)</h2>
+            <div class="table-container">
+                <table id="mfp-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13712.html">Fred Hamilton</a></td>
+                                    <td><a href="season_475.html">MFP, 2017 Winter Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_31058.html">Nick Fitzpatrick</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_31058.html">Nick Fitzpatrick</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74820.html">Will Chernetsky</a></td>
+                                    <td><a href="season_1080.html">MFPinball 2019 Summer Season</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                    <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                    <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15322.html">Philip Priddy</a></td>
+                                    <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_2456.html">MFPinball Winter Season 2023</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_201655.html">Wade Violini</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13709.html">Matthew Talley</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_211265.html">Sam Stanko</a></td>
+                                    <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                    <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13716.html">John Tracey</a></td>
+                                    <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Almost Perfect Nights (Won first 4, lost last)</h2>
+            <div class="table-container">
+                <table id="mfp-almost-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-almost-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-almost-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-almost-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13713.html">Philip Ryder</a></td>
+                                    <td><a href="season_475.html">MFP, 2017 Winter Season</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                    <td><a href="season_582.html">MFPinball 2018 Spring Season</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                    <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15322.html">Philip Priddy</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                    <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                    <td><a href="season_1080.html">MFPinball 2019 Summer Season</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13709.html">Matthew Talley</a></td>
+                                    <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13709.html">Matthew Talley</a></td>
+                                    <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                    <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                    <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13713.html">Philip Ryder</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                    <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_171853.html">Tiffani Cabutage</a></td>
+                                    <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                    <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13713.html">Philip Ryder</a></td>
+                                    <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                    <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                    <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_130058.html">Greg Dunlap</a></td>
+                                    <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_79530.html">Dexter Farm</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                    <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13716.html">John Tracey</a></td>
+                                    <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                    <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_262198.html">Matt Nielsen</a></td>
+                                    <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13709.html">Matthew Talley</a></td>
+                                    <td><a href="season_3410.html">MFPinball Spring Season</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_109691.html">Nate King</a></td>
+                                    <td><a href="season_3410.html">MFPinball Spring Season</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_84838.html">Eric Garcia</a></td>
+                                    <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                    <td><a href="season_3822.html">MFPinball Fall Season</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                    <td><a href="season_4929.html">MFPinball Fall Season 2025</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Wooden Nickels (5 Losses)</h2>
+            <div class="table-container">
+                <table id="mfp-wooden-nickels-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-wooden-nickels-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-wooden-nickels-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-wooden-nickels-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                                <tr>
+                                    <td><a href="player_18564.html">Katie Schwirzke</a></td>
+                                    <td><a href="season_152.html">MFP, 2016 Fall Season</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_26404.html">Lori Blackmon</a></td>
+                                    <td><a href="season_209.html">MFP, 2017 Winter Season</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_26402.html">Breanna</a></td>
+                                    <td><a href="season_209.html">MFP, 2017 Winter Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                    <td><a href="season_350.html">MFP, 2017 Summer Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_44505.html">Caleb Stark</a></td>
+                                    <td><a href="season_409.html">MFP, 2017 Fall Season</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50531.html">Chris Stark</a></td>
+                                    <td><a href="season_409.html">MFP, 2017 Fall Season</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_61526.html">Tyler Heath</a></td>
+                                    <td><a href="season_582.html">MFPinball 2018 Spring Season</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_72121.html">Asante Madrigal</a></td>
+                                    <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_68620.html">Jason Rader</a></td>
+                                    <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_61553.html">Danielle Licata</a></td>
+                                    <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74465.html">Cody Reeves</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_87684.html">"Penelope"</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74842.html">Scott Tashiro</a></td>
+                                    <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_69638.html">Presley Lippert</a></td>
+                                    <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_100547.html">Selena DeLeon</a></td>
+                                    <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_123865.html">Whitney Clark</a></td>
+                                    <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_145773.html">Erik Finch</a></td>
+                                    <td><a href="season_1357.html">MFPinball 2020 Winter Season </a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_145773.html">Erik Finch</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_195335.html">Chago Garcia</a></td>
+                                    <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_142513.html">Brian Simpson</a></td>
+                                    <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_191110.html">Barry White CA</a></td>
+                                    <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                    <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_219316.html">Tyler Powles</a></td>
+                                    <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                    <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_191110.html">Barry White CA</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_142513.html">Brian Simpson</a></td>
+                                    <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                    <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_329452.html">Jessica Pappas</a></td>
+                                    <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_293788.html">Pat Patton</a></td>
+                                    <td><a href="season_3410.html">MFPinball Spring Season</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_70106.html">Sergio Suarez</a></td>
+                                    <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_371886.html">Rigo Vasquez</a></td>
+                                    <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_371910.html">Jess Pappas</a></td>
+                                    <td><a href="season_3822.html">MFPinball Fall Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_415933.html">Irwin Flores</a></td>
+                                    <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_105061.html">Barrett Lindstrom</a></td>
+                                    <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Biggest Drops</h2>
+            <div class="table-container">
+                <table id="mfp-biggest-drops-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 2, true)">From Week</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 3, true)">Points</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 4, true)">To Week</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 5, true)">Points</th>
+                            <th onclick="sortTable('mfp-biggest-drops-table', 6, true)">Drop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                    <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                    <td>1</td>
+                                    <td>27</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>25</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>7</td>
+                                    <td>29</td>
+                                    <td>8</td>
+                                    <td>5</td>
+                                    <td>24</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15322.html">Philip Priddy</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>4</td>
+                                    <td>31</td>
+                                    <td>5</td>
+                                    <td>8</td>
+                                    <td>23</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_307101.html">Terrie White</a></td>
+                                    <td><a href="season_4643.html">MFPinball Summer Season 2025</a></td>
+                                    <td>3</td>
+                                    <td>29</td>
+                                    <td>4</td>
+                                    <td>7</td>
+                                    <td>22</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_201655.html">Wade Violini</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>1</td>
+                                    <td>35</td>
+                                    <td>2</td>
+                                    <td>13</td>
+                                    <td>22</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_19225.html">Nick Vibe</a></td>
+                                    <td><a href="season_1357.html">MFPinball 2020 Winter Season </a></td>
+                                    <td>3</td>
+                                    <td>23</td>
+                                    <td>4</td>
+                                    <td>2</td>
+                                    <td>21</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>5</td>
+                                    <td>23</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>21</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>1</td>
+                                    <td>23</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>21</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_31058.html">Nick Fitzpatrick</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>8</td>
+                                    <td>35</td>
+                                    <td>9</td>
+                                    <td>14</td>
+                                    <td>21</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_142513.html">Brian Simpson</a></td>
+                                    <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                    <td>5</td>
+                                    <td>25</td>
+                                    <td>6</td>
+                                    <td>5</td>
+                                    <td>20</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13709.html">Matthew Talley</a></td>
+                                    <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                    <td>6</td>
+                                    <td>33</td>
+                                    <td>7</td>
+                                    <td>13</td>
+                                    <td>20</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_113284.html">Jason Garcia</a></td>
+                                    <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                    <td>3</td>
+                                    <td>27</td>
+                                    <td>4</td>
+                                    <td>7</td>
+                                    <td>20</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                    <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                    <td>5</td>
+                                    <td>24</td>
+                                    <td>6</td>
+                                    <td>4</td>
+                                    <td>20</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13717.html">Todd Brammer</a></td>
+                                    <td><a href="season_209.html">MFP, 2017 Winter Season</a></td>
+                                    <td>1</td>
+                                    <td>23</td>
+                                    <td>2</td>
+                                    <td>4</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                    <td><a href="season_1357.html">MFPinball 2020 Winter Season </a></td>
+                                    <td>8</td>
+                                    <td>29</td>
+                                    <td>9</td>
+                                    <td>10</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_52838.html">Mike Hubbard</a></td>
+                                    <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                    <td>9</td>
+                                    <td>33</td>
+                                    <td>10</td>
+                                    <td>14</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>2</td>
+                                    <td>27</td>
+                                    <td>3</td>
+                                    <td>8</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_49307.html">“RC”</a></td>
+                                    <td><a href="season_987.html">MFPinball 2019 Spring Season </a></td>
+                                    <td>8</td>
+                                    <td>27</td>
+                                    <td>9</td>
+                                    <td>8</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_79530.html">Dexter Farm</a></td>
+                                    <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                    <td>9</td>
+                                    <td>27</td>
+                                    <td>10</td>
+                                    <td>8</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_123864.html">Vincent Ruggiero</a></td>
+                                    <td><a href="season_2456.html">MFPinball Winter Season 2023</a></td>
+                                    <td>8</td>
+                                    <td>27</td>
+                                    <td>9</td>
+                                    <td>9</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_15322.html">Philip Priddy</a></td>
+                                    <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                    <td>9</td>
+                                    <td>33</td>
+                                    <td>10</td>
+                                    <td>15</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                    <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                    <td>3</td>
+                                    <td>29</td>
+                                    <td>4</td>
+                                    <td>11</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_52838.html">Mike Hubbard</a></td>
+                                    <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                    <td>1</td>
+                                    <td>31</td>
+                                    <td>2</td>
+                                    <td>13</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                                    <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                    <td>4</td>
+                                    <td>23</td>
+                                    <td>5</td>
+                                    <td>5</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_170833.html">Tim Priddy</a></td>
+                                    <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                    <td>9</td>
+                                    <td>27</td>
+                                    <td>10</td>
+                                    <td>9</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_177157.html">Laura Masana</a></td>
+                                    <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                    <td>4</td>
+                                    <td>31</td>
+                                    <td>5</td>
+                                    <td>13</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                    <td><a href="season_3822.html">MFPinball Fall Season</a></td>
+                                    <td>7</td>
+                                    <td>33</td>
+                                    <td>8</td>
+                                    <td>15</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_61526.html">Tyler Heath</a></td>
+                                    <td><a href="season_582.html">MFPinball 2018 Spring Season</a></td>
+                                    <td>2</td>
+                                    <td>23</td>
+                                    <td>3</td>
+                                    <td>5</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                    <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                    <td>1</td>
+                                    <td>31</td>
+                                    <td>2</td>
+                                    <td>14</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74820.html">Will Chernetsky</a></td>
+                                    <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                    <td>3</td>
+                                    <td>29</td>
+                                    <td>4</td>
+                                    <td>12</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_79530.html">Dexter Farm</a></td>
+                                    <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                    <td>8</td>
+                                    <td>31</td>
+                                    <td>9</td>
+                                    <td>14</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13716.html">John Tracey</a></td>
+                                    <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                    <td>4</td>
+                                    <td>31</td>
+                                    <td>5</td>
+                                    <td>14</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13709.html">Matthew Talley</a></td>
+                                    <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                    <td>5</td>
+                                    <td>35</td>
+                                    <td>6</td>
+                                    <td>18</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_245985.html">Mitch Fadem</a></td>
+                                    <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                    <td>1</td>
+                                    <td>25</td>
+                                    <td>2</td>
+                                    <td>8</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_283381.html">Kevin Johnston</a></td>
+                                    <td><a href="season_4929.html">MFPinball Fall Season 2025</a></td>
+                                    <td>6</td>
+                                    <td>27</td>
+                                    <td>7</td>
+                                    <td>10</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+
+    <details>
+        <summary>MFLadies</summary>
+        <div class="tab-content" id="content-mflp">
+            <h2>Perfect Nights (35 Points)</h2>
+            <div class="table-container">
+                <table id="mflp-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                    <td><a href="season_755.html">Monterey Flipper Ladies Pinball Fall Season</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                    <td><a href="season_905.html">Monterey Flipper Ladies Pinball 2019 Winter Season</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                    <td><a href="season_1887.html">MFLadies Pinball Winter League 2022</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_174629.html">Paige Peck</a></td>
+                                    <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_211265.html">Sam Stanko</a></td>
+                                    <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_165915.html">Melina Meltzer</a></td>
+                                    <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                    <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Almost Perfect Nights (Won first 4, lost last)</h2>
+            <div class="table-container">
+                <table id="mflp-almost-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-almost-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-almost-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-almost-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                    <td><a href="season_1088.html">Monterey Flipper Ladies Pinball 2019 Summer Season</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                    <td><a href="season_1088.html">Monterey Flipper Ladies Pinball 2019 Summer Season</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                    <td><a href="season_1373.html">Monterey Flipper Ladies Pinball 2020 Winter Season</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                    <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                    <td><a href="season_2284.html">MFLadies Pinball Fall 2022 Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_189658.html">Carlene Malack</a></td>
+                                    <td><a href="season_3232.html">MFLadies Pinball Winter</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_190358.html">Amy Wolfrum</a></td>
+                                    <td><a href="season_3232.html">MFLadies Pinball Winter</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_165915.html">Melina Meltzer</a></td>
+                                    <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_307101.html">Terrie White</a></td>
+                                    <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                    <td><a href="season_4928.html">MFLadies Fall Season 2025</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Wooden Nickels (5 Losses)</h2>
+            <div class="table-container">
+                <table id="mflp-wooden-nickels-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-wooden-nickels-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-wooden-nickels-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-wooden-nickels-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_73340.html">Krystal Estrada</a></td>
+                                    <td><a href="season_755.html">Monterey Flipper Ladies Pinball Fall Season</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_114923.html">Becky Waters</a></td>
+                                    <td><a href="season_1088.html">Monterey Flipper Ladies Pinball 2019 Summer Season</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_114923.html">Becky Waters</a></td>
+                                    <td><a href="season_1223.html">Monterey Flipper Ladies Pinball 2019 Fall Season</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                    <td><a href="season_1757.html">MFLadies Pinball Fall 2021 Season </a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_189659.html">Melissa Kelly</a></td>
+                                    <td><a href="season_1887.html">MFLadies Pinball Winter League 2022</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_191356.html">Susan Thoms</a></td>
+                                    <td><a href="season_1887.html">MFLadies Pinball Winter League 2022</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_249328.html">Joules Per KG</a></td>
+                                    <td><a href="season_2457.html">MFLadies Pinball Winter Season 2023</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_249328.html">Joules Per KG</a></td>
+                                    <td><a href="season_2457.html">MFLadies Pinball Winter Season 2023</a></td>
+                                    <td>9</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_261892.html">Chelsey Robb</a></td>
+                                    <td><a href="season_2677.html">MFLadies Pinball Spring Season 2023</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_261892.html">Chelsey Robb</a></td>
+                                    <td><a href="season_2677.html">MFLadies Pinball Spring Season 2023</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_224451.html">Keeza Anzini</a></td>
+                                    <td><a href="season_2677.html">MFLadies Pinball Spring Season 2023</a></td>
+                                    <td>8</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_283012.html">Greta Billman</a></td>
+                                    <td><a href="season_2804.html">MFLadies Pinball Summer 2023</a></td>
+                                    <td>5</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_261892.html">Chelsey Robb</a></td>
+                                    <td><a href="season_2804.html">MFLadies Pinball Summer 2023</a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_269920.html">Carly Sabicer</a></td>
+                                    <td><a href="season_2958.html">MFLadies Pinball Fall Season 2023</a></td>
+                                    <td>10</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_348173.html">Mikayla Randolph</a></td>
+                                    <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_357622.html">Julie Sangimino</a></td>
+                                    <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_324012.html">Elizabeth Ramirez</a></td>
+                                    <td><a href="season_3641.html">MFLadies Pinball Summer Season</a></td>
+                                    <td>6</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_378186.html">Yvonne Meltzer</a></td>
+                                    <td><a href="season_3641.html">MFLadies Pinball Summer Season</a></td>
+                                    <td>7</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_418406.html">Charlotte Sibaja</a></td>
+                                    <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                    <td>2</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_400338.html">Elaine Noll</a></td>
+                                    <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                    <td>4</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_450053.html">Julia Payne</a></td>
+                                    <td><a href="season_4644.html">MFLadies Pinball Summer Season 2025</a></td>
+                                    <td>1</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_472610.html">Kenzie Lach</a></td>
+                                    <td><a href="season_4644.html">MFLadies Pinball Summer Season 2025</a></td>
+                                    <td>3</td>
+                                </tr>
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Biggest Drops</h2>
+            <div class="table-container">
+                <table id="mflp-biggest-drops-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 2, true)">From Week</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 3, true)">Points</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 4, true)">To Week</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 5, true)">Points</th>
+                            <th onclick="sortTable('mflp-biggest-drops-table', 6, true)">Drop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_95694.html">Tasha Lindstrom</a></td>
+                                    <td><a href="season_905.html">Monterey Flipper Ladies Pinball 2019 Winter Season</a></td>
+                                    <td>2</td>
+                                    <td>31</td>
+                                    <td>3</td>
+                                    <td>8</td>
+                                    <td>23</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                    <td><a href="season_684.html">Monterey Flipper Ladies Pinball Summer League</a></td>
+                                    <td>9</td>
+                                    <td>27</td>
+                                    <td>10</td>
+                                    <td>6</td>
+                                    <td>21</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                    <td><a href="season_2958.html">MFLadies Pinball Fall Season 2023</a></td>
+                                    <td>4</td>
+                                    <td>33</td>
+                                    <td>5</td>
+                                    <td>13</td>
+                                    <td>20</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_174629.html">Paige Peck</a></td>
+                                    <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                    <td>8</td>
+                                    <td>35</td>
+                                    <td>9</td>
+                                    <td>15</td>
+                                    <td>20</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                    <td><a href="season_2284.html">MFLadies Pinball Fall 2022 Season</a></td>
+                                    <td>1</td>
+                                    <td>30</td>
+                                    <td>2</td>
+                                    <td>11</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_177157.html">Laura Masana</a></td>
+                                    <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                    <td>2</td>
+                                    <td>29</td>
+                                    <td>3</td>
+                                    <td>10</td>
+                                    <td>19</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                    <td><a href="season_2284.html">MFLadies Pinball Fall 2022 Season</a></td>
+                                    <td>7</td>
+                                    <td>29</td>
+                                    <td>8</td>
+                                    <td>11</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                    <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                    <td>6</td>
+                                    <td>31</td>
+                                    <td>7</td>
+                                    <td>13</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_165915.html">Melina Meltzer</a></td>
+                                    <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                    <td>6</td>
+                                    <td>29</td>
+                                    <td>7</td>
+                                    <td>11</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                    <td><a href="season_2804.html">MFLadies Pinball Summer 2023</a></td>
+                                    <td>5</td>
+                                    <td>33</td>
+                                    <td>6</td>
+                                    <td>15</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_127357.html">Ivy Simpson</a></td>
+                                    <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                    <td>1</td>
+                                    <td>29</td>
+                                    <td>2</td>
+                                    <td>11</td>
+                                    <td>18</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                    <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                    <td>9</td>
+                                    <td>28</td>
+                                    <td>10</td>
+                                    <td>11</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_189658.html">Carlene Malack</a></td>
+                                    <td><a href="season_3232.html">MFLadies Pinball Winter</a></td>
+                                    <td>1</td>
+                                    <td>33</td>
+                                    <td>2</td>
+                                    <td>16</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                    <td><a href="season_2958.html">MFLadies Pinball Fall Season 2023</a></td>
+                                    <td>5</td>
+                                    <td>31</td>
+                                    <td>6</td>
+                                    <td>14</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                                <tr>
+                                    <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                                    <td><a href="season_755.html">Monterey Flipper Ladies Pinball Fall Season</a></td>
+                                    <td>3</td>
+                                    <td>27</td>
+                                    <td>4</td>
+                                    <td>10</td>
+                                    <td>17</td>
+                                </tr>
+                            
+                        
+                            
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+
+    <details>
+        <summary>Combined</summary>
+        <div class="tab-content" id="content-combined">
+            <h2>Perfect Nights (35 Points)</h2>
+            <div class="table-container">
+                <table id="combined-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><a href="player_13712.html">Fred Hamilton</a></td>
+                                <td><a href="season_475.html">MFP, 2017 Winter Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_31058.html">Nick Fitzpatrick</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_31058.html">Nick Fitzpatrick</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                <td><a href="season_755.html">Monterey Flipper Ladies Pinball Fall Season</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                <td><a href="season_905.html">Monterey Flipper Ladies Pinball 2019 Winter Season</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74820.html">Will Chernetsky</a></td>
+                                <td><a href="season_1080.html">MFPinball 2019 Summer Season</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                <td><a href="season_1887.html">MFLadies Pinball Winter League 2022</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_174629.html">Paige Peck</a></td>
+                                <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15322.html">Philip Priddy</a></td>
+                                <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_2456.html">MFPinball Winter Season 2023</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_201655.html">Wade Violini</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13709.html">Matthew Talley</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_211265.html">Sam Stanko</a></td>
+                                <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_211265.html">Sam Stanko</a></td>
+                                <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_165915.html">Melina Meltzer</a></td>
+                                <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13716.html">John Tracey</a></td>
+                                <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Almost Perfect Nights (Won first 4, lost last)</h2>
+            <div class="table-container">
+                <table id="combined-almost-perfect-nights-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-almost-perfect-nights-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-almost-perfect-nights-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-almost-perfect-nights-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><a href="player_13713.html">Philip Ryder</a></td>
+                                <td><a href="season_475.html">MFP, 2017 Winter Season</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                <td><a href="season_582.html">MFPinball 2018 Spring Season</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15322.html">Philip Priddy</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                <td><a href="season_1080.html">MFPinball 2019 Summer Season</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                <td><a href="season_1088.html">Monterey Flipper Ladies Pinball 2019 Summer Season</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                <td><a href="season_1088.html">Monterey Flipper Ladies Pinball 2019 Summer Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13709.html">Matthew Talley</a></td>
+                                <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                <td><a href="season_1373.html">Monterey Flipper Ladies Pinball 2020 Winter Season</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13709.html">Matthew Talley</a></td>
+                                <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13713.html">Philip Ryder</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_171853.html">Tiffani Cabutage</a></td>
+                                <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13713.html">Philip Ryder</a></td>
+                                <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_130058.html">Greg Dunlap</a></td>
+                                <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                <td><a href="season_2284.html">MFLadies Pinball Fall 2022 Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_79530.html">Dexter Farm</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_20122.html">Tony Lavigna</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13716.html">John Tracey</a></td>
+                                <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_262198.html">Matt Nielsen</a></td>
+                                <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_189658.html">Carlene Malack</a></td>
+                                <td><a href="season_3232.html">MFLadies Pinball Winter</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_190358.html">Amy Wolfrum</a></td>
+                                <td><a href="season_3232.html">MFLadies Pinball Winter</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13709.html">Matthew Talley</a></td>
+                                <td><a href="season_3410.html">MFPinball Spring Season</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_109691.html">Nate King</a></td>
+                                <td><a href="season_3410.html">MFPinball Spring Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_165915.html">Melina Meltzer</a></td>
+                                <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_84838.html">Eric Garcia</a></td>
+                                <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                <td><a href="season_3822.html">MFPinball Fall Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_307101.html">Terrie White</a></td>
+                                <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                <td><a href="season_4928.html">MFLadies Fall Season 2025</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                <td><a href="season_4929.html">MFPinball Fall Season 2025</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Wooden Nickels (5 Losses)</h2>
+            <div class="table-container">
+                <table id="combined-wooden-nickels-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-wooden-nickels-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-wooden-nickels-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-wooden-nickels-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><a href="player_18564.html">Katie Schwirzke</a></td>
+                                <td><a href="season_152.html">MFP, 2016 Fall Season</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_26404.html">Lori Blackmon</a></td>
+                                <td><a href="season_209.html">MFP, 2017 Winter Season</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_26402.html">Breanna</a></td>
+                                <td><a href="season_209.html">MFP, 2017 Winter Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                <td><a href="season_350.html">MFP, 2017 Summer Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_44505.html">Caleb Stark</a></td>
+                                <td><a href="season_409.html">MFP, 2017 Fall Season</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50531.html">Chris Stark</a></td>
+                                <td><a href="season_409.html">MFP, 2017 Fall Season</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_61526.html">Tyler Heath</a></td>
+                                <td><a href="season_582.html">MFPinball 2018 Spring Season</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_72121.html">Asante Madrigal</a></td>
+                                <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_68620.html">Jason Rader</a></td>
+                                <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_61553.html">Danielle Licata</a></td>
+                                <td><a href="season_672.html">MFPinball 2018 Summer Season</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74465.html">Cody Reeves</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_87684.html">"Penelope"</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_73340.html">Krystal Estrada</a></td>
+                                <td><a href="season_755.html">Monterey Flipper Ladies Pinball Fall Season</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74842.html">Scott Tashiro</a></td>
+                                <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_69638.html">Presley Lippert</a></td>
+                                <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_100547.html">Selena DeLeon</a></td>
+                                <td><a href="season_861.html">MFPinball 2018 Winter Season </a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_114923.html">Becky Waters</a></td>
+                                <td><a href="season_1088.html">Monterey Flipper Ladies Pinball 2019 Summer Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_123865.html">Whitney Clark</a></td>
+                                <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_114923.html">Becky Waters</a></td>
+                                <td><a href="season_1223.html">Monterey Flipper Ladies Pinball 2019 Fall Season</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_145773.html">Erik Finch</a></td>
+                                <td><a href="season_1357.html">MFPinball 2020 Winter Season </a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                <td><a href="season_1757.html">MFLadies Pinball Fall 2021 Season </a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_145773.html">Erik Finch</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_189659.html">Melissa Kelly</a></td>
+                                <td><a href="season_1887.html">MFLadies Pinball Winter League 2022</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_191356.html">Susan Thoms</a></td>
+                                <td><a href="season_1887.html">MFLadies Pinball Winter League 2022</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_195335.html">Chago Garcia</a></td>
+                                <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_142513.html">Brian Simpson</a></td>
+                                <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_191110.html">Barry White CA</a></td>
+                                <td><a href="season_2049.html">MFPinball Spring 2022</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_219316.html">Tyler Powles</a></td>
+                                <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_163117.html">Joshua Phillips</a></td>
+                                <td><a href="season_2250.html">MFPinball Fall Season 2022</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_249328.html">Joules Per KG</a></td>
+                                <td><a href="season_2457.html">MFLadies Pinball Winter Season 2023</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_249328.html">Joules Per KG</a></td>
+                                <td><a href="season_2457.html">MFLadies Pinball Winter Season 2023</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_191110.html">Barry White CA</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_261892.html">Chelsey Robb</a></td>
+                                <td><a href="season_2677.html">MFLadies Pinball Spring Season 2023</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_261892.html">Chelsey Robb</a></td>
+                                <td><a href="season_2677.html">MFLadies Pinball Spring Season 2023</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_224451.html">Keeza Anzini</a></td>
+                                <td><a href="season_2677.html">MFLadies Pinball Spring Season 2023</a></td>
+                                <td>8</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_142513.html">Brian Simpson</a></td>
+                                <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_283012.html">Greta Billman</a></td>
+                                <td><a href="season_2804.html">MFLadies Pinball Summer 2023</a></td>
+                                <td>5</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_261892.html">Chelsey Robb</a></td>
+                                <td><a href="season_2804.html">MFLadies Pinball Summer 2023</a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                <td><a href="season_2927.html">MFPinball Fall Season 2023</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_269920.html">Carly Sabicer</a></td>
+                                <td><a href="season_2958.html">MFLadies Pinball Fall Season 2023</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_329452.html">Jessica Pappas</a></td>
+                                <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_293788.html">Pat Patton</a></td>
+                                <td><a href="season_3410.html">MFPinball Spring Season</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_348173.html">Mikayla Randolph</a></td>
+                                <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_357622.html">Julie Sangimino</a></td>
+                                <td><a href="season_3429.html">MFLadies Pinball Spring Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_70106.html">Sergio Suarez</a></td>
+                                <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_371886.html">Rigo Vasquez</a></td>
+                                <td><a href="season_3603.html">MFPinball Summer Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_324012.html">Elizabeth Ramirez</a></td>
+                                <td><a href="season_3641.html">MFLadies Pinball Summer Season</a></td>
+                                <td>6</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_378186.html">Yvonne Meltzer</a></td>
+                                <td><a href="season_3641.html">MFLadies Pinball Summer Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_371910.html">Jess Pappas</a></td>
+                                <td><a href="season_3822.html">MFPinball Fall Season</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_400338.html">Elaine Noll</a></td>
+                                <td><a href="season_3845.html">MF Ladies Pinball Fall Season</a></td>
+                                <td>7</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_400338.html">Elaine Noll</a></td>
+                                <td><a href="season_3845.html">MF Ladies Pinball Fall Season</a></td>
+                                <td>9</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_415933.html">Irwin Flores</a></td>
+                                <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_418406.html">Charlotte Sibaja</a></td>
+                                <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                <td>2</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_400338.html">Elaine Noll</a></td>
+                                <td><a href="season_4043.html">MFLadies Pinball Winter Season 2025</a></td>
+                                <td>4</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_105061.html">Barrett Lindstrom</a></td>
+                                <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                <td>10</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_450053.html">Julia Payne</a></td>
+                                <td><a href="season_4644.html">MFLadies Pinball Summer Season 2025</a></td>
+                                <td>1</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_472610.html">Kenzie Lach</a></td>
+                                <td><a href="season_4644.html">MFLadies Pinball Summer Season 2025</a></td>
+                                <td>3</td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Biggest Drops</h2>
+            <div class="table-container">
+                <table id="combined-biggest-drops-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-biggest-drops-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 2, true)">From Week</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 3, true)">Points</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 4, true)">To Week</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 5, true)">Points</th>
+                            <th onclick="sortTable('combined-biggest-drops-table', 6, true)">Drop</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                <td>1</td>
+                                <td>27</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>25</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>7</td>
+                                <td>29</td>
+                                <td>8</td>
+                                <td>5</td>
+                                <td>24</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_95694.html">Tasha Lindstrom</a></td>
+                                <td><a href="season_905.html">Monterey Flipper Ladies Pinball 2019 Winter Season</a></td>
+                                <td>2</td>
+                                <td>31</td>
+                                <td>3</td>
+                                <td>8</td>
+                                <td>23</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15322.html">Philip Priddy</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>4</td>
+                                <td>31</td>
+                                <td>5</td>
+                                <td>8</td>
+                                <td>23</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_307101.html">Terrie White</a></td>
+                                <td><a href="season_4643.html">MFPinball Summer Season 2025</a></td>
+                                <td>3</td>
+                                <td>29</td>
+                                <td>4</td>
+                                <td>7</td>
+                                <td>22</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_201655.html">Wade Violini</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>1</td>
+                                <td>35</td>
+                                <td>2</td>
+                                <td>13</td>
+                                <td>22</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_19225.html">Nick Vibe</a></td>
+                                <td><a href="season_1357.html">MFPinball 2020 Winter Season </a></td>
+                                <td>3</td>
+                                <td>23</td>
+                                <td>4</td>
+                                <td>2</td>
+                                <td>21</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15302.html">Michael Mattsson</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>5</td>
+                                <td>23</td>
+                                <td>6</td>
+                                <td>2</td>
+                                <td>21</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>1</td>
+                                <td>23</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>21</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                                <td><a href="season_684.html">Monterey Flipper Ladies Pinball Summer League</a></td>
+                                <td>9</td>
+                                <td>27</td>
+                                <td>10</td>
+                                <td>6</td>
+                                <td>21</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_31058.html">Nick Fitzpatrick</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>8</td>
+                                <td>35</td>
+                                <td>9</td>
+                                <td>14</td>
+                                <td>21</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_142513.html">Brian Simpson</a></td>
+                                <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                <td>5</td>
+                                <td>25</td>
+                                <td>6</td>
+                                <td>5</td>
+                                <td>20</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13709.html">Matthew Talley</a></td>
+                                <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                <td>6</td>
+                                <td>33</td>
+                                <td>7</td>
+                                <td>13</td>
+                                <td>20</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_113284.html">Jason Garcia</a></td>
+                                <td><a href="season_1194.html">MFPinball 2019 Fall Season</a></td>
+                                <td>3</td>
+                                <td>27</td>
+                                <td>4</td>
+                                <td>7</td>
+                                <td>20</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                <td>5</td>
+                                <td>24</td>
+                                <td>6</td>
+                                <td>4</td>
+                                <td>20</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                <td><a href="season_2958.html">MFLadies Pinball Fall Season 2023</a></td>
+                                <td>4</td>
+                                <td>33</td>
+                                <td>5</td>
+                                <td>13</td>
+                                <td>20</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_174629.html">Paige Peck</a></td>
+                                <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                <td>8</td>
+                                <td>35</td>
+                                <td>9</td>
+                                <td>15</td>
+                                <td>20</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13717.html">Todd Brammer</a></td>
+                                <td><a href="season_209.html">MFP, 2017 Winter Season</a></td>
+                                <td>1</td>
+                                <td>23</td>
+                                <td>2</td>
+                                <td>4</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13708.html">Cary Carmichael</a></td>
+                                <td><a href="season_1357.html">MFPinball 2020 Winter Season </a></td>
+                                <td>8</td>
+                                <td>29</td>
+                                <td>9</td>
+                                <td>10</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                <td><a href="season_2284.html">MFLadies Pinball Fall 2022 Season</a></td>
+                                <td>1</td>
+                                <td>30</td>
+                                <td>2</td>
+                                <td>11</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_52838.html">Mike Hubbard</a></td>
+                                <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                <td>9</td>
+                                <td>33</td>
+                                <td>10</td>
+                                <td>14</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>2</td>
+                                <td>27</td>
+                                <td>3</td>
+                                <td>8</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_177157.html">Laura Masana</a></td>
+                                <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                <td>2</td>
+                                <td>29</td>
+                                <td>3</td>
+                                <td>10</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_49307.html">“RC”</a></td>
+                                <td><a href="season_987.html">MFPinball 2019 Spring Season </a></td>
+                                <td>8</td>
+                                <td>27</td>
+                                <td>9</td>
+                                <td>8</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_79530.html">Dexter Farm</a></td>
+                                <td><a href="season_748.html">MFPinball 2018 Fall Season </a></td>
+                                <td>9</td>
+                                <td>27</td>
+                                <td>10</td>
+                                <td>8</td>
+                                <td>19</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_123864.html">Vincent Ruggiero</a></td>
+                                <td><a href="season_2456.html">MFPinball Winter Season 2023</a></td>
+                                <td>8</td>
+                                <td>27</td>
+                                <td>9</td>
+                                <td>9</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_15322.html">Philip Priddy</a></td>
+                                <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                <td>9</td>
+                                <td>33</td>
+                                <td>10</td>
+                                <td>15</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                <td>3</td>
+                                <td>29</td>
+                                <td>4</td>
+                                <td>11</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74016.html">Lucy Cachux</a></td>
+                                <td><a href="season_2284.html">MFLadies Pinball Fall 2022 Season</a></td>
+                                <td>7</td>
+                                <td>29</td>
+                                <td>8</td>
+                                <td>11</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_52838.html">Mike Hubbard</a></td>
+                                <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                <td>1</td>
+                                <td>31</td>
+                                <td>2</td>
+                                <td>13</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_39977.html">Xavier Marin</a></td>
+                                <td><a href="season_2789.html">MFPinball Summer 2023</a></td>
+                                <td>4</td>
+                                <td>23</td>
+                                <td>5</td>
+                                <td>5</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_170833.html">Tim Priddy</a></td>
+                                <td><a href="season_1755.html">MFPinball Fall 2021 Season</a></td>
+                                <td>9</td>
+                                <td>27</td>
+                                <td>10</td>
+                                <td>9</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_177157.html">Laura Masana</a></td>
+                                <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                <td>4</td>
+                                <td>31</td>
+                                <td>5</td>
+                                <td>13</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                                <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                <td>6</td>
+                                <td>31</td>
+                                <td>7</td>
+                                <td>13</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_165915.html">Melina Meltzer</a></td>
+                                <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                <td>6</td>
+                                <td>29</td>
+                                <td>7</td>
+                                <td>11</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_164121.html">Greg Gorelick</a></td>
+                                <td><a href="season_3822.html">MFPinball Fall Season</a></td>
+                                <td>7</td>
+                                <td>33</td>
+                                <td>8</td>
+                                <td>15</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_61526.html">Tyler Heath</a></td>
+                                <td><a href="season_582.html">MFPinball 2018 Spring Season</a></td>
+                                <td>2</td>
+                                <td>23</td>
+                                <td>3</td>
+                                <td>5</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50534.html">Sneha Kolar</a></td>
+                                <td><a href="season_2804.html">MFLadies Pinball Summer 2023</a></td>
+                                <td>5</td>
+                                <td>33</td>
+                                <td>6</td>
+                                <td>15</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_127357.html">Ivy Simpson</a></td>
+                                <td><a href="season_2161.html">MFLadies Pinball Summer 2022 </a></td>
+                                <td>1</td>
+                                <td>29</td>
+                                <td>2</td>
+                                <td>11</td>
+                                <td>18</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                <td><a href="season_2149.html">MFPinball Summer 2022 </a></td>
+                                <td>1</td>
+                                <td>31</td>
+                                <td>2</td>
+                                <td>14</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_74820.html">Will Chernetsky</a></td>
+                                <td><a href="season_4375.html">MFPinball Spring Season 2025</a></td>
+                                <td>3</td>
+                                <td>29</td>
+                                <td>4</td>
+                                <td>12</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_79530.html">Dexter Farm</a></td>
+                                <td><a href="season_3163.html">MFPinball Winter Season</a></td>
+                                <td>8</td>
+                                <td>31</td>
+                                <td>9</td>
+                                <td>14</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13716.html">John Tracey</a></td>
+                                <td><a href="season_1875.html">MFPinball Winter 2022 Season</a></td>
+                                <td>4</td>
+                                <td>31</td>
+                                <td>5</td>
+                                <td>14</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13709.html">Matthew Talley</a></td>
+                                <td><a href="season_2607.html">MFPinball Spring Season 2023</a></td>
+                                <td>5</td>
+                                <td>35</td>
+                                <td>6</td>
+                                <td>18</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_245985.html">Mitch Fadem</a></td>
+                                <td><a href="season_4022.html">MFPinball Winter Season 2025</a></td>
+                                <td>1</td>
+                                <td>25</td>
+                                <td>2</td>
+                                <td>8</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                                <td><a href="season_4376.html">MFLadies Spring Season 2025</a></td>
+                                <td>9</td>
+                                <td>28</td>
+                                <td>10</td>
+                                <td>11</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_189658.html">Carlene Malack</a></td>
+                                <td><a href="season_3232.html">MFLadies Pinball Winter</a></td>
+                                <td>1</td>
+                                <td>33</td>
+                                <td>2</td>
+                                <td>16</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                                <td><a href="season_2958.html">MFLadies Pinball Fall Season 2023</a></td>
+                                <td>5</td>
+                                <td>31</td>
+                                <td>6</td>
+                                <td>14</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                                <td><a href="season_755.html">Monterey Flipper Ladies Pinball Fall Season</a></td>
+                                <td>3</td>
+                                <td>27</td>
+                                <td>4</td>
+                                <td>10</td>
+                                <td>17</td>
+                            </tr>
+                        
+                            <tr>
+                                <td><a href="player_283381.html">Kevin Johnston</a></td>
+                                <td><a href="season_4929.html">MFPinball Fall Season 2025</a></td>
+                                <td>6</td>
+                                <td>27</td>
+                                <td>7</td>
+                                <td>10</td>
+                                <td>17</td>
+                            </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </details>
+
+    </main>
+
+    <footer class="container">
+        <small>Last updated: 2026-01-08 08:39:15</small>
+    </footer>
+
+    <script>
+        function sortTable(tableId, n, isNumeric = false) {
+            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById(tableId);
+            switching = true;
+            // Set the sorting direction to ascending:
+            dir = "asc";
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                    let xContent = x.innerHTML;
+                    let yContent = y.innerHTML;
+
+                    // Handle potential HTML spans for coloring (e.g., score_color_code filter)
+                    if (x.firstElementChild && x.firstElementChild.tagName === 'SPAN') {
+                        xContent = x.firstElementChild.textContent;
+                    }
+                    if (y.firstElementChild && y.firstElementChild.tagName === 'SPAN') {
+                        yContent = y.firstElementChild.textContent;
+                    }
+
+                    // Convert to number if isNumeric is true
+                    if (isNumeric) {
+                        xContent = parseFloat(xContent.replace(/[^0-9.-]+/g,"")); // Remove non-numeric chars except . and -
+                        yContent = parseFloat(yContent.replace(/[^0-9.-]+/g,""));
+                        // Handle NaN from parseFloat if content is not a valid number
+                        if (isNaN(xContent)) xContent = dir === "asc" ? -Infinity : Infinity;
+                        if (isNaN(yContent)) yContent = dir === "asc" ? -Infinity : Infinity;
+                    } else {
+                        xContent = xContent.toLowerCase();
+                        yContent = yContent.toLowerCase();
+                    }
+
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (dir == "asc") {
+                        if (xContent > yContent) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (xContent < yContent) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

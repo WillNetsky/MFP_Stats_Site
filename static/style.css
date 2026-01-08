@@ -15,6 +15,21 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
 }
 
+/* Increase container width for larger screens */
+.container {
+    max-width: 95vw; /* Use 95% of viewport width */
+}
+
+/* Keep standard container behavior for smaller screens if needed,
+   but Pico's default breakpoints might override max-width if we aren't careful.
+   Pico sets max-width at various breakpoints. We want to override this for PC.
+*/
+@media (min-width: 992px) {
+    .container {
+        max-width: 95vw;
+    }
+}
+
 .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
@@ -35,16 +50,6 @@ th, td {
 
 thead {
     background-color: #f2f2f2;
-}
-
-/* Dark mode overrides */
-[data-theme="dark"] thead {
-    background-color: #333333; /* Dark grey for table headers in dark mode */
-    color: #ffffff; /* Ensure text is readable */
-}
-
-[data-theme="dark"] th, [data-theme="dark"] td {
-    border-color: #444444; /* Darker border color for dark mode */
 }
 
 .active-season {
@@ -68,19 +73,6 @@ thead {
 
 .bronze-finish {
     background-color: #cd7f32; /* Bronze */
-}
-
-/* Dark mode overrides for medal rows to ensure text contrast */
-[data-theme="dark"] .gold-finish,
-[data-theme="dark"] .silver-finish,
-[data-theme="dark"] .bronze-finish,
-[data-theme="dark"] .gold-finish td,
-[data-theme="dark"] .silver-finish td,
-[data-theme="dark"] .bronze-finish td,
-[data-theme="dark"] .gold-finish a,
-[data-theme="dark"] .silver-finish a,
-[data-theme="dark"] .bronze-finish a {
-    color: #000000;
 }
 
 /* Specific medals for 1st, 2nd, 3rd and 4th */

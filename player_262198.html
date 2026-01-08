@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,79 +8,9 @@
     <link rel="stylesheet" href="static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
-        const themeSwitcher = {
-            // Config
-            _scheme: "auto",
-            menuTarget: "details[role='list']",
-            buttonsTarget: "a[data-theme-switcher]",
-            buttonAttribute: "data-theme-switcher",
-            rootAttribute: "data-theme",
-            localStorageKey: "picoPreferedColorScheme",
-
-            // Get scheme from local storage
-            get schemeFromLocalStorage() {
-                if (typeof window.localStorage !== "undefined") {
-                    if (window.localStorage.getItem(this.localStorageKey) !== null) {
-                        return window.localStorage.getItem(this.localStorageKey);
-                    }
-                }
-                return this._scheme;
-            },
-
-            // Prefered scheme
-            get scheme() {
-                return this._scheme;
-            },
-
-            // Set scheme
-            set scheme(scheme) {
-                if (scheme == "auto") {
-                    this._scheme = "auto";
-                } else if (scheme == "dark") {
-                    this._scheme = "dark";
-                } else {
-                    this._scheme = "light";
-                }
-                this.applyScheme();
-                this.schemeToLocalStorage();
-            },
-
-            // Init switchers
-            initSwitchers() {
-                const buttons = document.querySelectorAll(this.buttonsTarget);
-                buttons.forEach((button) => {
-                    button.addEventListener(
-                        "click",
-                        (event) => {
-                            event.preventDefault();
-                            // Set scheme
-                            this.scheme = button.getAttribute(this.buttonAttribute);
-                            // Close dropdown
-                            document.querySelector(this.menuTarget).removeAttribute("open");
-                        },
-                        false
-                    );
-                });
-            },
-
-            // Apply scheme
-            applyScheme() {
-                document.documentElement.setAttribute(this.rootAttribute, this.scheme);
-                updateScoreColors(); // Update score colors when theme changes
-            },
-
-            // Store scheme to local storage
-            schemeToLocalStorage() {
-                if (typeof window.localStorage !== "undefined") {
-                    window.localStorage.setItem(this.localStorageKey, this.scheme);
-                }
-            },
-        };
-
-        // Function to update score colors based on theme
+        // Function to update score colors (simplified for light theme only)
         function updateScoreColors() {
             const badges = document.querySelectorAll('.score-badge');
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
             badges.forEach(badge => {
                 const score = parseFloat(badge.getAttribute('data-score'));
@@ -98,42 +28,22 @@
                     // Green
                     r = 0; g = 128; b = 0;
                 } else if (score < 20) {
-                    // Red to White (or Dark Grey in dark mode)
+                    // Red to White
                     const t = (score - 5) / 15.0;
-                    if (isDark) {
-                        // Interpolate Red (255,0,0) to Dark Grey (50,50,50)
-                        r = 255 + (50 - 255) * t;
-                        g = 0 + (50 - 0) * t;
-                        b = 0 + (50 - 0) * t;
-                    } else {
-                        // Interpolate Red (255,0,0) to White (255,255,255)
-                        r = 255;
-                        g = int(255 * t); // This logic was slightly off in python, let's fix it here
-                        // Python: g = int(255 * t), b = int(255 * t) -> Red to White
-                        g = Math.floor(255 * t);
-                        b = Math.floor(255 * t);
-                    }
+                    r = 255;
+                    g = Math.floor(255 * t);
+                    b = Math.floor(255 * t);
                 } else {
-                    // White (or Dark Grey) to Green
+                    // White to Green
                     const t = (score - 20) / 14.0;
-                    if (isDark) {
-                        // Interpolate Dark Grey (50,50,50) to Green (0,128,0)
-                        r = 50 + (0 - 50) * t;
-                        g = 50 + (128 - 50) * t;
-                        b = 50 + (0 - 50) * t;
-                    } else {
-                        // Interpolate White (255,255,255) to Green (0,128,0)
-                        r = Math.floor(255 * (1 - t));
-                        g = Math.floor(255 * (1 - t) + 128 * t);
-                        b = Math.floor(255 * (1 - t));
-                    }
+                    r = Math.floor(255 * (1 - t));
+                    g = Math.floor(255 * (1 - t) + 128 * t);
+                    b = Math.floor(255 * (1 - t));
                 }
 
                 badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
 
                 // Adjust text color for contrast
-                // Simple check: if background is dark, text white, else black
-                // Calculate luminance
                 const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
                 if (luminance > 0.5) {
                     badge.style.color = 'black';
@@ -143,11 +53,7 @@
             });
         }
 
-        // Init
-        themeSwitcher.scheme = themeSwitcher.schemeFromLocalStorage;
-
         document.addEventListener('DOMContentLoaded', () => {
-            themeSwitcher.initSwitchers();
             updateScoreColors(); // Initial color update
         });
     </script>
@@ -213,7 +119,7 @@
 <body class="player-page">
     <nav class="container-fluid">
     <ul>
-        <li><a href="index.html"><strong>Pinball Stats</strong></a></li>
+        <li><a href="index.html"><strong>MFP Stats</strong></a></li>
     </ul>
     <ul>
         <li><a href="index.html">Home</a></li>
@@ -221,18 +127,7 @@
         <li><a href="players.html">Players</a></li>
         <li><a href="charts.html">Charts</a></li>
         <li><a href="leaderboards.html">Leaderboards</a></li>
-    </ul>
-    <ul>
-        <li>
-            <details role="list" dir="rtl">
-                <summary aria-haspopup="listbox" role="link">Theme</summary>
-                <ul role="listbox">
-                    <li><a href="#" data-theme-switcher="auto">Auto</a></li>
-                    <li><a href="#" data-theme-switcher="light">Light</a></li>
-                    <li><a href="#" data-theme-switcher="dark">Dark</a></li>
-                </ul>
-            </details>
-        </li>
+        <li><a href="frivolities.html">Frivolities</a></li>
     </ul>
 </nav>
     <main class="container">
@@ -1476,7 +1371,7 @@
     </main>
 
     <footer class="container">
-        <small>Last updated: 2026-01-07 08:40:20</small>
+        <small>Last updated: 2026-01-08 08:39:15</small>
     </footer>
 
     <script>

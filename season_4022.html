@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,79 +8,9 @@
     <link rel="stylesheet" href="static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
-        const themeSwitcher = {
-            // Config
-            _scheme: "auto",
-            menuTarget: "details[role='list']",
-            buttonsTarget: "a[data-theme-switcher]",
-            buttonAttribute: "data-theme-switcher",
-            rootAttribute: "data-theme",
-            localStorageKey: "picoPreferedColorScheme",
-
-            // Get scheme from local storage
-            get schemeFromLocalStorage() {
-                if (typeof window.localStorage !== "undefined") {
-                    if (window.localStorage.getItem(this.localStorageKey) !== null) {
-                        return window.localStorage.getItem(this.localStorageKey);
-                    }
-                }
-                return this._scheme;
-            },
-
-            // Prefered scheme
-            get scheme() {
-                return this._scheme;
-            },
-
-            // Set scheme
-            set scheme(scheme) {
-                if (scheme == "auto") {
-                    this._scheme = "auto";
-                } else if (scheme == "dark") {
-                    this._scheme = "dark";
-                } else {
-                    this._scheme = "light";
-                }
-                this.applyScheme();
-                this.schemeToLocalStorage();
-            },
-
-            // Init switchers
-            initSwitchers() {
-                const buttons = document.querySelectorAll(this.buttonsTarget);
-                buttons.forEach((button) => {
-                    button.addEventListener(
-                        "click",
-                        (event) => {
-                            event.preventDefault();
-                            // Set scheme
-                            this.scheme = button.getAttribute(this.buttonAttribute);
-                            // Close dropdown
-                            document.querySelector(this.menuTarget).removeAttribute("open");
-                        },
-                        false
-                    );
-                });
-            },
-
-            // Apply scheme
-            applyScheme() {
-                document.documentElement.setAttribute(this.rootAttribute, this.scheme);
-                updateScoreColors(); // Update score colors when theme changes
-            },
-
-            // Store scheme to local storage
-            schemeToLocalStorage() {
-                if (typeof window.localStorage !== "undefined") {
-                    window.localStorage.setItem(this.localStorageKey, this.scheme);
-                }
-            },
-        };
-
-        // Function to update score colors based on theme
+        // Function to update score colors (simplified for light theme only)
         function updateScoreColors() {
             const badges = document.querySelectorAll('.score-badge');
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
             badges.forEach(badge => {
                 const score = parseFloat(badge.getAttribute('data-score'));
@@ -98,42 +28,22 @@
                     // Green
                     r = 0; g = 128; b = 0;
                 } else if (score < 20) {
-                    // Red to White (or Dark Grey in dark mode)
+                    // Red to White
                     const t = (score - 5) / 15.0;
-                    if (isDark) {
-                        // Interpolate Red (255,0,0) to Dark Grey (50,50,50)
-                        r = 255 + (50 - 255) * t;
-                        g = 0 + (50 - 0) * t;
-                        b = 0 + (50 - 0) * t;
-                    } else {
-                        // Interpolate Red (255,0,0) to White (255,255,255)
-                        r = 255;
-                        g = int(255 * t); // This logic was slightly off in python, let's fix it here
-                        // Python: g = int(255 * t), b = int(255 * t) -> Red to White
-                        g = Math.floor(255 * t);
-                        b = Math.floor(255 * t);
-                    }
+                    r = 255;
+                    g = Math.floor(255 * t);
+                    b = Math.floor(255 * t);
                 } else {
-                    // White (or Dark Grey) to Green
+                    // White to Green
                     const t = (score - 20) / 14.0;
-                    if (isDark) {
-                        // Interpolate Dark Grey (50,50,50) to Green (0,128,0)
-                        r = 50 + (0 - 50) * t;
-                        g = 50 + (128 - 50) * t;
-                        b = 50 + (0 - 50) * t;
-                    } else {
-                        // Interpolate White (255,255,255) to Green (0,128,0)
-                        r = Math.floor(255 * (1 - t));
-                        g = Math.floor(255 * (1 - t) + 128 * t);
-                        b = Math.floor(255 * (1 - t));
-                    }
+                    r = Math.floor(255 * (1 - t));
+                    g = Math.floor(255 * (1 - t) + 128 * t);
+                    b = Math.floor(255 * (1 - t));
                 }
 
                 badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
 
                 // Adjust text color for contrast
-                // Simple check: if background is dark, text white, else black
-                // Calculate luminance
                 const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
                 if (luminance > 0.5) {
                     badge.style.color = 'black';
@@ -143,11 +53,7 @@
             });
         }
 
-        // Init
-        themeSwitcher.scheme = themeSwitcher.schemeFromLocalStorage;
-
         document.addEventListener('DOMContentLoaded', () => {
-            themeSwitcher.initSwitchers();
             updateScoreColors(); // Initial color update
         });
     </script>
@@ -156,7 +62,7 @@
 <body class="season-page">
     <nav class="container-fluid">
     <ul>
-        <li><a href="index.html"><strong>Pinball Stats</strong></a></li>
+        <li><a href="index.html"><strong>MFP Stats</strong></a></li>
     </ul>
     <ul>
         <li><a href="index.html">Home</a></li>
@@ -164,18 +70,7 @@
         <li><a href="players.html">Players</a></li>
         <li><a href="charts.html">Charts</a></li>
         <li><a href="leaderboards.html">Leaderboards</a></li>
-    </ul>
-    <ul>
-        <li>
-            <details role="list" dir="rtl">
-                <summary aria-haspopup="listbox" role="link">Theme</summary>
-                <ul role="listbox">
-                    <li><a href="#" data-theme-switcher="auto">Auto</a></li>
-                    <li><a href="#" data-theme-switcher="light">Light</a></li>
-                    <li><a href="#" data-theme-switcher="dark">Dark</a></li>
-                </ul>
-            </details>
-        </li>
+        <li><a href="frivolities.html">Frivolities</a></li>
     </ul>
 </nav>
     <main class="container">
@@ -187,145 +82,77 @@
     
         <h2>Finals Results</h2>
         <div class="grid">
-            <div class="column">
-                <h3>Semi-Finals</h3>
-                
+            
+                <div class="column">
+                    <h3>Semi-Finals</h3>
                     
-                        <h4>Group 0</h4>
                         <table role="grid">
                             <thead>
                                 <tr>
                                     <th>Player</th>
                                     
-                                        <th>John Wick (Premium)</th>
-                                    
-                                        <th>Godzilla</th>
-                                    
-                                        <th>Jurassic Park (Premium)</th>
+                                        <th>Funhouse</th>
                                     
                                         <th>Rick And Morty</th>
                                     
-                                        <th>Surf Champ</th>
-                                    
-                                        <th>Funhouse</th>
+                                        <th>Jurassic Park (Premium)</th>
                                     
                                     <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 
-                                    <tr>
+                                    <tr >
                                         <td><a href="player_283381.html">Kevin Johnston</a></td>
                                         
-                                            <td>-</td>
+                                            <td>1.0</td>
                                         
-                                            <td>-</td>
+                                            <td>1.0</td>
                                         
                                             <td>5.0</td>
-                                        
-                                            <td>1.0</td>
-                                        
-                                            <td>-</td>
-                                        
-                                            <td>1.0</td>
                                         
                                         <td>7</td>
                                     </tr>
                                 
-                                    <tr>
+                                    <tr style="font-weight: bold;">
                                         <td><a href="player_84838.html">Eric Garcia</a></td>
                                         
                                             <td>5.0</td>
                                         
-                                            <td>1.0</td>
+                                            <td>7.0</td>
                                         
                                             <td>3.0</td>
                                         
-                                            <td>7.0</td>
-                                        
-                                            <td>7.0</td>
-                                        
-                                            <td>5.0</td>
-                                        
-                                        <td>28</td>
+                                        <td>15</td>
                                     </tr>
                                 
-                                    <tr>
+                                    <tr >
                                         <td><a href="player_15322.html">Philip Priddy</a></td>
                                         
-                                            <td>-</td>
+                                            <td>3.0</td>
                                         
-                                            <td>-</td>
+                                            <td>3.0</td>
                                         
                                             <td>1.0</td>
-                                        
-                                            <td>3.0</td>
-                                        
-                                            <td>-</td>
-                                        
-                                            <td>3.0</td>
                                         
                                         <td>7</td>
                                     </tr>
                                 
-                                    <tr>
+                                    <tr style="font-weight: bold;">
                                         <td><a href="player_39977.html">Xavier Marin</a></td>
                                         
                                             <td>7.0</td>
                                         
-                                            <td>7.0</td>
-                                        
-                                            <td>7.0</td>
-                                        
                                             <td>5.0</td>
-                                        
-                                            <td>3.0</td>
                                         
                                             <td>7.0</td>
                                         
-                                        <td>36</td>
-                                    </tr>
-                                
-                                    <tr>
-                                        <td><a href="player_109691.html">Nate King</a></td>
-                                        
-                                            <td>3.0</td>
-                                        
-                                            <td>3.0</td>
-                                        
-                                            <td>-</td>
-                                        
-                                            <td>-</td>
-                                        
-                                            <td>5.0</td>
-                                        
-                                            <td>-</td>
-                                        
-                                        <td>11</td>
-                                    </tr>
-                                
-                                    <tr>
-                                        <td><a href="player_13716.html">John Tracey</a></td>
-                                        
-                                            <td>1.0</td>
-                                        
-                                            <td>5.0</td>
-                                        
-                                            <td>-</td>
-                                        
-                                            <td>-</td>
-                                        
-                                            <td>1.0</td>
-                                        
-                                            <td>-</td>
-                                        
-                                        <td>7</td>
+                                        <td>19</td>
                                     </tr>
                                 
                             </tbody>
                         </table>
                     
-                        <h4>Group 1</h4>
                         <table role="grid">
                             <thead>
                                 <tr>
@@ -342,7 +169,7 @@
                             </thead>
                             <tbody>
                                 
-                                    <tr>
+                                    <tr >
                                         <td><a href="player_61526.html">Tyler Heath</a></td>
                                         
                                             <td>3.0</td>
@@ -354,7 +181,7 @@
                                         <td>9</td>
                                     </tr>
                                 
-                                    <tr>
+                                    <tr >
                                         <td><a href="player_74820.html">Will Chernetsky</a></td>
                                         
                                             <td>5.0</td>
@@ -366,7 +193,7 @@
                                         <td>9</td>
                                     </tr>
                                 
-                                    <tr>
+                                    <tr style="font-weight: bold;">
                                         <td><a href="player_109691.html">Nate King</a></td>
                                         
                                             <td>1.0</td>
@@ -378,7 +205,7 @@
                                         <td>15</td>
                                     </tr>
                                 
-                                    <tr>
+                                    <tr style="font-weight: bold;">
                                         <td><a href="player_13716.html">John Tracey</a></td>
                                         
                                             <td>7.0</td>
@@ -394,12 +221,81 @@
                         </table>
                     
                     
-                
-            </div>
-            <div class="column">
-                <h3>Finals</h3>
-                
-            </div>
+                </div>
+            
+                <div class="column">
+                    <h3>Finals</h3>
+                    
+                        <table role="grid">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    
+                                        <th>John Wick (Premium)</th>
+                                    
+                                        <th>Surf Champ</th>
+                                    
+                                        <th>Godzilla</th>
+                                    
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                    <tr style="font-weight: bold;">
+                                        <td><a href="player_84838.html">Eric Garcia</a></td>
+                                        
+                                            <td>5.0</td>
+                                        
+                                            <td>7.0</td>
+                                        
+                                            <td>1.0</td>
+                                        
+                                        <td>13</td>
+                                    </tr>
+                                
+                                    <tr >
+                                        <td><a href="player_109691.html">Nate King</a></td>
+                                        
+                                            <td>3.0</td>
+                                        
+                                            <td>5.0</td>
+                                        
+                                            <td>3.0</td>
+                                        
+                                        <td>11</td>
+                                    </tr>
+                                
+                                    <tr >
+                                        <td><a href="player_13716.html">John Tracey</a></td>
+                                        
+                                            <td>1.0</td>
+                                        
+                                            <td>1.0</td>
+                                        
+                                            <td>5.0</td>
+                                        
+                                        <td>7</td>
+                                    </tr>
+                                
+                                    <tr style="font-weight: bold;">
+                                        <td><a href="player_39977.html">Xavier Marin</a></td>
+                                        
+                                            <td>7.0</td>
+                                        
+                                            <td>3.0</td>
+                                        
+                                            <td>7.0</td>
+                                        
+                                        <td>17</td>
+                                    </tr>
+                                
+                            </tbody>
+                        </table>
+                    
+                    
+                </div>
+            
         </div>
     
 
@@ -621,41 +517,6 @@
                         </tr>
                     
                         <tr>
-                            <td><a href="player_74820.html">Will Chernetsky</a></td>
-                            <td>5</td>
-                            <td>150</td>
-                            <td>207</td>
-                            <td>9</td>
-                            <td>23</td>
-                            <td>11</td>
-                            <td>17</td>
-                            <td>11</td>
-                            <td>4</td>
-                            <td>2</td>
-                            
-                                <td><span class="score-badge" data-score="27.0">27</span></td>
-                            
-                                <td><span class="score-badge" data-score="25.0">25</span></td>
-                            
-                                <td><span class="score-badge" data-score="25.0">25</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td><span class="score-badge" data-score="25.0">25</span></td>
-                            
-                                <td><span class="score-badge" data-score="17.0">17</span></td>
-                            
-                                <td><span class="score-badge" data-score="21.0">21</span></td>
-                            
-                                <td><span class="score-badge" data-score="21.0">21</span></td>
-                            
-                                <td><span class="score-badge" data-score="27.0">27</span></td>
-                            
-                        </tr>
-                    
-                        <tr>
                             <td><a href="player_283381.html">Kevin Johnston</a></td>
                             <td>5</td>
                             <td>150</td>
@@ -691,35 +552,35 @@
                         </tr>
                     
                         <tr>
-                            <td><a href="player_84838.html">Eric Garcia</a></td>
-                            <td>8</td>
-                            <td>147</td>
-                            <td>166</td>
-                            <td>7</td>
-                            <td>23.71</td>
-                            <td>12</td>
-                            <td>11</td>
-                            <td>6</td>
+                            <td><a href="player_74820.html">Will Chernetsky</a></td>
                             <td>5</td>
-                            <td>1</td>
-                            
-                                <td><span class="score-badge" data-score="22.0">22</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            <td>150</td>
+                            <td>207</td>
+                            <td>9</td>
+                            <td>23</td>
+                            <td>11</td>
+                            <td>17</td>
+                            <td>11</td>
+                            <td>4</td>
+                            <td>2</td>
                             
                                 <td><span class="score-badge" data-score="27.0">27</span></td>
                             
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td></td>
+                            
                                 <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td></td>
-                            
                                 <td><span class="score-badge" data-score="25.0">25</span></td>
                             
-                                <td></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
-                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td><span class="score-badge" data-score="27.0">27</span></td>
                             
@@ -755,6 +616,41 @@
                                 <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="player_84838.html">Eric Garcia</a></td>
+                            <td>8</td>
+                            <td>147</td>
+                            <td>166</td>
+                            <td>7</td>
+                            <td>23.71</td>
+                            <td>12</td>
+                            <td>11</td>
+                            <td>6</td>
+                            <td>5</td>
+                            <td>1</td>
+                            
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td><span class="score-badge" data-score="27.0">27</span></td>
                             
@@ -831,41 +727,6 @@
                         </tr>
                     
                         <tr>
-                            <td><a href="player_52838.html">Mike Hubbard</a></td>
-                            <td>12</td>
-                            <td>144</td>
-                            <td>186</td>
-                            <td>9</td>
-                            <td>20.67</td>
-                            <td>14</td>
-                            <td>11</td>
-                            <td>5</td>
-                            <td>14</td>
-                            <td>1</td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="23.0">23</span></td>
-                            
-                                <td><span class="score-badge" data-score="27.0">27</span></td>
-                            
-                                <td><span class="score-badge" data-score="16.0">16</span></td>
-                            
-                                <td><span class="score-badge" data-score="21.0">21</span></td>
-                            
-                                <td><span class="score-badge" data-score="31.0">31</span></td>
-                            
-                                <td><span class="score-badge" data-score="17.0">17</span></td>
-                            
-                                <td><span class="score-badge" data-score="25.0">25</span></td>
-                            
-                                <td><span class="score-badge" data-score="15.0">15</span></td>
-                            
-                                <td><span class="score-badge" data-score="11.0">11</span></td>
-                            
-                        </tr>
-                    
-                        <tr>
                             <td><a href="player_177157.html">Laura Masana</a></td>
                             <td>12</td>
                             <td>144</td>
@@ -897,6 +758,41 @@
                                 <td><span class="score-badge" data-score="25.0">25</span></td>
                             
                                 <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="player_52838.html">Mike Hubbard</a></td>
+                            <td>12</td>
+                            <td>144</td>
+                            <td>186</td>
+                            <td>9</td>
+                            <td>20.67</td>
+                            <td>14</td>
+                            <td>11</td>
+                            <td>5</td>
+                            <td>14</td>
+                            <td>1</td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
+                            
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="31.0">31</span></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
                             
                         </tr>
                     
@@ -1111,6 +1007,41 @@
                         </tr>
                     
                         <tr>
+                            <td><a href="player_105061.html">Barrett Lindstrom</a></td>
+                            <td>20</td>
+                            <td>129</td>
+                            <td>182</td>
+                            <td>9</td>
+                            <td>20.22</td>
+                            <td>11</td>
+                            <td>14</td>
+                            <td>6</td>
+                            <td>13</td>
+                            <td>1</td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                        </tr>
+                    
+                        <tr>
                             <td><a href="player_79530.html">Dexter Farm</a></td>
                             <td>20</td>
                             <td>129</td>
@@ -1177,41 +1108,6 @@
                                 <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                                 <td></td>
-                            
-                        </tr>
-                    
-                        <tr>
-                            <td><a href="player_105061.html">Barrett Lindstrom</a></td>
-                            <td>20</td>
-                            <td>129</td>
-                            <td>182</td>
-                            <td>9</td>
-                            <td>20.22</td>
-                            <td>11</td>
-                            <td>14</td>
-                            <td>6</td>
-                            <td>13</td>
-                            <td>1</td>
-                            
-                                <td><span class="score-badge" data-score="21.0">21</span></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td><span class="score-badge" data-score="22.0">22</span></td>
-                            
-                                <td><span class="score-badge" data-score="15.0">15</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td><span class="score-badge" data-score="25.0">25</span></td>
-                            
-                                <td><span class="score-badge" data-score="23.0">23</span></td>
                             
                         </tr>
                     
@@ -1356,41 +1252,6 @@
                         </tr>
                     
                         <tr>
-                            <td><a href="player_164121.html">Greg Gorelick</a></td>
-                            <td>27</td>
-                            <td>122</td>
-                            <td>122</td>
-                            <td>6</td>
-                            <td>20.33</td>
-                            <td>9</td>
-                            <td>6</td>
-                            <td>6</td>
-                            <td>3</td>
-                            <td>2</td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="27.0">27</span></td>
-                            
-                                <td><span class="score-badge" data-score="29.0">29</span></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td><span class="score-badge" data-score="24.0">24</span></td>
-                            
-                                <td><span class="score-badge" data-score="4.0">4</span></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td></td>
-                            
-                                <td></td>
-                            
-                                <td></td>
-                            
-                        </tr>
-                    
-                        <tr>
                             <td><a href="player_165919.html">Linda G</a></td>
                             <td>27</td>
                             <td>122</td>
@@ -1426,37 +1287,37 @@
                         </tr>
                     
                         <tr>
-                            <td><a href="player_13708.html">Cary Carmichael</a></td>
-                            <td>29</td>
-                            <td>121</td>
-                            <td>149</td>
-                            <td>8</td>
-                            <td>18.62</td>
-                            <td>8</td>
+                            <td><a href="player_164121.html">Greg Gorelick</a></td>
+                            <td>27</td>
+                            <td>122</td>
+                            <td>122</td>
                             <td>6</td>
-                            <td>14</td>
+                            <td>20.33</td>
                             <td>9</td>
+                            <td>6</td>
+                            <td>6</td>
                             <td>3</td>
+                            <td>2</td>
                             
-                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                                <td></td>
                             
-                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                                <td><span class="score-badge" data-score="27.0">27</span></td>
                             
-                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                                <td><span class="score-badge" data-score="29.0">29</span></td>
                             
-                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
-                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                                <td><span class="score-badge" data-score="24.0">24</span></td>
                             
-                                <td><span class="score-badge" data-score="22.0">22</span></td>
+                                <td><span class="score-badge" data-score="4.0">4</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                                 <td></td>
                             
                                 <td></td>
                             
-                                <td><span class="score-badge" data-score="23.0">23</span></td>
-                            
-                                <td><span class="score-badge" data-score="13.0">13</span></td>
+                                <td></td>
                             
                         </tr>
                     
@@ -1496,6 +1357,41 @@
                         </tr>
                     
                         <tr>
+                            <td><a href="player_13708.html">Cary Carmichael</a></td>
+                            <td>29</td>
+                            <td>121</td>
+                            <td>149</td>
+                            <td>8</td>
+                            <td>18.62</td>
+                            <td>8</td>
+                            <td>6</td>
+                            <td>14</td>
+                            <td>9</td>
+                            <td>3</td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
+                            
+                                <td></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
+                            
+                        </tr>
+                    
+                        <tr>
                             <td><a href="player_290095.html">Korey Ericson</a></td>
                             <td>31</td>
                             <td>119</td>
@@ -1527,41 +1423,6 @@
                                 <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td><span class="score-badge" data-score="11.0">11</span></td>
-                            
-                        </tr>
-                    
-                        <tr>
-                            <td><a href="player_13709.html">Matthew Talley</a></td>
-                            <td>32</td>
-                            <td>116</td>
-                            <td>116</td>
-                            <td>5</td>
-                            <td>23.2</td>
-                            <td>9</td>
-                            <td>7</td>
-                            <td>3</td>
-                            <td>5</td>
-                            <td>1</td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="16.0">16</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td></td>
-                            
-                                <td><span class="score-badge" data-score="25.0">25</span></td>
-                            
-                                <td><span class="score-badge" data-score="33.0">33</span></td>
-                            
-                                <td><span class="score-badge" data-score="23.0">23</span></td>
-                            
-                                <td></td>
-                            
-                                <td></td>
                             
                         </tr>
                     
@@ -1601,37 +1462,37 @@
                         </tr>
                     
                         <tr>
-                            <td><a href="player_71359.html">Ikela Lagapa</a></td>
-                            <td>34</td>
-                            <td>115</td>
-                            <td>142</td>
-                            <td>8</td>
-                            <td>17.75</td>
-                            <td>6</td>
+                            <td><a href="player_13709.html">Matthew Talley</a></td>
+                            <td>32</td>
+                            <td>116</td>
+                            <td>116</td>
+                            <td>5</td>
+                            <td>23.2</td>
                             <td>9</td>
-                            <td>6</td>
-                            <td>13</td>
-                            <td>6</td>
-                            
-                                <td><span class="score-badge" data-score="14.0">14</span></td>
-                            
-                                <td><span class="score-badge" data-score="19.0">19</span></td>
-                            
-                                <td><span class="score-badge" data-score="17.0">17</span></td>
-                            
-                                <td><span class="score-badge" data-score="21.0">21</span></td>
+                            <td>7</td>
+                            <td>3</td>
+                            <td>5</td>
+                            <td>1</td>
                             
                                 <td></td>
                             
-                                <td><span class="score-badge" data-score="22.0">22</span></td>
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
                             
                                 <td></td>
                             
-                                <td><span class="score-badge" data-score="13.0">13</span></td>
-                            
-                                <td><span class="score-badge" data-score="17.0">17</span></td>
-                            
                                 <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="25.0">25</span></td>
+                            
+                                <td><span class="score-badge" data-score="33.0">33</span></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                                <td></td>
+                            
+                                <td></td>
                             
                         </tr>
                     
@@ -1671,35 +1532,35 @@
                         </tr>
                     
                         <tr>
-                            <td><a href="player_95694.html">Tasha Lindstrom</a></td>
-                            <td>36</td>
-                            <td>111</td>
-                            <td>137</td>
+                            <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                            <td>34</td>
+                            <td>115</td>
+                            <td>142</td>
                             <td>8</td>
-                            <td>17.12</td>
+                            <td>17.75</td>
                             <td>6</td>
+                            <td>9</td>
                             <td>6</td>
-                            <td>11</td>
-                            <td>12</td>
-                            <td>5</td>
+                            <td>13</td>
+                            <td>6</td>
                             
-                                <td><span class="score-badge" data-score="20.0">20</span></td>
+                                <td><span class="score-badge" data-score="14.0">14</span></td>
                             
-                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
+                            
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
+                            
+                                <td><span class="score-badge" data-score="21.0">21</span></td>
                             
                                 <td></td>
                             
-                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                                <td><span class="score-badge" data-score="22.0">22</span></td>
                             
                                 <td></td>
                             
-                                <td><span class="score-badge" data-score="18.0">18</span></td>
+                                <td><span class="score-badge" data-score="13.0">13</span></td>
                             
-                                <td><span class="score-badge" data-score="11.0">11</span></td>
-                            
-                                <td><span class="score-badge" data-score="15.0">15</span></td>
-                            
-                                <td><span class="score-badge" data-score="16.0">16</span></td>
+                                <td><span class="score-badge" data-score="17.0">17</span></td>
                             
                                 <td><span class="score-badge" data-score="19.0">19</span></td>
                             
@@ -1737,6 +1598,41 @@
                                 <td><span class="score-badge" data-score="12.0">12</span></td>
                             
                                 <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td><a href="player_95694.html">Tasha Lindstrom</a></td>
+                            <td>36</td>
+                            <td>111</td>
+                            <td>137</td>
+                            <td>8</td>
+                            <td>17.12</td>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>11</td>
+                            <td>12</td>
+                            <td>5</td>
+                            
+                                <td><span class="score-badge" data-score="20.0">20</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="23.0">23</span></td>
+                            
+                                <td></td>
+                            
+                                <td><span class="score-badge" data-score="18.0">18</span></td>
+                            
+                                <td><span class="score-badge" data-score="11.0">11</span></td>
+                            
+                                <td><span class="score-badge" data-score="15.0">15</span></td>
+                            
+                                <td><span class="score-badge" data-score="16.0">16</span></td>
+                            
+                                <td><span class="score-badge" data-score="19.0">19</span></td>
                             
                         </tr>
                     
@@ -2763,7 +2659,7 @@
     </main>
 
     <footer class="container">
-        <small>Last updated: 2026-01-07 08:40:20</small>
+        <small>Last updated: 2026-01-08 08:39:15</small>
     </footer>
 
     <script>
