@@ -65,9 +65,12 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                         'total_weeks_played': 0,
                         'weekly_wins': 0,
                         'average_points_per_week': 0.0,
-                        'total_games_won': 0
+                        'total_games_won': 0,
+                        'total_games_played': 0,
+                        'perfect_nights_count': 0
                     }
                 target_stats_dict[player_id]['total_games_won'] += player_game_stats.get('1st', 0)
+                target_stats_dict[player_id]['total_games_played'] += player_game_stats.get('total_games', 0)
 
             for player_info in series_data['players']:
                 player_id = player_info['playerId']
@@ -86,7 +89,9 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                         'total_weeks_played': 0,
                         'weekly_wins': 0,
                         'average_points_per_week': 0.0,
-                        'total_games_won': 0
+                        'total_games_won': 0,
+                        'total_games_played': 0,
+                        'perfect_nights_count': 0
                     }
                 
                 target_stats_dict[player_id]['name'] = player_name
@@ -146,6 +151,9 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                             weekly_winner_id = player_id
 
                         if points == 35.0:
+                            if target_stats_dict and player_id in target_stats_dict:
+                                target_stats_dict[player_id]['perfect_nights_count'] += 1
+                            
                             player_name = player_map.get(player_id, 'Unknown Player')
                             perfect_night_entry = {
                                 'playerId': player_id,
@@ -190,6 +198,8 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
             combined_players_stats[player_id]['total_weeks_played'] += stats['total_weeks_played']
             combined_players_stats[player_id]['weekly_wins'] += stats['weekly_wins']
             combined_players_stats[player_id]['total_games_won'] += stats.get('total_games_won', 0)
+            combined_players_stats[player_id]['total_games_played'] += stats.get('total_games_played', 0)
+            combined_players_stats[player_id]['perfect_nights_count'] += stats.get('perfect_nights_count', 0)
             for i in range(1, 5):
                 combined_players_stats[player_id]['top_4_finishes'][i] += stats['top_4_finishes'][i]
         else:

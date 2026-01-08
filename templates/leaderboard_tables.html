@@ -17,11 +17,13 @@
                 <th onclick="sortTable('{{ league_prefix }}-total-points-table', 1)">Player</th>
                 <th onclick="sortTable('{{ league_prefix }}-total-points-table', 2, true)">Total Raw Points</th>
                 <th onclick="sortTable('{{ league_prefix }}-total-points-table', 3, true)">Weekly Wins</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 4, true)">Total Games Won</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 5, true)">Total Adjusted Points</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 6, true)">Seasons Played</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 7, true)">Total Weeks Attended</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 8, true)">Points/Week</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 4, true)">Perfect Nights</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 5, true)">Total Games Played</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 6, true)">Total Games Won</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 7, true)">Total Adjusted Points</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 8, true)">Seasons Played</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 9, true)">Total Weeks Attended</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 10, true)">Points/Week</th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +33,8 @@
                     <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
                     <td>{{ player.total_raw_points | format_number }}</td>
                     <td>{{ player.weekly_wins }}</td>
+                    <td>{{ player.perfect_nights_count }}</td>
+                    <td>{{ player.total_games_played }}</td>
                     <td>{{ player.total_games_won }}</td>
                     <td>{{ player.total_adjusted_points | format_number }}</td>
                     <td>{{ player.seasons_played_count }}</td>
