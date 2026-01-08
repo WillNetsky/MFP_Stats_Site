@@ -207,3 +207,64 @@ def find_almost_perfect_nights(all_series_data):
                                 'league_type': league_type
                             })
     return almost_perfect_nights
+
+def find_wooden_nickels(all_series_data):
+    """
+    Identifies instances where a player played 5 games in a league night and got last place in all of them (5 points total).
+    """
+    wooden_nickels = []
+
+    for series_data_raw in all_series_data:
+        series = series_data_raw['data']
+        series_id = series['seriesId']
+        series_name = series['name']
+        
+        year, season_name, league_name = parse_series_name(series_name)
+        league_type = 'Combined'
+        if league_name == "MFPinball":
+            league_type = 'MFP'
+        elif league_name == "MFLadies Pinball":
+            league_type = 'MFLP'
+        
+        tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series.get('tournamentIds', []))}
+        player_name_map = {p['playerId']: p['name'] for p in series.get('players', [])}
+
+        for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
+            tournament_id = int(tournament_id_str)
+            week_num = tournament_id_to_week_num.get(tournament_id)
+            if week_num is None:
+                continue
+
+            # Group games by player
+            player_games = defaultdict(list)
+            for game in games_list:
+                if 'playerIds' in game:
+                    for pid in game['playerIds']:
+                        player_games[pid].append(game)
+            
+            for player_id, p_games in player_games.items():
+                if len(p_games) == 5:
+                    all_last_place = True
+                    for game in p_games:
+                        # Check if player is last in resultPositions
+                        if 'resultPositions' in game and game['resultPositions']:
+                            if game['resultPositions'][-1] != player_id:
+                                all_last_place = False
+                                break
+                        else:
+                            all_last_place = False
+                            break
+                    
+                    if all_last_place:
+                        player_name = player_name_map.get(player_id, 'Unknown Player')
+                        wooden_nickels.append({
+                            'playerId': player_id,
+                            'name': player_name,
+                            'seriesId': series_id,
+                            'seriesName': series_name,
+                            'year': year,
+                            'season_name': season_name,
+                            'week_num': week_num,
+                            'league_type': league_type
+                        })
+    return wooden_nickels

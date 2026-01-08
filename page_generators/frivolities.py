@@ -1,5 +1,5 @@
 import os
-from data_processor import find_almost_perfect_nights, process_game_data, parse_series_name
+from data_processor import find_almost_perfect_nights, find_wooden_nickels, process_game_data, parse_series_name
 from config import OUTPUT_DIR
 
 def generate_frivolities_page(env, all_series_data):
@@ -8,6 +8,7 @@ def generate_frivolities_page(env, all_series_data):
     
     all_perfect_nights = []
     all_almost_perfect_nights = find_almost_perfect_nights(all_series_data)
+    all_wooden_nickels = find_wooden_nickels(all_series_data)
 
     for series_data_raw in all_series_data:
         series_data = series_data_raw['data']
@@ -51,11 +52,13 @@ def generate_frivolities_page(env, all_series_data):
 
     all_perfect_nights.sort(key=lambda x: (x['seriesId'], x['week_num']))
     all_almost_perfect_nights.sort(key=lambda x: (x['seriesId'], x['week_num']))
+    all_wooden_nickels.sort(key=lambda x: (x['seriesId'], x['week_num']))
 
     template = env.get_template('frivolities.html')
     with open(os.path.join(OUTPUT_DIR, 'frivolities.html'), 'w') as f:
         f.write(template.render(
             all_perfect_nights=all_perfect_nights,
-            all_almost_perfect_nights=all_almost_perfect_nights
+            all_almost_perfect_nights=all_almost_perfect_nights,
+            all_wooden_nickels=all_wooden_nickels
         ))
     print("Generated frivolities.html")

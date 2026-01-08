@@ -55,6 +55,30 @@
                     </tbody>
                 </table>
             </div>
+
+            <h2>Wooden Nickels (5 Losses)</h2>
+            <div class="table-container">
+                <table id="mfp-wooden-nickels-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-wooden-nickels-table', 0)">Player</th>
+                            <th onclick="sortTable('mfp-wooden-nickels-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-wooden-nickels-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_wooden_nickels %}
+                            {% if night.league_type == 'MFP' %}
+                                <tr>
+                                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td>{{ night.week_num }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </details>
 
@@ -108,6 +132,30 @@
                     </tbody>
                 </table>
             </div>
+
+            <h2>Wooden Nickels (5 Losses)</h2>
+            <div class="table-container">
+                <table id="mflp-wooden-nickels-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-wooden-nickels-table', 0)">Player</th>
+                            <th onclick="sortTable('mflp-wooden-nickels-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-wooden-nickels-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_wooden_nickels %}
+                            {% if night.league_type == 'MFLP' %}
+                                <tr>
+                                    <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td>{{ night.week_num }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </details>
 
@@ -148,6 +196,28 @@
                     </thead>
                     <tbody>
                         {% for night in all_almost_perfect_nights %}
+                            <tr>
+                                <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
+                                <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                <td>{{ night.week_num }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>Wooden Nickels (5 Losses)</h2>
+            <div class="table-container">
+                <table id="combined-wooden-nickels-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-wooden-nickels-table', 0)">Player</th>
+                            <th onclick="sortTable('combined-wooden-nickels-table', 1)">Season</th>
+                            <th onclick="sortTable('combined-wooden-nickels-table', 2, true)">Week</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for night in all_wooden_nickels %}
                             <tr>
                                 <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
                                 <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
