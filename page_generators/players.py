@@ -69,11 +69,10 @@ def generate_player_pages(env, all_series_data):
                     if year_key not in all_players_game_performance[player_id][game_name]:
                          all_players_game_performance[player_id][game_name][year_key] = defaultdict(int)
                     
-                    all_players_game_performance[player_id][game_name][year_key]['1st'] += stats['1st']
-                    all_players_game_performance[player_id][game_name][year_key]['2nd'] += stats['2nd_4p']
-                    all_players_game_performance[player_id][game_name][year_key]['2nd_3p'] += stats['2nd_3p']
-                    all_players_game_performance[player_id][game_name][year_key]['3rd'] += stats['3rd_4p']
-                    all_players_game_performance[player_id][game_name][year_key]['4th'] += stats['4th_combined']
+                    all_players_game_performance[player_id][game_name][year_key]['1st_place'] += stats['1st']
+                    all_players_game_performance[player_id][game_name][year_key]['2nd_place'] += stats['2nd_4p'] + stats['2nd_3p']
+                    all_players_game_performance[player_id][game_name][year_key]['3rd_place'] += stats['3rd_4p'] + stats['4th_combined']
+                    all_players_game_performance[player_id][game_name][year_key]['4th_place'] += stats['4th_combined']
                     all_players_game_performance[player_id][game_name][year_key]['total_plays'] += stats['total_plays']
 
         # Populate game log
@@ -102,14 +101,19 @@ def generate_player_pages(env, all_series_data):
                             pass
                     
                     num_players = len(game['playerIds'])
-                    result_str = f"{position}/{num_players}" if position != 'N/A' else "N/A"
+                    result_str = f"{position}" if position != 'N/A' else "N/A"
 
                     all_players_game_log[player_id].append({
                         'date': started_at,
-                        'season': series_data['name'],
+                        'league': league_name_parsed,
+                        'season': season_name_parsed,
+                        'year': year,
                         'week': week_num,
                         'machine': arena_name,
+                        'play_order': p_idx + 1,
                         'result': result_str,
+                        'position': position,
+                        'players': num_players,
                         'points': points
                     })
 

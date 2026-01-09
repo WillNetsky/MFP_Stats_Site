@@ -288,11 +288,15 @@
                 <thead>
                     <tr>
                         <th onclick="sortTable('game-log-table', 0)">Date</th>
-                        <th onclick="sortTable('game-log-table', 1)">Season</th>
-                        <th onclick="sortTable('game-log-table', 2)">Week</th>
-                        <th onclick="sortTable('game-log-table', 3)">Machine</th>
-                        <th onclick="sortTable('game-log-table', 4)">Result</th>
-                        <th onclick="sortTable('game-log-table', 5, true)">Points</th>
+                        <th onclick="sortTable('game-log-table', 1)">League</th>
+                        <th onclick="sortTable('game-log-table', 2)">Season</th>
+                        <th onclick="sortTable('game-log-table', 3)">Year</th>
+                        <th onclick="sortTable('game-log-table', 4)">Week</th>
+                        <th onclick="sortTable('game-log-table', 5)">Machine</th>
+                        <th onclick="sortTable('game-log-table', 6)">Players</th>
+                        <th onclick="sortTable('game-log-table', 7)">Position</th>
+                        <th onclick="sortTable('game-log-table', 8)">Result</th>
+                        <th onclick="sortTable('game-log-table', 9, true)">Points</th>
                     </tr>
                 </thead>
                 <tbody id="game-log-body">
@@ -552,7 +556,7 @@
             if (pageData.length === 0) {
                 const row = tbody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 6;
+                cell.colSpan = 10;
                 cell.textContent = "No games found.";
                 return;
             }
@@ -560,10 +564,14 @@
             pageData.forEach(game => {
                 const row = tbody.insertRow();
                 row.insertCell().textContent = game.date;
+                row.insertCell().textContent = game.league;
                 row.insertCell().textContent = game.season;
+                row.insertCell().textContent = game.year;
                 row.insertCell().textContent = game.week;
                 row.insertCell().textContent = game.machine;
-                row.insertCell().textContent = game.result;
+                row.insertCell().textContent = game.players;
+                row.insertCell().textContent = game.play_order; // Position (play order)
+                row.insertCell().textContent = game.position; // Result (finishing position)
 
                 // Color code points
                 const pointsCell = row.insertCell();
@@ -575,13 +583,15 @@
                 else if (points === 3) color = "rgb(255, 165, 0)"; // Orange
                 else if (points === 1) color = "rgb(255, 0, 0)"; // Red
 
-                // Use score-badge class for consistent styling if desired, or inline
-                // Let's use inline for simplicity here as it's specific to this table
-                // Actually, let's use the score-badge class and data-score attribute to leverage existing theme logic if possible,
-                // but the existing logic is for weekly totals (0-35).
-                // So let's stick to simple coloring or just text.
-                // The user asked for "every column of info", points is one.
                 pointsCell.textContent = game.points;
+                if (color) {
+                    pointsCell.style.backgroundColor = color;
+                    // Adjust text color for contrast if needed, but simple colors usually fine with black text
+                    if (points === 7 || points === 1) pointsCell.style.color = "white";
+                    else pointsCell.style.color = "black";
+                    pointsCell.style.fontWeight = "bold";
+                    pointsCell.style.textAlign = "center";
+                }
             });
 
             // Update pagination controls

@@ -60,7 +60,7 @@ def parse_series_name(series_name):
 
     if "MFPinball" in original_name or "MFP" in original_name:
         league_name = "MFPinball"
-    elif "Monterey Flipper Ladies Pinball" in original_name or "MFLadies" in original_name:
+    elif "Monterey Flipper Ladies Pinball" in original_name or "MFLadies" in original_name or "MFLPinball" in original_name:
         league_name = "MFLadies Pinball"
     
     season_keywords = ["Fall", "Summer", "Winter", "Spring"]
