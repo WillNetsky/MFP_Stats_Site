@@ -41,10 +41,7 @@ def generate_player_pages(env, all_series_data):
         season_name_parsed = corrected_info['season_name']
         league_name_parsed = corrected_info['league_name']
 
-        # Determine if this series should be included in arena stats based on date
-        # We use the 'year' and 'season_name' to approximate a date if exact start date isn't available
-        # Or we can check series_data['startDate'] if available.
-        # Let's try to parse startDate first.
+        # Determine series start date for grouping
         series_start_date = None
         if 'startDate' in series_data and series_data['startDate']:
             try:
@@ -71,9 +68,73 @@ def generate_player_pages(env, all_series_data):
                     if year_key not in all_players_game_performance[player_id][game_name]:
                          all_players_game_performance[player_id][game_name][year_key] = defaultdict(int)
                     
-                    all_players_game_performance[player_id][game_name][year_key]['1st_place'] += stats['1st_place']
-                    all_players_game_performance[player_id][game_name][year_key]['2nd_place'] += stats['2nd_place']
-                    all_players_game_performance[player_id][game_name][year_key]['3rd_place'] += stats['3rd_place']
+                    all_players_game_performance[player_id][game_name][year_key]['1st_place'] += stats['1st']
+                    all_players_game_performance[player_id][game_name][year_key]['2nd_place'] += stats['2nd_4p'] + stats['2nd_3p']
+                    all_players_game_performance[player_id][game_name][year_key]['3rd_place'] += stats['3rd_4p'] + stats['4th_combined']
+                    all_players_game_performance[player_id][game_name][year_key]['4th_place'] += stats['4th_combined'] # Note: 4th_combined includes 3rd in 3p, but here we want 4th place specifically?
+                    # Wait, process_game_data logic:
+                    # 3rd place in 4p -> '3rd_4p'
+                    # 3rd place in 3p -> '4th_combined' (weird naming in process_game_data, let's check)
+                    # 4th place in 4p -> '4th_combined'
+                    
+                    # Let's re-read process_game_data in data_processor.py to be sure.
+                    # if position == 3:
+                    #   if num_players == 4: by_machine...['3rd_4p'] += 1
+                    #   elif num_players == 3: by_machine...['4th_combined'] += 1
+                    # if position == 4:
+                    #   if num_players == 4: by_machine...['4th_combined'] += 1
+                    
+                    # So '4th_combined' actually means "Last place in a 3 or 4 player game" effectively?
+                    # Or rather "1 point game"?
+                    # In standard scoring:
+                    # 4p: 7, 5, 3, 1
+                    # 3p: 7, 4, 1
+                    
+                    # So 3rd in 3p gets 1 point. 4th in 4p gets 1 point.
+                    # 3rd in 4p gets 3 points.
+                    
+                    # The user wants: 1st, 2nd, 3rd, 4th.
+                    # 1st is clear.
+                    # 2nd is clear (2nd_4p + 2nd_3p).
+                    # 3rd is 3rd_4p.
+                    # 4th is 4th_combined (which includes 3rd in 3p and 4th in 4p).
+                    
+                    # Let's map them:
+                    # 1st Place: stats['1st']
+                    # 2nd Place: stats['2nd_4p'] + stats['2nd_3p']
+                    # 3rd Place: stats['3rd_4p']
+                    # 4th Place (or Last): stats['4th_combined']
+                    
+                    # Wait, 3rd place in a 3-player game is technically 3rd place, but gets 1 point (like 4th).
+                    # The user prompt says: "We should have 1st, 2nd, 2nd in a 3 player group, 3rd and 4th (3rd in 3player group)"
+                    # Wait, "2nd, 2nd in a 3 player group" -> implies separating them?
+                    # "3rd and 4th (3rd in 3player group)" -> implies combining 3rd(4p) and 4th(4p)/3rd(3p)?
+                    # Or maybe "3rd" column and "4th" column.
+                    
+                    # Let's re-read carefully: "We should have 1st, 2nd, 2nd in a 3 player group, 3rd and 4th (3rd in 3player group)"
+                    # This sounds like 5 columns?
+                    # 1. 1st
+                    # 2. 2nd (4p)
+                    # 3. 2nd (3p)
+                    # 4. 3rd (4p)
+                    # 5. 4th (4p) + 3rd (3p) -> This is what '4th_combined' currently tracks in data_processor.
+                    
+                    # So we need to track these separately in data_processor if they aren't already.
+                    # process_game_data currently tracks:
+                    # 1st
+                    # 2nd_4p
+                    # 2nd_3p
+                    # 3rd_4p
+                    # 4th_combined (3rd in 3p AND 4th in 4p)
+                    
+                    # So we have all the buckets we need in `stats`.
+                    # We just need to aggregate them correctly here.
+                    
+                    all_players_game_performance[player_id][game_name][year_key]['1st'] += stats['1st']
+                    all_players_game_performance[player_id][game_name][year_key]['2nd'] += stats['2nd_4p']
+                    all_players_game_performance[player_id][game_name][year_key]['2nd_3p'] += stats['2nd_3p']
+                    all_players_game_performance[player_id][game_name][year_key]['3rd'] += stats['3rd_4p']
+                    all_players_game_performance[player_id][game_name][year_key]['4th'] += stats['4th_combined']
                     all_players_game_performance[player_id][game_name][year_key]['total_plays'] += stats['total_plays']
 
         finals_tournament_ids = None
@@ -165,14 +226,7 @@ def generate_player_pages(env, all_series_data):
         data['mfp_seasons'].sort(key=lambda x: x['seriesId'], reverse=True)
         data['mflp_seasons'].sort(key=lambda x: x['seriesId'], reverse=True)
         
-        # Convert the year-based game performance to a flat structure for the template, 
-        # but keep the year data available for filtering.
-        # We'll pass the raw year-based dict to the template and let JS handle the filtering/aggregation.
-        # However, to avoid breaking existing logic, we can pre-calculate the "default" view (since 2024).
-        # Actually, passing the full data structure to JS is better for dynamic filtering.
-        # But we need to be careful about JSON serialization of defaultdicts again.
-        
-        # Let's convert defaultdicts to dicts for serialization
+        # Convert defaultdicts to dicts for serialization
         serializable_game_perf = {}
         for game_name, years_data in all_players_game_performance[player_id].items():
             serializable_game_perf[game_name] = {}

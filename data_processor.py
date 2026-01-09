@@ -121,30 +121,29 @@ def process_game_data(series_data):
                     continue 
 
                 by_player[player_id]['total_games'] += 1
+                by_machine[player_id][arena_name]['total_plays'] += 1
                 
                 if position == 1:
                     by_player[player_id]['1st'] += 1
+                    by_machine[player_id][arena_name]['1st'] += 1
                 elif position == 2:
                     if num_players == 4:
                         by_player[player_id]['2nd_4p'] += 1
+                        by_machine[player_id][arena_name]['2nd_4p'] += 1
                     elif num_players == 3:
                         by_player[player_id]['2nd_3p'] += 1
+                        by_machine[player_id][arena_name]['2nd_3p'] += 1
                 elif position == 3:
                     if num_players == 4:
                         by_player[player_id]['3rd_4p'] += 1
+                        by_machine[player_id][arena_name]['3rd_4p'] += 1
                     elif num_players == 3:
                         by_player[player_id]['4th_combined'] += 1
+                        by_machine[player_id][arena_name]['4th_combined'] += 1
                 elif position == 4:
                     if num_players == 4:
                         by_player[player_id]['4th_combined'] += 1
-
-                by_machine[player_id][arena_name]['total_plays'] += 1
-                if position == 1:
-                    by_machine[player_id][arena_name]['1st_place'] += 1
-                elif position == 2:
-                    by_machine[player_id][arena_name]['2nd_place'] += 1
-                elif position == 3:
-                    by_machine[player_id][arena_name]['3rd_place'] += 1
+                        by_machine[player_id][arena_name]['4th_combined'] += 1
 
     return {'by_machine': by_machine, 'by_player': by_player}
 

@@ -278,18 +278,11 @@
     {% endif %}
 
     <details>
-        <summary><h2>Performance by Machine (Since {{ arena_cutoff_date }})</h2></summary>
+        <summary><h2>Performance by Machine</h2></summary>
         <div class="filter-controls">
             <label for="start-year-filter">Starting Year:</label>
             <select id="start-year-filter" onchange="updateMachinePerformanceTable()">
-                <option value="2024" selected>2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
-                <option value="2018">2018</option>
-                <option value="all">All Time</option>
+                <!-- Options populated by JS -->
             </select>
         </div>
 
@@ -302,9 +295,12 @@
                     <tr>
                         <th onclick="sortTable('game-performance-table', 0)">Machine</th>
                         <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
-                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
-                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 2, true)">Avg Points</th>
+                        <th onclick="sortTable('game-performance-table', 3, true)">1st</th>
+                        <th onclick="sortTable('game-performance-table', 4, true)">2nd (4p)</th>
+                        <th onclick="sortTable('game-performance-table', 5, true)">2nd (3p)</th>
+                        <th onclick="sortTable('game-performance-table', 6, true)">3rd</th>
+                        <th onclick="sortTable('game-performance-table', 7, true)">Last</th>
                     </tr>
                 </thead>
                 <tbody id="game-performance-body">
@@ -315,7 +311,7 @@
     </details>
 
     {% if not game_performance %}
-        <p>No game performance data available for this player since {{ arena_cutoff_date }}.</p>
+        <p>No game performance data available for this player.</p>
     {% endif %}
 
     <!-- Player Performance Chart Section -->
@@ -384,6 +380,50 @@
             console.error("Failed to parse data:", e);
         }
 
+        function populateYearFilter() {
+            const startYearSelect = document.getElementById('start-year-filter');
+            if (!startYearSelect) return;
+
+            // Collect all years from machinePerformanceData
+            const years = new Set();
+            for (const gameData of Object.values(machinePerformanceData)) {
+                for (const year of Object.keys(gameData)) {
+                    years.add(parseInt(year));
+                }
+            }
+
+            // Sort years descending
+            const sortedYears = Array.from(years).sort((a, b) => b - a);
+
+            // Clear existing options
+            startYearSelect.innerHTML = '';
+
+            // Add year options
+            sortedYears.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === 2024) { // Default to 2024 if available
+                    option.selected = true;
+                }
+                startYearSelect.appendChild(option);
+            });
+
+            // Add "All Time" option
+            const allOption = document.createElement('option');
+            allOption.value = 'all';
+            allOption.textContent = 'All Time';
+            startYearSelect.appendChild(allOption);
+
+            // If 2024 wasn't in the list, select the most recent year
+            if (!sortedYears.includes(2024) && sortedYears.length > 0) {
+                 startYearSelect.value = sortedYears[0];
+            } else if (sortedYears.length === 0) {
+                 // Fallback if no data
+                 startYearSelect.value = 'all';
+            }
+        }
+
         function updateMachinePerformanceTable() {
             const startYearSelect = document.getElementById('start-year-filter');
             const startYearVal = startYearSelect.value;
@@ -398,48 +438,65 @@
             for (const [gameName, yearsData] of Object.entries(machinePerformanceData)) {
                 let totalPlays = 0;
                 let firsts = 0;
-                let seconds = 0;
-                let thirds = 0;
+                let seconds_4p = 0;
+                let seconds_3p = 0;
+                let thirds_4p = 0;
+                let fourths_combined = 0;
 
                 for (const [yearStr, stats] of Object.entries(yearsData)) {
                     const year = parseInt(yearStr);
                     if (year >= startYear) {
                         totalPlays += stats.total_plays;
-                        firsts += stats['1st_place'];
-                        seconds += stats['2nd_place'];
-                        thirds += stats['3rd_place'];
+                        firsts += stats['1st'];
+                        seconds_4p += stats['2nd'];
+                        seconds_3p += stats['2nd_3p'];
+                        thirds_4p += stats['3rd'];
+                        fourths_combined += stats['4th'];
                     }
                 }
 
                 if (totalPlays > 0) {
                     aggregatedStats[gameName] = {
                         total_plays: totalPlays,
-                        '1st_place': firsts,
-                        '2nd_place': seconds,
-                        '3rd_place': thirds
+                        '1st': firsts,
+                        '2nd': seconds_4p,
+                        '2nd_3p': seconds_3p,
+                        '3rd': thirds_4p,
+                        '4th': fourths_combined
                     };
                 }
             }
 
             // Sort by total plays descending (default)
-            // Or we can just convert to array and let the user sort using the table headers
             const sortedGames = Object.entries(aggregatedStats).sort((a, b) => b[1].total_plays - a[1].total_plays);
 
             if (sortedGames.length === 0) {
                 const row = tbody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 5;
+                cell.colSpan = 8;
                 cell.textContent = "No game performance data available for this period.";
                 return;
             }
 
             for (const [gameName, stats] of sortedGames) {
+                // Calculate Average Points
+                // 1st: 7pts, 2nd(4p): 5pts, 2nd(3p): 4pts, 3rd(4p): 3pts, Last: 1pt
+                const totalPoints = (stats['1st'] * 7) +
+                                    (stats['2nd'] * 5) +
+                                    (stats['2nd_3p'] * 4) +
+                                    (stats['3rd'] * 3) +
+                                    (stats['4th'] * 1);
+                const avgPoints = stats.total_plays > 0 ? (totalPoints / stats.total_plays).toFixed(2) : 0;
+
                 const row = tbody.insertRow();
                 row.insertCell().textContent = gameName;
                 row.insertCell().textContent = stats.total_plays;
-                row.insertCell().textContent = stats['1st_place'];
-                row.insertCell().textContent = stats['2nd_place'];
-                row.insertCell().textContent = stats['3rd_place'];
+                row.insertCell().textContent = avgPoints;
+                row.insertCell().textContent = stats['1st'];
+                row.insertCell().textContent = stats['2nd'];
+                row.insertCell().textContent = stats['2nd_3p'];
+                row.insertCell().textContent = stats['3rd'];
+                row.insertCell().textContent = stats['4th'];
             }
         }
 
@@ -682,6 +739,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Initial chart render
             updatePlayerChart();
+
+            // Populate year filter dynamically
+            populateYearFilter();
 
             // Initial machine performance table render
             updateMachinePerformanceTable();
