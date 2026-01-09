@@ -2,6 +2,7 @@ import os
 import json
 import re
 from collections import defaultdict
+from datetime import datetime
 
 from config import DATA_DIR
 from api_client import fetch_tournament_games
@@ -83,7 +84,30 @@ def apply_year_corrections_to_seasons_list(seasons_list):
     
     mflp_2018_assigned = 0
     for season in seasons_list:
+        # Check if we can get the year from the games data
+        series_data_raw = season.get('original_series_data')
+        if series_data_raw:
+            tournament_games_data = series_data_raw.get('tournament_games_data', {})
+            if tournament_games_data:
+                # Get the first tournament's games
+                first_tournament_games = next(iter(tournament_games_data.values()), [])
+                if first_tournament_games:
+                    # Get the first game's start date
+                    first_game = first_tournament_games[0]
+                    started_at = first_game.get('startedAt')
+                    if started_at:
+                        try:
+                            game_year = str(datetime.strptime(started_at.split('T')[0], "%Y-%m-%d").year)
+                            season['year'] = game_year
+                            continue # Skip other corrections if we found a valid year
+                        except ValueError:
+                            pass
+
         if season['seriesId'] == 5198 and season['league_name'] == "MFPinball":
+            season['year'] = "2026"
+            continue
+        
+        if season['seriesId'] == 5199 and season['league_name'] == "MFLadies Pinball":
             season['year'] = "2026"
             continue
 
@@ -172,6 +196,7 @@ def find_almost_perfect_nights(all_series_data):
 
         for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
             tournament_id = int(tournament_id_str)
+            week_num = tournament_id_to_week_num.get(tournament_id, 'N/A')
             
             # Group games by player
             player_games = defaultdict(list)
@@ -201,10 +226,9 @@ def find_almost_perfect_nights(all_series_data):
                                 'name': player_name_map.get(player_id, 'Unknown Player'),
                                 'seriesId': series_id,
                                 'seriesName': series_name,
-                                'tournamentId': tournament_id,
-                                'week_num': tournament_id_to_week_num.get(tournament_id, 'N/A'),
-                                'wins': 4,
-                                'total_games': 5,
+                                'year': year,
+                                'season_name': season_name,
+                                'week_num': week_num,
                                 'league_type': league_type
                             })
     return almost_perfect_nights
