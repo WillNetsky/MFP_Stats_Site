@@ -13,6 +13,7 @@ def generate_player_pages(env, all_series_data):
     unique_players = {}
     player_categorized_seasons = {}
     all_players_game_performance = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+    all_players_game_log = defaultdict(list)
     
     temp_season_entries = []
     for series_data_raw in all_series_data:
@@ -68,74 +69,49 @@ def generate_player_pages(env, all_series_data):
                     if year_key not in all_players_game_performance[player_id][game_name]:
                          all_players_game_performance[player_id][game_name][year_key] = defaultdict(int)
                     
-                    all_players_game_performance[player_id][game_name][year_key]['1st_place'] += stats['1st']
-                    all_players_game_performance[player_id][game_name][year_key]['2nd_place'] += stats['2nd_4p'] + stats['2nd_3p']
-                    all_players_game_performance[player_id][game_name][year_key]['3rd_place'] += stats['3rd_4p'] + stats['4th_combined']
-                    all_players_game_performance[player_id][game_name][year_key]['4th_place'] += stats['4th_combined'] # Note: 4th_combined includes 3rd in 3p, but here we want 4th place specifically?
-                    # Wait, process_game_data logic:
-                    # 3rd place in 4p -> '3rd_4p'
-                    # 3rd place in 3p -> '4th_combined' (weird naming in process_game_data, let's check)
-                    # 4th place in 4p -> '4th_combined'
-                    
-                    # Let's re-read process_game_data in data_processor.py to be sure.
-                    # if position == 3:
-                    #   if num_players == 4: by_machine...['3rd_4p'] += 1
-                    #   elif num_players == 3: by_machine...['4th_combined'] += 1
-                    # if position == 4:
-                    #   if num_players == 4: by_machine...['4th_combined'] += 1
-                    
-                    # So '4th_combined' actually means "Last place in a 3 or 4 player game" effectively?
-                    # Or rather "1 point game"?
-                    # In standard scoring:
-                    # 4p: 7, 5, 3, 1
-                    # 3p: 7, 4, 1
-                    
-                    # So 3rd in 3p gets 1 point. 4th in 4p gets 1 point.
-                    # 3rd in 4p gets 3 points.
-                    
-                    # The user wants: 1st, 2nd, 3rd, 4th.
-                    # 1st is clear.
-                    # 2nd is clear (2nd_4p + 2nd_3p).
-                    # 3rd is 3rd_4p.
-                    # 4th is 4th_combined (which includes 3rd in 3p and 4th in 4p).
-                    
-                    # Let's map them:
-                    # 1st Place: stats['1st']
-                    # 2nd Place: stats['2nd_4p'] + stats['2nd_3p']
-                    # 3rd Place: stats['3rd_4p']
-                    # 4th Place (or Last): stats['4th_combined']
-                    
-                    # Wait, 3rd place in a 3-player game is technically 3rd place, but gets 1 point (like 4th).
-                    # The user prompt says: "We should have 1st, 2nd, 2nd in a 3 player group, 3rd and 4th (3rd in 3player group)"
-                    # Wait, "2nd, 2nd in a 3 player group" -> implies separating them?
-                    # "3rd and 4th (3rd in 3player group)" -> implies combining 3rd(4p) and 4th(4p)/3rd(3p)?
-                    # Or maybe "3rd" column and "4th" column.
-                    
-                    # Let's re-read carefully: "We should have 1st, 2nd, 2nd in a 3 player group, 3rd and 4th (3rd in 3player group)"
-                    # This sounds like 5 columns?
-                    # 1. 1st
-                    # 2. 2nd (4p)
-                    # 3. 2nd (3p)
-                    # 4. 3rd (4p)
-                    # 5. 4th (4p) + 3rd (3p) -> This is what '4th_combined' currently tracks in data_processor.
-                    
-                    # So we need to track these separately in data_processor if they aren't already.
-                    # process_game_data currently tracks:
-                    # 1st
-                    # 2nd_4p
-                    # 2nd_3p
-                    # 3rd_4p
-                    # 4th_combined (3rd in 3p AND 4th in 4p)
-                    
-                    # So we have all the buckets we need in `stats`.
-                    # We just need to aggregate them correctly here.
-                    
                     all_players_game_performance[player_id][game_name][year_key]['1st'] += stats['1st']
                     all_players_game_performance[player_id][game_name][year_key]['2nd'] += stats['2nd_4p']
                     all_players_game_performance[player_id][game_name][year_key]['2nd_3p'] += stats['2nd_3p']
                     all_players_game_performance[player_id][game_name][year_key]['3rd'] += stats['3rd_4p']
                     all_players_game_performance[player_id][game_name][year_key]['4th'] += stats['4th_combined']
                     all_players_game_performance[player_id][game_name][year_key]['total_plays'] += stats['total_plays']
+
+        # Populate game log
+        tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series_data.get('tournamentIds', []))}
+        
+        for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
+            tournament_id = int(tournament_id_str)
+            week_num = tournament_id_to_week_num.get(tournament_id, 'N/A')
+            
+            for game in games_list:
+                arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
+                started_at = game.get('startedAt', 'N/A')
+                if started_at != 'N/A':
+                    started_at = started_at.split('T')[0] # Format YYYY-MM-DD
+                
+                for p_idx, player_id in enumerate(game['playerIds']):
+                    points = 'N/A'
+                    if 'resultPoints' in game and len(game['resultPoints']) > p_idx:
+                        points = game['resultPoints'][p_idx]
+                    
+                    position = 'N/A'
+                    if 'resultPositions' in game:
+                        try:
+                            position = game['resultPositions'].index(player_id) + 1
+                        except ValueError:
+                            pass
+                    
+                    num_players = len(game['playerIds'])
+                    result_str = f"{position}/{num_players}" if position != 'N/A' else "N/A"
+
+                    all_players_game_log[player_id].append({
+                        'date': started_at,
+                        'season': series_data['name'],
+                        'week': week_num,
+                        'machine': arena_name,
+                        'result': result_str,
+                        'points': points
+                    })
 
         finals_tournament_ids = None
         if league_name_parsed in load_finals_mapping() and year != "N/A" and season_name_parsed != "N/A":
@@ -261,6 +237,9 @@ def generate_player_pages(env, all_series_data):
         
         # Pass the specific player's chart data to the template
         player_chart_data = all_players_chart_data.get(player_id, {})
+        
+        # Sort game log by date descending
+        game_log = sorted(all_players_game_log[player_id], key=lambda x: x['date'], reverse=True)
 
         with open(os.path.join(OUTPUT_DIR, f"player_{player_id}.html"), 'w') as f:
             f.write(player_template.render(
@@ -270,7 +249,8 @@ def generate_player_pages(env, all_series_data):
                 game_performance=data['game_performance'],
                 arena_cutoff_date=ARENA_DATA_CUTOFF_DATE.strftime("%B %Y"),
                 player_chart_data=player_chart_data, # Pass chart data
-                all_players_chart_data=all_players_chart_data # Pass all data for comparison
+                all_players_chart_data=all_players_chart_data, # Pass all data for comparison
+                game_log=game_log # Pass game log
             ))
         print(f"Generated player_{player_id}.html")
 

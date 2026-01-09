@@ -114,13 +114,15 @@ def process_game_data(series_data):
             arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
             num_players = len(game['playerIds'])
 
-            for player_id in game['playerIds']:
+            for p_idx, player_id in enumerate(game['playerIds']):
                 try:
                     position = game['resultPositions'].index(player_id) + 1
                 except (ValueError, TypeError):
                     continue 
 
                 by_player[player_id]['total_games'] += 1
+                by_player[player_id][f'order_{p_idx + 1}'] += 1
+
                 by_machine[player_id][arena_name]['total_plays'] += 1
                 
                 if position == 1:
