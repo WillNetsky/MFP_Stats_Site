@@ -108,6 +108,9 @@
         .chart-toggle-button.active {
             background-color: var(--primary-hover);
         }
+        .chart-toggle-button.active:hover {
+            background-color: var(--primary-hover);
+        }
         .chart-toggle-button:hover {
             opacity: 0.9;
         }
@@ -139,173 +142,185 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ player.name }}</h1>
-    <p>IFPA Number: {{ player.ifpaId if player.ifpaId else 'N/A' }}</p>
+    <details open>
+        <summary><h1>{{ player.name }}</h1></summary>
+        <p>IFPA Number: {{ player.ifpaId if player.ifpaId else 'N/A' }}</p>
+    </details>
 
     {% if mfp_seasons %}
-        <h2>MFPinball Seasons</h2>
-        <div class="table-container">
-            <table id="mfp-player-seasons-table">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('mfp-player-seasons-table', 0, true)">Year</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 1)">Season</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 2)">League</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 3, true)">Final Position</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 4)">Trophy</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 5, true)">Total Adjusted Points</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 6, true)">Total Raw Points</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 7, true)">Weeks Played</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 8, true)">1st</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 9, true)">2nd</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 10, true)">3rd</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 11, true)">4th (3rd in 3p)</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 12, true)">2nd (3p)</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 13, true)">Avg Points/Week</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 14, true)">Best Week</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 15, true)">2nd Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 16, true)">3rd Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 17, true)">4th Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 18, true)">5th Best</th>
-                        <th onclick="sortTable('mfp-player-seasons-table', 19, true)">6th Best</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for season_data in mfp_seasons %}
-                        {% set stats = season_data.summary_stats %}
-                        {% set pos = stats.final_position %}
-                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
-                            <td>{{ season_data.year }}</td>
-                            <td>{{ season_data.season_name }}</td>
-                            <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
-                            <td>
-                                {% if stats.played_in_finals %}
-                                    {{ pos }} ({{ stats.qualifying_position }})
-                                {% else %}
-                                    {{ pos }}
-                                {% endif %}
-                            </td>
-                            <td class="trophy-icon"></td>
-                            <td>{{ stats.total_adjusted_points | format_number }}</td>
-                            <td>{{ stats.total_raw_points | format_number }}</td>
-                            <td>{{ stats.weeks_played }}</td>
-                            <td>{{ stats.game_outcomes['1st'] }}</td>
-                            <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
-                            <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
-                            <td>{{ stats.game_outcomes['4th_combined'] }}</td>
-                            <td>{{ stats.game_outcomes['2nd_3p'] }}</td>
-                            <td>{{ stats.average_points_per_week | format_number }}</td>
-                            {% for score in stats.top_6_scores %}
-                                <td>{{ score | score_color_code | safe }}</td>
-                            {% endfor %}
+        <details open>
+            <summary><h2>MFPinball Seasons</h2></summary>
+            <div class="table-container">
+                <table id="mfp-player-seasons-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-player-seasons-table', 0, true)">Year</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 1)">Season</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 2)">League</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 3, true)">Final Position</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 4)">Trophy</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 5, true)">Total Adjusted Points</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 6, true)">Total Raw Points</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 7, true)">Weeks Played</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 8, true)">1st</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 9, true)">2nd</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 10, true)">3rd</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 11, true)">4th (3rd in 3p)</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 12, true)">2nd (3p)</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 13, true)">Avg Points/Week</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 14, true)">Best Week</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 15, true)">2nd Best</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 16, true)">3rd Best</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 17, true)">4th Best</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 18, true)">5th Best</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 19, true)">6th Best</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {% for season_data in mfp_seasons %}
+                            {% set stats = season_data.summary_stats %}
+                            {% set pos = stats.final_position %}
+                            <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
+                                <td>{{ season_data.year }}</td>
+                                <td>{{ season_data.season_name }}</td>
+                                <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
+                                <td>
+                                    {% if stats.played_in_finals %}
+                                        {{ pos }} ({{ stats.qualifying_position }})
+                                    {% else %}
+                                        {{ pos }}
+                                    {% endif %}
+                                </td>
+                                <td class="trophy-icon"></td>
+                                <td>{{ stats.total_adjusted_points | format_number }}</td>
+                                <td>{{ stats.total_raw_points | format_number }}</td>
+                                <td>{{ stats.weeks_played }}</td>
+                                <td>{{ stats.game_outcomes['1st'] }}</td>
+                                <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
+                                <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
+                                <td>{{ stats.game_outcomes['4th_combined'] }}</td>
+                                <td>{{ stats.game_outcomes['2nd_3p'] }}</td>
+                                <td>{{ stats.average_points_per_week | format_number }}</td>
+                                {% for score in stats.top_6_scores %}
+                                    <td>{{ score | score_color_code | safe }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </details>
     {% endif %}
 
     {% if mflp_seasons %}
-        <h2>MFLadies Pinball Seasons</h2>
+        <details open>
+            <summary><h2>MFLadies Pinball Seasons</h2></summary>
+            <div class="table-container">
+                <table id="mflp-player-seasons-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-player-seasons-table', 0, true)">Year</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 1)">Season</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 2)">League</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 3, true)">Final Position</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 4)">Trophy</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 5, true)">Total Adjusted Points</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 6, true)">Total Raw Points</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 7, true)">Weeks Played</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 8, true)">1st</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 9, true)">2nd</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 10, true)">3rd</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 11, true)">4th (3rd in 3p)</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 12, true)">2nd (3p)</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 13, true)">Avg Points/Week</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 14, true)">Best Week</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 15, true)">2nd Best</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 16, true)">3rd Best</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 17, true)">4th Best</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 18, true)">5th Best</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 19, true)">6th Best</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for season_data in mflp_seasons %}
+                            {% set stats = season_data.summary_stats %}
+                            {% set pos = stats.final_position %}
+                            <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
+                                <td>{{ season_data.year }}</td>
+                                <td>{{ season_data.season_name }}</td>
+                                <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
+                                <td>
+                                    {% if stats.played_in_finals %}
+                                        {{ pos }} ({{ stats.qualifying_position }})
+                                    {% else %}
+                                        {{ pos }}
+                                    {% endif %}
+                                </td>
+                                <td class="trophy-icon"></td>
+                                <td>{{ stats.total_adjusted_points | format_number }}</td>
+                                <td>{{ stats.total_raw_points | format_number }}</td>
+                                <td>{{ stats.weeks_played }}</td>
+                                <td>{{ stats.game_outcomes['1st'] }}</td>
+                                <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
+                                <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
+                                <td>{{ stats.game_outcomes['4th_combined'] }}</td>
+                                <td>{{ stats.game_outcomes['2nd_3p'] }}</td>
+                                <td>{{ stats.average_points_per_week | format_number }}</td>
+                                {% for score in stats.top_6_scores %}
+                                    <td>{{ score | score_color_code | safe }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </details>
+    {% endif %}
+
+    <details>
+        <summary><h2>Performance by Machine (Since {{ arena_cutoff_date }})</h2></summary>
+        <div class="filter-controls">
+            <label for="start-year-filter">Starting Year:</label>
+            <select id="start-year-filter" onchange="updateMachinePerformanceTable()">
+                <option value="2024" selected>2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="all">All Time</option>
+            </select>
+        </div>
+
+        <!-- Data injection for machine performance -->
+        <div id="machine-performance-data" data-machine-perf="{{ game_performance | tojson | e }}" style="display: none;"></div>
+
         <div class="table-container">
-            <table id="mflp-player-seasons-table">
+            <table id="game-performance-table">
                 <thead>
                     <tr>
-                        <th onclick="sortTable('mflp-player-seasons-table', 0, true)">Year</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 1)">Season</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 2)">League</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 3, true)">Final Position</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 4)">Trophy</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 5, true)">Total Adjusted Points</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 6, true)">Total Raw Points</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 7, true)">Weeks Played</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 8, true)">1st</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 9, true)">2nd</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 10, true)">3rd</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 11, true)">4th (3rd in 3p)</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 12, true)">2nd (3p)</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 13, true)">Avg Points/Week</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 14, true)">Best Week</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 15, true)">2nd Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 16, true)">3rd Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 17, true)">4th Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 18, true)">5th Best</th>
-                        <th onclick="sortTable('mflp-player-seasons-table', 19, true)">6th Best</th>
+                        <th onclick="sortTable('game-performance-table', 0)">Machine</th>
+                        <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
+                        <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
+                        <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for season_data in mflp_seasons %}
-                        {% set stats = season_data.summary_stats %}
-                        {% set pos = stats.final_position %}
-                        <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
-                            <td>{{ season_data.year }}</td>
-                            <td>{{ season_data.season_name }}</td>
-                            <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
-                            <td>
-                                {% if stats.played_in_finals %}
-                                    {{ pos }} ({{ stats.qualifying_position }})
-                                {% else %}
-                                    {{ pos }}
-                                {% endif %}
-                            </td>
-                            <td class="trophy-icon"></td>
-                            <td>{{ stats.total_adjusted_points | format_number }}</td>
-                            <td>{{ stats.total_raw_points | format_number }}</td>
-                            <td>{{ stats.weeks_played }}</td>
-                            <td>{{ stats.game_outcomes['1st'] }}</td>
-                            <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
-                            <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
-                            <td>{{ stats.game_outcomes['4th_combined'] }}</td>
-                            <td>{{ stats.game_outcomes['2nd_3p'] }}</td>
-                            <td>{{ stats.average_points_per_week | format_number }}</td>
-                            {% for score in stats.top_6_scores %}
-                                <td>{{ score | score_color_code | safe }}</td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
+                <tbody id="game-performance-body">
+                    <!-- Populated by JS -->
                 </tbody>
             </table>
         </div>
+    </details>
+
+    {% if not game_performance %}
+        <p>No game performance data available for this player since {{ arena_cutoff_date }}.</p>
     {% endif %}
-
-    <h2>Performance by Machine</h2>
-    <div class="filter-controls">
-        <label for="start-year-filter">Starting Year:</label>
-        <select id="start-year-filter" onchange="updateMachinePerformanceTable()">
-            <option value="2024" selected>2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-            <option value="2019">2019</option>
-            <option value="2018">2018</option>
-            <option value="all">All Time</option>
-        </select>
-    </div>
-
-    <!-- Data injection for machine performance -->
-    <div id="machine-performance-data" data-machine-perf="{{ game_performance | tojson | e }}" style="display: none;"></div>
-
-    <div class="table-container">
-        <table id="game-performance-table">
-            <thead>
-                <tr>
-                    <th onclick="sortTable('game-performance-table', 0)">Machine</th>
-                    <th onclick="sortTable('game-performance-table', 1, true)">Total Plays</th>
-                    <th onclick="sortTable('game-performance-table', 2, true)">1st Place Finishes</th>
-                    <th onclick="sortTable('game-performance-table', 3, true)">2nd Place Finishes</th>
-                    <th onclick="sortTable('game-performance-table', 4, true)">3rd Place Finishes</th>
-                </tr>
-            </thead>
-            <tbody id="game-performance-body">
-                <!-- Populated by JS -->
-            </tbody>
-        </table>
-    </div>
 
     <!-- Player Performance Chart Section -->
     <details>
-        <summary>Performance Charts</summary>
+        <summary><h2>Performance Charts</h2></summary>
         <div class="chart-section">
             <!-- Data injection -->
             <div id="player-chart-data" data-chart-data="{{ player_chart_data | tojson | e }}" style="display: none;"></div>
@@ -688,15 +703,18 @@
             });
 
             // Re-render chart when details is opened to ensure correct sizing
-            const details = document.querySelector('details');
-            if (details) {
-                details.addEventListener('toggle', function() {
+            const details = document.querySelectorAll('details');
+            details.forEach(detail => {
+                detail.addEventListener('toggle', function() {
                     if (this.open) {
                         // Small delay to allow layout to settle
-                        setTimeout(updatePlayerChart, 10);
+                        setTimeout(() => {
+                            updatePlayerChart();
+                            // Also trigger resize for any other charts if needed
+                        }, 10);
                     }
                 });
-            }
+            });
         });
     </script>
 {% endblock %}
