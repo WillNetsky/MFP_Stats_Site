@@ -40,10 +40,10 @@
                             <td><a href="season_{{ season.seriesId }}.html">{{ season.league_name }}</a></td>
                             <td>{{ season.status }}</td>
                             <td>{{ season.has_finals }}</td>
-                            <td>{% if season.first_place_player %}<a href="player_{{ season.first_place_player.playerId }}.html">{{ season.first_place_player.name }}</a>{% else %}-{% endif %}</td>
-                            <td>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
-                            <td>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
-                            <td>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.first_place_player %}<a href="player_{{ season.first_place_player.playerId }}.html">{{ season.first_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
                             <td>{{ season.qualified_players_count }}</td>
                             <td>{{ season.qualification_threshold }}</td>
                         </tr>
@@ -82,10 +82,10 @@
                             <td><a href="season_{{ season.seriesId }}.html">{{ season.league_name }}</a></td>
                             <td>{{ season.status }}</td>
                             <td>{{ season.has_finals }}</td>
-                            <td>{% if season.first_place_player %}<a href="player_{{ season.first_place_player.playerId }}.html">{{ season.first_place_player.name }}</a>{% else %}-{% endif %}</td>
-                            <td>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
-                            <td>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
-                            <td>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.first_place_player %}<a href="player_{{ season.first_place_player.playerId }}.html">{{ season.first_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.second_place_player %}<a href="player_{{ season.second_place_player.playerId }}.html">{{ season.second_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.third_place_player %}<a href="player_{{ season.third_place_player.playerId }}.html">{{ season.third_place_player.name }}</a>{% else %}-{% endif %}</td>
+                            <td {% if season.status == 'active' %}style="font-style: italic;"{% endif %}>{% if season.fourth_place_player %}<a href="player_{{ season.fourth_place_player.playerId }}.html">{{ season.fourth_place_player.name }}</a>{% else %}-{% endif %}</td>
                             <td>{{ season.qualified_players_count }}</td>
                             <td>{{ season.qualification_threshold }}</td>
                         </tr>

@@ -14,6 +14,14 @@ EXCLUDED_SERIES_NAMES = [
     "MFPinball 2019 Spring Season  (clone)"
 ]
 
+# Variations of the MFLadies Pinball league name
+MFLADIES_LEAGUE_NAMES = [
+    "Monterey Flipper Ladies Pinball",
+    "MFLadies",
+    "MFLPinball",
+    "MF Ladies Pinball"
+]
+
 # -- Leaderboard Configuration --
 # Minimum number of weeks a player must have played in two consecutive seasons
 # to be eligible for the "Most Improved Player" leaderboard.

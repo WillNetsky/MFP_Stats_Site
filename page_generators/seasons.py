@@ -239,7 +239,8 @@ def generate_season_pages(env, all_series_data):
                         for p_idx, player_id in enumerate(game['playerIds']):
                             groups[game_set]['players'][player_id]['name'] = player_name_map.get(player_id, 'Unknown Player')
                             if p_idx < len(game['resultPoints']):
-                                points = float(game['resultPoints'][p_idx])
+                                points_val = game['resultPoints'][p_idx]
+                                points = float(points_val) if points_val is not None else 0.0
                                 groups[game_set]['players'][player_id]['games'][arena_name] = points
                                 groups[game_set]['players'][player_id]['total_points'] += points
                     

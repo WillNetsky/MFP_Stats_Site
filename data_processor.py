@@ -4,7 +4,7 @@ import re
 from collections import defaultdict
 from datetime import datetime
 
-from config import DATA_DIR
+from config import DATA_DIR, MFLADIES_LEAGUE_NAMES
 from api_client import fetch_tournament_games
 
 def load_all_series_data(excluded_series_names):
@@ -61,7 +61,7 @@ def parse_series_name(series_name):
 
     if "MFPinball" in original_name or "MFP" in original_name:
         league_name = "MFPinball"
-    elif "Monterey Flipper Ladies Pinball" in original_name or "MFLadies" in original_name or "MFLPinball" in original_name:
+    elif any(name in original_name for name in MFLADIES_LEAGUE_NAMES):
         league_name = "MFLadies Pinball"
     
     season_keywords = ["Fall", "Summer", "Winter", "Spring"]
