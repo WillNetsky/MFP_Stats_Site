@@ -1,6 +1,6 @@
 import os
 from copy import deepcopy
-from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, find_almost_perfect_nights, process_game_data, extract_year_from_series_data
+from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, find_almost_perfect_nights, process_game_data
 from api_client import fetch_finals_results
 from config import OUTPUT_DIR, MIN_WEEKS_FOR_IMPROVEMENT
 
