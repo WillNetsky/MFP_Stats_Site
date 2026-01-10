@@ -148,7 +148,7 @@
     </details>
 
     {% if mfp_seasons %}
-        <details open>
+        <details>
             <summary><h2>MFPinball Seasons</h2></summary>
             <div class="table-container">
                 <table id="mfp-player-seasons-table">
@@ -158,10 +158,10 @@
                             <th onclick="sortTable('mfp-player-seasons-table', 1)">Season</th>
                             <th onclick="sortTable('mfp-player-seasons-table', 2)">League</th>
                             <th onclick="sortTable('mfp-player-seasons-table', 3, true)">Final Position</th>
-                            <th onclick="sortTable('mfp-player-seasons-table', 4)">Trophy</th>
-                            <th onclick="sortTable('mfp-player-seasons-table', 5, true)">Total Adjusted Points</th>
-                            <th onclick="sortTable('mfp-player-seasons-table', 6, true)">Total Raw Points</th>
-                            <th onclick="sortTable('mfp-player-seasons-table', 7, true)">Weeks Played</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 4, true)">Total Adjusted Points</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 5, true)">Total Raw Points</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 6, true)">Weeks Played</th>
+                            <th onclick="sortTable('mfp-player-seasons-table', 7, true)">Weeks Won</th>
                             <th onclick="sortTable('mfp-player-seasons-table', 8, true)">1st</th>
                             <th onclick="sortTable('mfp-player-seasons-table', 9, true)">2nd</th>
                             <th onclick="sortTable('mfp-player-seasons-table', 10, true)">3rd</th>
@@ -190,11 +190,12 @@
                                     {% else %}
                                         {{ pos }}
                                     {% endif %}
+                                    <span class="trophy-icon"></span>
                                 </td>
-                                <td class="trophy-icon"></td>
                                 <td>{{ stats.total_adjusted_points | format_number }}</td>
                                 <td>{{ stats.total_raw_points | format_number }}</td>
                                 <td>{{ stats.weeks_played }}</td>
+                                <td>{{ stats.weekly_wins }}</td>
                                 <td>{{ stats.game_outcomes['1st'] }}</td>
                                 <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
                                 <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
@@ -213,7 +214,7 @@
     {% endif %}
 
     {% if mflp_seasons %}
-        <details open>
+        <details>
             <summary><h2>MFLadies Pinball Seasons</h2></summary>
             <div class="table-container">
                 <table id="mflp-player-seasons-table">
@@ -223,10 +224,10 @@
                             <th onclick="sortTable('mflp-player-seasons-table', 1)">Season</th>
                             <th onclick="sortTable('mflp-player-seasons-table', 2)">League</th>
                             <th onclick="sortTable('mflp-player-seasons-table', 3, true)">Final Position</th>
-                            <th onclick="sortTable('mflp-player-seasons-table', 4)">Trophy</th>
-                            <th onclick="sortTable('mflp-player-seasons-table', 5, true)">Total Adjusted Points</th>
-                            <th onclick="sortTable('mflp-player-seasons-table', 6, true)">Total Raw Points</th>
-                            <th onclick="sortTable('mflp-player-seasons-table', 7, true)">Weeks Played</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 4, true)">Total Adjusted Points</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 5, true)">Total Raw Points</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 6, true)">Weeks Played</th>
+                            <th onclick="sortTable('mflp-player-seasons-table', 7, true)">Weeks Won</th>
                             <th onclick="sortTable('mflp-player-seasons-table', 8, true)">1st</th>
                             <th onclick="sortTable('mflp-player-seasons-table', 9, true)">2nd</th>
                             <th onclick="sortTable('mflp-player-seasons-table', 10, true)">3rd</th>
@@ -255,11 +256,12 @@
                                     {% else %}
                                         {{ pos }}
                                     {% endif %}
+                                    <span class="trophy-icon"></span>
                                 </td>
-                                <td class="trophy-icon"></td>
                                 <td>{{ stats.total_adjusted_points | format_number }}</td>
                                 <td>{{ stats.total_raw_points | format_number }}</td>
                                 <td>{{ stats.weeks_played }}</td>
+                                <td>{{ stats.weekly_wins }}</td>
                                 <td>{{ stats.game_outcomes['1st'] }}</td>
                                 <td>{{ stats.game_outcomes['2nd_4p'] }}</td>
                                 <td>{{ stats.game_outcomes['3rd_4p'] }}</td>
