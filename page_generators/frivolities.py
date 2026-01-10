@@ -1,5 +1,5 @@
 import os
-from data_processor import find_almost_perfect_nights, find_wooden_nickels, find_biggest_drops, process_game_data, parse_series_name, extract_year_from_series_data
+from data_processor import find_almost_perfect_nights, find_wooden_nickels, find_biggest_drops, find_tournaments_on_this_day, process_game_data, parse_series_name, extract_year_from_series_data
 from config import OUTPUT_DIR
 
 def generate_frivolities_page(env, all_series_data):
@@ -10,6 +10,7 @@ def generate_frivolities_page(env, all_series_data):
     all_almost_perfect_nights = find_almost_perfect_nights(all_series_data)
     all_wooden_nickels = find_wooden_nickels(all_series_data)
     all_biggest_drops = find_biggest_drops(all_series_data)
+    tournaments_on_this_day = find_tournaments_on_this_day(all_series_data)
 
     for series_data_raw in all_series_data:
         series_data = series_data_raw['data']
@@ -66,6 +67,7 @@ def generate_frivolities_page(env, all_series_data):
             all_perfect_nights=all_perfect_nights,
             all_almost_perfect_nights=all_almost_perfect_nights,
             all_wooden_nickels=all_wooden_nickels,
-            all_biggest_drops=all_biggest_drops[:50] # Limit to top 50
+            all_biggest_drops=all_biggest_drops[:50], # Limit to top 50
+            tournaments_on_this_day=tournaments_on_this_day
         ))
     print("Generated frivolities.html")

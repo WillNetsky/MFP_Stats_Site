@@ -391,3 +391,65 @@ def find_biggest_drops(all_series_data):
     # Sort by drop amount descending
     biggest_drops.sort(key=lambda x: x['drop'], reverse=True)
     return biggest_drops
+
+def find_tournaments_on_this_day(all_series_data):
+    """
+    Finds tournaments that happened on the current day (month and day) in any year.
+    """
+    today = datetime.now()
+    today_month = today.month
+    today_day = today.day
+    
+    tournaments_on_this_day = []
+
+    for series_data_raw in all_series_data:
+        series = series_data_raw['data']
+        series_id = series['seriesId']
+        series_name = series['name']
+        
+        year, season_name, league_name = parse_series_name(series_name)
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+
+        tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series.get('tournamentIds', []))}
+        player_name_map = {p['playerId']: p['name'] for p in series.get('players', [])}
+
+        for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
+            tournament_id = int(tournament_id_str)
+            week_num = tournament_id_to_week_num.get(tournament_id, 'N/A')
+            
+            # Check the date of the first game in the tournament
+            if games_list:
+                first_game = games_list[0]
+                started_at = first_game.get('startedAt')
+                if started_at:
+                    try:
+                        game_date = datetime.strptime(started_at.split('T')[0], "%Y-%m-%d")
+                        if game_date.month == today_month and game_date.day == today_day:
+                            
+                            # Find the winner of the tournament
+                            winner_name = "Unknown"
+                            winner_id = None
+                            if 'tournamentPoints' in series and str(tournament_id) in series['tournamentPoints']:
+                                player_points_map = series['tournamentPoints'][str(tournament_id)]
+                                if player_points_map:
+                                    winner_id_str = max(player_points_map, key=lambda p_id: float(player_points_map[p_id]))
+                                    winner_id = int(winner_id_str)
+                                    winner_name = player_name_map.get(winner_id, "Unknown")
+
+                            tournaments_on_this_day.append({
+                                'date': game_date.strftime("%Y-%m-%d"),
+                                'year': game_date.year,
+                                'seriesId': series_id,
+                                'seriesName': series_name,
+                                'week_num': week_num,
+                                'winner_name': winner_name,
+                                'winner_id': winner_id
+                            })
+                    except ValueError:
+                        pass
+    
+    # Sort by year descending
+    tournaments_on_this_day.sort(key=lambda x: x['year'], reverse=True)
+    return tournaments_on_this_day
