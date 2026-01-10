@@ -163,6 +163,14 @@ def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
 
         # Process finals tournaments
         year, season_name_parsed, league_name_parsed = parse_series_name_func(series['name'])
+        
+        # Check if league name is in finals mapping (handling MFLadies variations)
+        from config import MFLADIES_LEAGUE_NAMES
+        if league_name_parsed == "MFLadies Pinball":
+             # Try to find if any variation is in the mapping, though mapping likely uses the canonical name
+             # The mapping in data_processor uses "MFLadies Pinball" as key.
+             pass
+
         if league_name_parsed in finals_mapping and year != "N/A" and season_name_parsed != "N/A":
             key = f"{season_name_parsed} {year}"
             finals_tournament_ids = finals_mapping[league_name_parsed].get(key)

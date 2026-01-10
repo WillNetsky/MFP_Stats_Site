@@ -78,6 +78,26 @@ def parse_series_name(series_name):
 
     return year, season_name, league_name
 
+def extract_year_from_series_data(series_data_raw):
+    """
+    Attempts to extract the year from the series data (games start date).
+    Returns the year as a string if found, otherwise None.
+    """
+    tournament_games_data = series_data_raw.get('tournament_games_data', {})
+    if tournament_games_data:
+        # Get the first tournament's games
+        first_tournament_games = next(iter(tournament_games_data.values()), [])
+        if first_tournament_games:
+            # Get the first game's start date
+            first_game = first_tournament_games[0]
+            started_at = first_game.get('startedAt')
+            if started_at:
+                try:
+                    return str(datetime.strptime(started_at.split('T')[0], "%Y-%m-%d").year)
+                except ValueError:
+                    pass
+    return None
+
 def apply_year_corrections_to_seasons_list(seasons_list):
     """Applies specific year correction logic to a list of season entries."""
     seasons_list.sort(key=lambda x: x['seriesId'])
@@ -87,21 +107,10 @@ def apply_year_corrections_to_seasons_list(seasons_list):
         # Check if we can get the year from the games data
         series_data_raw = season.get('original_series_data')
         if series_data_raw:
-            tournament_games_data = series_data_raw.get('tournament_games_data', {})
-            if tournament_games_data:
-                # Get the first tournament's games
-                first_tournament_games = next(iter(tournament_games_data.values()), [])
-                if first_tournament_games:
-                    # Get the first game's start date
-                    first_game = first_tournament_games[0]
-                    started_at = first_game.get('startedAt')
-                    if started_at:
-                        try:
-                            game_year = str(datetime.strptime(started_at.split('T')[0], "%Y-%m-%d").year)
-                            season['year'] = game_year
-                            continue # Skip other corrections if we found a valid year
-                        except ValueError:
-                            pass
+            data_year = extract_year_from_series_data(series_data_raw)
+            if data_year:
+                season['year'] = data_year
+                continue # Skip other corrections if we found a valid year
 
         if season['seriesId'] == 5198 and season['league_name'] == "MFPinball":
             season['year'] = "2026"
@@ -110,6 +119,10 @@ def apply_year_corrections_to_seasons_list(seasons_list):
         if season['seriesId'] == 5199 and season['league_name'] == "MFLadies Pinball":
             season['year'] = "2026"
             continue
+        
+        # Correction for MFPinball Winter 2017 (actually 2018)
+        if season['seriesName'] == "MFPinball Winter 2017" and season['year'] == "2017":
+             season['year'] = "2018"
 
         if season['year'] == "N/A":
             if season['league_name'] == "MFLadies Pinball":
@@ -185,6 +198,11 @@ def find_almost_perfect_nights(all_series_data):
         series_name = series['name']
         
         year, season_name, league_name = parse_series_name(series_name)
+        
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+
         league_type = 'Combined'
         if league_name == "MFPinball":
             league_type = 'MFP'
@@ -245,6 +263,11 @@ def find_wooden_nickels(all_series_data):
         series_name = series['name']
         
         year, season_name, league_name = parse_series_name(series_name)
+        
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+
         league_type = 'Combined'
         if league_name == "MFPinball":
             league_type = 'MFP'
@@ -306,6 +329,11 @@ def find_biggest_drops(all_series_data):
         series_name = series['name']
         
         year, season_name, league_name = parse_series_name(series_name)
+        
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+
         league_type = 'Combined'
         if league_name == "MFPinball":
             league_type = 'MFP'

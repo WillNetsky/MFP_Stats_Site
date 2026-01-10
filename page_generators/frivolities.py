@@ -1,5 +1,5 @@
 import os
-from data_processor import find_almost_perfect_nights, find_wooden_nickels, find_biggest_drops, process_game_data, parse_series_name
+from data_processor import find_almost_perfect_nights, find_wooden_nickels, find_biggest_drops, process_game_data, parse_series_name, extract_year_from_series_data
 from config import OUTPUT_DIR
 
 def generate_frivolities_page(env, all_series_data):
@@ -17,6 +17,10 @@ def generate_frivolities_page(env, all_series_data):
         series_name = series_data['name']
         year, season_name_parsed, league_name_parsed = parse_series_name(series_name)
         
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+
         player_map = {p['playerId']: p['name'] for p in series_data['players']}
         tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series_data['tournamentIds'])}
 

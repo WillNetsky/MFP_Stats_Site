@@ -1,6 +1,6 @@
 import os
 from collections import defaultdict
-from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data
+from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data, extract_year_from_series_data
 from api_client import fetch_finals_results, fetch_tournament_games
 from config import OUTPUT_DIR
 from page_generators.helpers import get_qualification_threshold
@@ -23,6 +23,11 @@ def generate_seasons_page(env, all_series_data):
         series_name = series['name']
         
         year, season_name_parsed, league_name_parsed = parse_series_name(series_name)
+        
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+
         all_years.add(year)
 
         season_entry = {
@@ -165,6 +170,11 @@ def generate_season_pages(env, all_series_data):
         series_name = series['name']
         
         year, season_name_parsed, league_name_parsed = parse_series_name(series_name)
+        
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+
         processed_seasons_for_pages.append({
             'seriesId': series_id,
             'seriesName': series_name,

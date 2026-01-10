@@ -1,7 +1,7 @@
 import os
 from collections import defaultdict
 from datetime import datetime
-from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data
+from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data, extract_year_from_series_data
 from api_client import fetch_finals_results
 from config import OUTPUT_DIR
 
