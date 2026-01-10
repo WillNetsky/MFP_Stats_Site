@@ -135,8 +135,16 @@
         .filter-controls {
             margin-bottom: 10px;
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 10px;
+        }
+        .filter-controls input, .filter-controls select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--form-element-border-color);
+            background-color: var(--form-element-background-color);
+            color: var(--color);
         }
     </style>
 {% endblock %}
@@ -282,8 +290,23 @@
     <details>
         <summary><h2>Game Log</h2></summary>
         <div class="filter-controls">
-            <label for="game-log-filter">Filter by Machine:</label>
             <input type="text" id="game-log-filter" placeholder="Search machine..." onkeyup="filterGameLog()">
+            <select id="game-log-league-filter" onchange="filterGameLog()">
+                <option value="all">All Leagues</option>
+                <option value="MFPinball">MFPinball</option>
+                <option value="MFLadies Pinball">MFLadies Pinball</option>
+            </select>
+            <select id="game-log-season-filter" onchange="filterGameLog()">
+                <option value="all">All Seasons</option>
+                <option value="Winter">Winter</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+                <option value="Fall">Fall</option>
+            </select>
+            <select id="game-log-year-filter" onchange="filterGameLog()">
+                <option value="all">All Years</option>
+                <!-- Years populated by JS -->
+            </select>
         </div>
         <div class="table-container">
             <table id="game-log-table">
@@ -471,6 +494,30 @@
             }
         }
 
+        function populateGameLogYearFilter() {
+            const yearSelect = document.getElementById('game-log-year-filter');
+            if (!yearSelect) return;
+
+            const years = new Set();
+            gameLogData.forEach(game => {
+                if (game.year && game.year !== 'N/A') {
+                    years.add(game.year);
+                }
+            });
+
+            const sortedYears = Array.from(years).sort((a, b) => b - a);
+
+            // Clear existing options except "All Years"
+            yearSelect.innerHTML = '<option value="all">All Years</option>';
+
+            sortedYears.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            });
+        }
+
         function updateMachinePerformanceTable() {
             const startYearSelect = document.getElementById('start-year-filter');
             const startYearVal = startYearSelect.value;
@@ -577,29 +624,50 @@
 
                 // Color code points
                 const pointsCell = row.insertCell();
-                let color = "";
                 const points = parseFloat(game.points);
-                if (points === 7) color = "rgb(0,128,0)"; // Green
-                else if (points === 5) color = "rgb(144, 238, 144)"; // Light Green
-                else if (points === 4) color = "rgb(255, 255, 224)"; // Light Yellow
-                else if (points === 3) color = "rgb(255, 165, 0)"; // Orange
-                else if (points === 1) color = "rgb(255, 0, 0)"; // Red
+                const displayPoints = Number.isInteger(points) ? parseInt(points) : points;
 
-                pointsCell.textContent = game.points;
-                if (color) {
-                    pointsCell.style.backgroundColor = color;
-                    // Adjust text color for contrast if needed, but simple colors usually fine with black text
-                    if (points === 7 || points === 1) pointsCell.style.color = "white";
-                    else pointsCell.style.color = "black";
-                    pointsCell.style.fontWeight = "bold";
-                    pointsCell.style.textAlign = "center";
+                pointsCell.style.textAlign = "center";
+
+                if (!isNaN(points)) {
+                    const badge = document.createElement('span');
+                    badge.className = 'score-badge';
+                    badge.textContent = displayPoints;
+
+                    // Color logic: Fade from Red (1) -> Transparent (4) -> Green (7)
+                    let backgroundColor = 'transparent';
+                    let textColor = 'var(--color)'; // Default text color
+
+                    if (points > 4) {
+                        // Fade to Green (40, 167, 69)
+                        // 4 -> 0 opacity, 7 -> 1 opacity
+                        const opacity = (points - 4) / 3;
+                        backgroundColor = `rgba(40, 167, 69, ${opacity})`;
+                        // For higher opacity, switch to white text for contrast
+                        if (opacity > 0.5) textColor = 'white';
+                    } else if (points < 4) {
+                        // Fade to Red (220, 53, 69)
+                        // 4 -> 0 opacity, 1 -> 1 opacity
+                        const opacity = (4 - points) / 3;
+                        backgroundColor = `rgba(220, 53, 69, ${opacity})`;
+                        // For higher opacity, switch to white text for contrast
+                        if (opacity > 0.5) textColor = 'white';
+                    }
+                    // If points == 4, it stays transparent with default text color
+
+                    badge.style.backgroundColor = backgroundColor;
+                    badge.style.color = textColor;
+
+                    pointsCell.appendChild(badge);
+                } else {
+                    pointsCell.textContent = displayPoints;
                 }
             });
 
             // Update pagination controls
-            document.getElementById('page-info').textContent = `Page ${currentPage} of ${Math.ceil(filteredGameLog.length / rowsPerPage)}`;
+            document.getElementById('page-info').textContent = `Page ${currentPage} of ${Math.ceil(filteredGameLog.length / rowsPerPage) || 1}`;
             document.getElementById('prev-page-btn').disabled = currentPage === 1;
-            document.getElementById('next-page-btn').disabled = currentPage === Math.ceil(filteredGameLog.length / rowsPerPage);
+            document.getElementById('next-page-btn').disabled = currentPage === Math.ceil(filteredGameLog.length / rowsPerPage) || filteredGameLog.length === 0;
         }
 
         function changePage(delta) {
@@ -608,10 +676,19 @@
         }
 
         function filterGameLog() {
-            const filterText = document.getElementById('game-log-filter').value.toLowerCase();
-            filteredGameLog = gameLogData.filter(game =>
-                game.machine.toLowerCase().includes(filterText)
-            );
+            const machineFilter = document.getElementById('game-log-filter').value.toLowerCase();
+            const leagueFilter = document.getElementById('game-log-league-filter').value;
+            const seasonFilter = document.getElementById('game-log-season-filter').value;
+            const yearFilter = document.getElementById('game-log-year-filter').value;
+
+            filteredGameLog = gameLogData.filter(game => {
+                const matchesMachine = game.machine.toLowerCase().includes(machineFilter);
+                const matchesLeague = leagueFilter === 'all' || game.league === leagueFilter;
+                const matchesSeason = seasonFilter === 'all' || game.season === seasonFilter;
+                const matchesYear = yearFilter === 'all' || game.year === yearFilter;
+
+                return matchesMachine && matchesLeague && matchesSeason && matchesYear;
+            });
             currentPage = 1;
             renderGameLogTable();
         }
@@ -858,6 +935,7 @@
 
             // Populate year filter dynamically
             populateYearFilter();
+            populateGameLogYearFilter();
 
             // Initial machine performance table render
             updateMachinePerformanceTable();
