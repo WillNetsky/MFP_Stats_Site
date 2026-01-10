@@ -453,3 +453,85 @@ def find_tournaments_on_this_day(all_series_data):
     # Sort by year descending
     tournaments_on_this_day.sort(key=lambda x: x['year'], reverse=True)
     return tournaments_on_this_day
+
+def find_one_hit_wonders(all_series_data):
+    """
+    Identifies players who have only played in exactly one league night across all series.
+    """
+    player_appearances = defaultdict(list)
+    player_name_map = {}
+
+    for series_data_raw in all_series_data:
+        series = series_data_raw['data']
+        series_id = series['seriesId']
+        series_name = series['name']
+        
+        year, season_name, league_name = parse_series_name(series_name)
+        data_year = extract_year_from_series_data(series_data_raw)
+        if data_year:
+            year = data_year
+            
+        league_type = 'Combined'
+        if league_name == "MFPinball":
+            league_type = 'MFP'
+        elif league_name == "MFLadies Pinball":
+            league_type = 'MFLP'
+
+        tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series.get('tournamentIds', []))}
+        
+        # Update player name map
+        for p in series.get('players', []):
+            player_name_map[p['playerId']] = p['name']
+
+        if 'tournamentPoints' in series and series['tournamentPoints']:
+            for tournament_id_str, player_points_map_val in series['tournamentPoints'].items():
+                current_tournament_id = int(tournament_id_str)
+                week_num = tournament_id_to_week_num.get(current_tournament_id)
+                if week_num is None:
+                    continue
+
+                # Get date for this tournament if available
+                tournament_date = "Unknown Date"
+                if 'tournament_games_data' in series_data_raw and tournament_id_str in series_data_raw['tournament_games_data']:
+                    games = series_data_raw['tournament_games_data'][tournament_id_str]
+                    if games:
+                        first_game = games[0]
+                        started_at = first_game.get('startedAt')
+                        if started_at:
+                            try:
+                                tournament_date = datetime.strptime(started_at.split('T')[0], "%Y-%m-%d").strftime("%Y-%m-%d")
+                            except ValueError:
+                                pass
+
+                if isinstance(player_points_map_val, dict):
+                    for player_id_str, points_str in player_points_map_val.items():
+                        points = float(points_str)
+                        player_id = int(player_id_str)
+                        
+                        player_appearances[player_id].append({
+                            'date': tournament_date,
+                            'seriesId': series_id,
+                            'seriesName': series_name,
+                            'week_num': week_num,
+                            'points': points,
+                            'league_type': league_type
+                        })
+
+    one_hit_wonders = []
+    for player_id, appearances in player_appearances.items():
+        if len(appearances) == 1:
+            appearance = appearances[0]
+            one_hit_wonders.append({
+                'playerId': player_id,
+                'name': player_name_map.get(player_id, 'Unknown Player'),
+                'date': appearance['date'],
+                'seriesId': appearance['seriesId'],
+                'seriesName': appearance['seriesName'],
+                'week_num': appearance['week_num'],
+                'points': appearance['points'],
+                'league_type': appearance['league_type']
+            })
+    
+    # Sort by date descending
+    one_hit_wonders.sort(key=lambda x: x['date'], reverse=True)
+    return one_hit_wonders

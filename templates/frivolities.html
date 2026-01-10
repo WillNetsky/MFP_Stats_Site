@@ -149,6 +149,34 @@
                     </tbody>
                 </table>
             </div>
+
+            <h2>One Hit Wonders</h2>
+            <div class="table-container">
+                <table id="mfp-one-hit-wonders-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mfp-one-hit-wonders-table', 0)">Date</th>
+                            <th onclick="sortTable('mfp-one-hit-wonders-table', 1)">Player</th>
+                            <th onclick="sortTable('mfp-one-hit-wonders-table', 2)">Season</th>
+                            <th onclick="sortTable('mfp-one-hit-wonders-table', 3, true)">Week</th>
+                            <th onclick="sortTable('mfp-one-hit-wonders-table', 4, true)">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in one_hit_wonders %}
+                            {% if player.league_type == 'MFP' %}
+                                <tr>
+                                    <td>{{ player.date }}</td>
+                                    <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                    <td><a href="season_{{ player.seriesId }}.html">{{ player.seriesName }}</a></td>
+                                    <td>{{ player.week_num }}</td>
+                                    <td>{{ player.points | format_number }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </details>
 
@@ -258,6 +286,34 @@
                     </tbody>
                 </table>
             </div>
+
+            <h2>One Hit Wonders</h2>
+            <div class="table-container">
+                <table id="mflp-one-hit-wonders-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('mflp-one-hit-wonders-table', 0)">Date</th>
+                            <th onclick="sortTable('mflp-one-hit-wonders-table', 1)">Player</th>
+                            <th onclick="sortTable('mflp-one-hit-wonders-table', 2)">Season</th>
+                            <th onclick="sortTable('mflp-one-hit-wonders-table', 3, true)">Week</th>
+                            <th onclick="sortTable('mflp-one-hit-wonders-table', 4, true)">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in one_hit_wonders %}
+                            {% if player.league_type == 'MFLP' %}
+                                <tr>
+                                    <td>{{ player.date }}</td>
+                                    <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                    <td><a href="season_{{ player.seriesId }}.html">{{ player.seriesName }}</a></td>
+                                    <td>{{ player.week_num }}</td>
+                                    <td>{{ player.points | format_number }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </details>
 
@@ -354,6 +410,32 @@
                                 <td>{{ drop.week_to }}</td>
                                 <td>{{ drop.points_to | format_number }}</td>
                                 <td>{{ drop.drop | format_number }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>One Hit Wonders</h2>
+            <div class="table-container">
+                <table id="combined-one-hit-wonders-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('combined-one-hit-wonders-table', 0)">Date</th>
+                            <th onclick="sortTable('combined-one-hit-wonders-table', 1)">Player</th>
+                            <th onclick="sortTable('combined-one-hit-wonders-table', 2)">Season</th>
+                            <th onclick="sortTable('combined-one-hit-wonders-table', 3, true)">Week</th>
+                            <th onclick="sortTable('combined-one-hit-wonders-table', 4, true)">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in one_hit_wonders %}
+                            <tr>
+                                <td>{{ player.date }}</td>
+                                <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                                <td><a href="season_{{ player.seriesId }}.html">{{ player.seriesName }}</a></td>
+                                <td>{{ player.week_num }}</td>
+                                <td>{{ player.points | format_number }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
