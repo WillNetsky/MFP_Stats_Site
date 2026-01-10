@@ -2511,7 +2511,7 @@
     </main>
 
     <footer class="container">
-        <small>Last updated: 2026-01-09 08:39:17</small>
+        <small>Last updated: 2026-01-10 08:35:47</small>
     </footer>
 
     <script>
@@ -2537,16 +2537,8 @@
                     x = rows[i].getElementsByTagName("TD")[n];
                     y = rows[i + 1].getElementsByTagName("TD")[n];
 
-                    let xContent = x.innerHTML;
-                    let yContent = y.innerHTML;
-
-                    // Handle potential HTML spans for coloring (e.g., score_color_code filter)
-                    if (x.firstElementChild && x.firstElementChild.tagName === 'SPAN') {
-                        xContent = x.firstElementChild.textContent;
-                    }
-                    if (y.firstElementChild && y.firstElementChild.tagName === 'SPAN') {
-                        yContent = y.firstElementChild.textContent;
-                    }
+                    let xContent = x.textContent || x.innerText;
+                    let yContent = y.textContent || y.innerText;
 
                     // Convert to number if isNumeric is true
                     if (isNumeric) {

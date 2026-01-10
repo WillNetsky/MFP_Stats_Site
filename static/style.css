@@ -118,3 +118,17 @@ thead {
     color: black; /* Default text color for badges */
     font-weight: bold;
 }
+
+/* Dynamic Score Coloring */
+.score-badge[data-score] {
+    background-color: transparent; /* Default */
+}
+
+/* Weekly Scores (5-35) */
+.score-badge[data-score^="35"] { background-color: #ffd700; } /* Gold */
+.score-badge[data-score^="34"] { background-color: #28a745; color: white; } /* Green */
+.score-badge[data-score^="20"] { background-color: #f8f9fa; } /* White/Light Grey */
+.score-badge[data-score^="5"] { background-color: #dc3545; color: white; } /* Red */
+
+/* Game Points (1-7) - Handled dynamically in JS or specific CSS rules if needed */
+/* We will use inline styles for the gradient effect requested */
