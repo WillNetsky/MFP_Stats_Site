@@ -23,7 +23,7 @@
                             {% for tournament in tournaments_on_this_day %}
                                 <tr>
                                     <td>{{ tournament.date }}</td>
-                                    <td><a href="season_{{ tournament.seriesId }}.html">{{ tournament.seriesName }}</a></td>
+                                    <td><a href="season_{{ tournament.seriesId }}.html">{{ tournament.league_name }} {{ tournament.season_name }} {{ tournament.year }}</a></td>
                                     <td>{{ tournament.week_num }}</td>
                                     <td>
                                         {% if tournament.winner_id %}
@@ -61,7 +61,7 @@
                             {% if night.league_type == 'MFP' %}
                                 <tr>
                                     <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                     <td>{{ night.week_num }}</td>
                                 </tr>
                             {% endif %}
@@ -85,7 +85,7 @@
                             {% if night.league_type == 'MFP' %}
                                 <tr>
                                     <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                     <td>{{ night.week_num }}</td>
                                 </tr>
                             {% endif %}
@@ -109,7 +109,7 @@
                             {% if night.league_type == 'MFP' %}
                                 <tr>
                                     <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                     <td>{{ night.week_num }}</td>
                                 </tr>
                             {% endif %}
@@ -137,7 +137,7 @@
                             {% if drop.league_type == 'MFP' %}
                                 <tr>
                                     <td><a href="player_{{ drop.playerId }}.html">{{ drop.name }}</a></td>
-                                    <td><a href="season_{{ drop.seriesId }}.html">{{ drop.seriesName }}</a></td>
+                                    <td><a href="season_{{ drop.seriesId }}.html">{{ drop.league_name }} {{ drop.season_name }} {{ drop.year }}</a></td>
                                     <td>{{ drop.week_from }}</td>
                                     <td>{{ drop.points_from | format_number }}</td>
                                     <td>{{ drop.week_to }}</td>
@@ -168,7 +168,7 @@
                                 <tr>
                                     <td>{{ player.date }}</td>
                                     <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                                    <td><a href="season_{{ player.seriesId }}.html">{{ player.seriesName }}</a></td>
+                                    <td><a href="season_{{ player.seriesId }}.html">{{ player.league_name }} {{ player.season_name }} {{ player.year }}</a></td>
                                     <td>{{ player.week_num }}</td>
                                     <td>{{ player.points | format_number }}</td>
                                 </tr>
@@ -198,7 +198,7 @@
                             {% if night.league_type == 'MFLP' %}
                                 <tr>
                                     <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                     <td>{{ night.week_num }}</td>
                                 </tr>
                             {% endif %}
@@ -222,7 +222,7 @@
                             {% if night.league_type == 'MFLP' %}
                                 <tr>
                                     <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                     <td>{{ night.week_num }}</td>
                                 </tr>
                             {% endif %}
@@ -246,7 +246,7 @@
                             {% if night.league_type == 'MFLP' %}
                                 <tr>
                                     <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                    <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                     <td>{{ night.week_num }}</td>
                                 </tr>
                             {% endif %}
@@ -274,7 +274,7 @@
                             {% if drop.league_type == 'MFLP' %}
                                 <tr>
                                     <td><a href="player_{{ drop.playerId }}.html">{{ drop.name }}</a></td>
-                                    <td><a href="season_{{ drop.seriesId }}.html">{{ drop.seriesName }}</a></td>
+                                    <td><a href="season_{{ drop.seriesId }}.html">{{ drop.league_name }} {{ drop.season_name }} {{ drop.year }}</a></td>
                                     <td>{{ drop.week_from }}</td>
                                     <td>{{ drop.points_from | format_number }}</td>
                                     <td>{{ drop.week_to }}</td>
@@ -305,7 +305,7 @@
                                 <tr>
                                     <td>{{ player.date }}</td>
                                     <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                                    <td><a href="season_{{ player.seriesId }}.html">{{ player.seriesName }}</a></td>
+                                    <td><a href="season_{{ player.seriesId }}.html">{{ player.league_name }} {{ player.season_name }} {{ player.year }}</a></td>
                                     <td>{{ player.week_num }}</td>
                                     <td>{{ player.points | format_number }}</td>
                                 </tr>
@@ -334,7 +334,7 @@
                         {% for night in all_perfect_nights %}
                             <tr>
                                 <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                 <td>{{ night.week_num }}</td>
                             </tr>
                         {% endfor %}
@@ -356,7 +356,7 @@
                         {% for night in all_almost_perfect_nights %}
                             <tr>
                                 <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                 <td>{{ night.week_num }}</td>
                             </tr>
                         {% endfor %}
@@ -378,7 +378,7 @@
                         {% for night in all_wooden_nickels %}
                             <tr>
                                 <td><a href="player_{{ night.playerId }}.html">{{ night.name }}</a></td>
-                                <td><a href="season_{{ night.seriesId }}.html">{{ night.seriesName }}</a></td>
+                                <td><a href="season_{{ night.seriesId }}.html">{{ night.league_name }} {{ night.season_name }} {{ night.year }}</a></td>
                                 <td>{{ night.week_num }}</td>
                             </tr>
                         {% endfor %}
@@ -404,7 +404,7 @@
                         {% for drop in all_biggest_drops %}
                             <tr>
                                 <td><a href="player_{{ drop.playerId }}.html">{{ drop.name }}</a></td>
-                                <td><a href="season_{{ drop.seriesId }}.html">{{ drop.seriesName }}</a></td>
+                                <td><a href="season_{{ drop.seriesId }}.html">{{ drop.league_name }} {{ drop.season_name }} {{ drop.year }}</a></td>
                                 <td>{{ drop.week_from }}</td>
                                 <td>{{ drop.points_from | format_number }}</td>
                                 <td>{{ drop.week_to }}</td>
@@ -433,7 +433,7 @@
                             <tr>
                                 <td>{{ player.date }}</td>
                                 <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
-                                <td><a href="season_{{ player.seriesId }}.html">{{ player.seriesName }}</a></td>
+                                <td><a href="season_{{ player.seriesId }}.html">{{ player.league_name }} {{ player.season_name }} {{ player.year }}</a></td>
                                 <td>{{ player.week_num }}</td>
                                 <td>{{ player.points | format_number }}</td>
                             </tr>

@@ -92,7 +92,7 @@
             {% for entry in top_seasons_leaderboard %}
                 <tr>
                     <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
-                    <td><a href="season_{{ entry.season.seriesId }}.html">{{ entry.season.seriesName }}</a></td>
+                    <td><a href="season_{{ entry.season.seriesId }}.html">{{ entry.season.league_name }} {{ entry.season.season_name }} {{ entry.season.year }}</a></td>
                     <td>{{ entry.score | format_number }}</td>
                     <td>{{ entry.weekly_wins }}</td>
                     <td>{{ entry.game_outcomes['1st'] }}</td>
@@ -124,9 +124,9 @@
                 <tr>
                     <td><a href="player_{{ entry.player.playerId }}.html">{{ entry.player.name }}</a></td>
                     <td>{{ "%.2f"|format(entry.improvement_percent * 100) }}%</td>
-                    <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.seriesName }}</a></td>
+                    <td><a href="season_{{ entry.season1.seriesId }}.html">{{ entry.season1.league_name }} {{ entry.season1.season_name }} {{ entry.season1.year }}</a></td>
                     <td>{{ entry.season1.summary_stats.total_adjusted_points | format_number }}</td>
-                    <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.seriesName }}</a></td>
+                    <td><a href="season_{{ entry.season2.seriesId }}.html">{{ entry.season2.league_name }} {{ entry.season2.season_name }} {{ entry.season2.year }}</a></td>
                     <td>{{ entry.season2.summary_stats.total_adjusted_points | format_number }}</td>
                 </tr>
             {% endfor %}

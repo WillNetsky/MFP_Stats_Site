@@ -247,7 +247,8 @@ def find_almost_perfect_nights(all_series_data):
                                 'year': year,
                                 'season_name': season_name,
                                 'week_num': week_num,
-                                'league_type': league_type
+                                'league_type': league_type,
+                                'league_name': league_name
                             })
     return almost_perfect_nights
 
@@ -313,7 +314,8 @@ def find_wooden_nickels(all_series_data):
                             'year': year,
                             'season_name': season_name,
                             'week_num': week_num,
-                            'league_type': league_type
+                            'league_type': league_type,
+                            'league_name': league_name
                         })
     return wooden_nickels
 
@@ -385,7 +387,8 @@ def find_biggest_drops(all_series_data):
                                 'week_to': week2['week'],
                                 'points_to': week2['points'],
                                 'drop': drop,
-                                'league_type': league_type
+                                'league_type': league_type,
+                                'league_name': league_name
                             })
     
     # Sort by drop amount descending
@@ -450,11 +453,20 @@ def find_tournaments_on_this_day(all_series_data):
                         winner_id = int(winner_id_str)
                         winner_name = player_name_map.get(winner_id, "Unknown")
 
+                league_type = 'Combined'
+                if league_name == "MFPinball":
+                    league_type = 'MFP'
+                elif league_name == "MFLadies Pinball":
+                    league_type = 'MFLP'
+
                 tournaments_on_this_day.append({
                     'date': tournament_date.strftime("%Y-%m-%d"),
                     'year': tournament_date.year,
                     'seriesId': series_id,
                     'seriesName': series_name,
+                    'season_name': season_name,
+                    'league_type': league_type,
+                    'league_name': league_name,
                     'week_num': week_num,
                     'winner_name': winner_name,
                     'winner_id': winner_id
@@ -525,9 +537,12 @@ def find_one_hit_wonders(all_series_data):
                             'date': tournament_date,
                             'seriesId': series_id,
                             'seriesName': series_name,
+                            'year': year,
+                            'season_name': season_name,
                             'week_num': week_num,
                             'points': points,
-                            'league_type': league_type
+                            'league_type': league_type,
+                            'league_name': league_name
                         })
 
     one_hit_wonders = []
@@ -540,9 +555,12 @@ def find_one_hit_wonders(all_series_data):
                 'date': appearance['date'],
                 'seriesId': appearance['seriesId'],
                 'seriesName': appearance['seriesName'],
+                'year': appearance['year'],
+                'season_name': appearance['season_name'],
                 'week_num': appearance['week_num'],
                 'points': appearance['points'],
-                'league_type': appearance['league_type']
+                'league_type': appearance['league_type'],
+                'league_name': appearance['league_name']
             })
     
     # Sort by date descending

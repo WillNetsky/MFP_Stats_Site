@@ -52,6 +52,15 @@ thead {
     background-color: #f2f2f2;
 }
 
+th[onclick] {
+    cursor: pointer;
+    user-select: none;
+}
+
+th[onclick]:hover {
+    background-color: #d9d9d9;
+}
+
 .active-season {
     animation: glowing 2s infinite;
     border: 1px solid #00ff00;

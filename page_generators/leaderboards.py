@@ -163,7 +163,8 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
                                 'year': year,
                                 'season_name': season_name_parsed,
                                 'week_num': week_num,
-                                'league_type': 'Combined'
+                                'league_type': 'Combined',
+                                'league_name': league_name_parsed
                             }
                             if "MFPinball" in league_name_parsed or "MFP" in league_name_parsed:
                                 perfect_night_entry['league_type'] = 'MFP'

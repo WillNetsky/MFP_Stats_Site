@@ -69,10 +69,11 @@ def generate_player_pages(env, all_series_data):
                     if year_key not in all_players_game_performance[player_id][game_name]:
                          all_players_game_performance[player_id][game_name][year_key] = defaultdict(int)
                     
-                    all_players_game_performance[player_id][game_name][year_key]['1st_place'] += stats['1st']
-                    all_players_game_performance[player_id][game_name][year_key]['2nd_place'] += stats['2nd_4p'] + stats['2nd_3p']
-                    all_players_game_performance[player_id][game_name][year_key]['3rd_place'] += stats['3rd_4p'] + stats['4th_combined']
-                    all_players_game_performance[player_id][game_name][year_key]['4th_place'] += stats['4th_combined']
+                    all_players_game_performance[player_id][game_name][year_key]['1st'] += stats['1st']
+                    all_players_game_performance[player_id][game_name][year_key]['2nd'] += stats['2nd_4p']
+                    all_players_game_performance[player_id][game_name][year_key]['2nd_3p'] += stats['2nd_3p']
+                    all_players_game_performance[player_id][game_name][year_key]['3rd'] += stats['3rd_4p']
+                    all_players_game_performance[player_id][game_name][year_key]['4th'] += stats['4th_combined']
                     all_players_game_performance[player_id][game_name][year_key]['total_plays'] += stats['total_plays']
 
         # Populate game log
