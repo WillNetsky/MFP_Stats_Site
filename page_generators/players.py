@@ -8,6 +8,101 @@ from config import OUTPUT_DIR
 # Define the cutoff date for arena data
 ARENA_DATA_CUTOFF_DATE = datetime(2024, 1, 1) # Winter 2024 starts roughly here
 
+MIN_GAMES_FOR_MACHINE_HIGHLIGHT = 5
+
+
+def _build_player_bio(player_data, game_performance_raw):
+    """Build a bio dict with summary stats, trophies, and machine highlights."""
+    mfp = player_data['mfp_seasons']
+    mflp = player_data['mflp_seasons']
+    all_seasons = mfp + mflp
+
+    # Trophy counts from completed seasons only
+    trophies = {1: 0, 2: 0, 3: 0, 4: 0}
+    for s in all_seasons:
+        if s.get('status') == 'completed':
+            pos = s['summary_stats']['final_position']
+            if isinstance(pos, int) and 1 <= pos <= 4:
+                trophies[pos] += 1
+
+    total_weeks = sum(s['summary_stats']['weeks_played'] for s in all_seasons)
+    total_wins = sum(s['summary_stats']['weekly_wins'] for s in all_seasons)
+    total_raw_points = sum(s['summary_stats']['total_raw_points'] for s in all_seasons)
+
+    # Machine highlights: find best win rate with enough games
+    best_machine = None
+    best_machine_rate = 0
+    best_machine_plays = 0
+    # Aggregate across all years
+    machine_totals = defaultdict(lambda: {'1st': 0, 'total_plays': 0})
+    for game_name, years_data in game_performance_raw.items():
+        for year_key, stats in years_data.items():
+            if isinstance(stats, dict):
+                machine_totals[game_name]['1st'] += stats.get('1st', 0)
+                machine_totals[game_name]['total_plays'] += stats.get('total_plays', 0)
+
+    for game_name, totals in machine_totals.items():
+        if totals['total_plays'] >= MIN_GAMES_FOR_MACHINE_HIGHLIGHT:
+            rate = totals['1st'] / totals['total_plays']
+            if rate > best_machine_rate:
+                best_machine_rate = rate
+                best_machine = game_name
+                best_machine_plays = totals['total_plays']
+
+    # Build summary sentences
+    parts = []
+    mfp_completed = [s for s in mfp if s.get('status') == 'completed']
+    mflp_completed = [s for s in mflp if s.get('status') == 'completed']
+    mfp_active = [s for s in mfp if s.get('status') != 'completed']
+    mflp_active = [s for s in mflp if s.get('status') != 'completed']
+
+    league_parts = []
+    if mfp_completed:
+        league_parts.append(f"{len(mfp_completed)} MFPinball")
+    if mflp_completed:
+        league_parts.append(f"{len(mflp_completed)} MFLadies Pinball")
+    if league_parts:
+        parts.append(f"Has played {' and '.join(league_parts)} {'season' if len(all_seasons) == 1 else 'seasons'}")
+    active_parts = []
+    if mfp_active:
+        active_parts.append(f"{len(mfp_active)} MFPinball")
+    if mflp_active:
+        active_parts.append(f"{len(mflp_active)} MFLadies Pinball")
+    if active_parts:
+        parts.append(f"Currently playing {' and '.join(active_parts)}")
+
+    if total_weeks > 0:
+        parts.append(f"Attended {total_weeks} league nights, winning {total_wins}")
+
+    trophy_parts = []
+    if trophies[1] > 0:
+        trophy_parts.append(f"{trophies[1]} first place finish{'es' if trophies[1] > 1 else ''}")
+    if trophies[2] > 0:
+        trophy_parts.append(f"{trophies[2]} second")
+    if trophies[3] > 0:
+        trophy_parts.append(f"{trophies[3]} third")
+    if trophies[4] > 0:
+        trophy_parts.append(f"{trophies[4]} fourth")
+    if trophy_parts:
+        parts.append(f"Finished with {', '.join(trophy_parts)}")
+
+    if best_machine and best_machine_rate >= 0.3:
+        parts.append(f"Wins {round(best_machine_rate * 100)}% of the time at {best_machine} ({best_machine_plays} games)")
+
+    return {
+        'mfp_seasons_count': len(mfp),
+        'mflp_seasons_count': len(mflp),
+        'total_weeks': total_weeks,
+        'total_wins': total_wins,
+        'total_raw_points': total_raw_points,
+        'trophies': trophies,
+        'best_machine': best_machine,
+        'best_machine_rate': best_machine_rate,
+        'best_machine_plays': best_machine_plays,
+        'summary': '. '.join(parts) + '.' if parts else ''
+    }
+
+
 def generate_player_pages(env, all_series_data):
     """Generates individual player pages and a main players list page."""
     unique_players = {}
@@ -78,31 +173,43 @@ def generate_player_pages(env, all_series_data):
 
         # Populate game log
         tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series_data.get('tournamentIds', []))}
-        
+        player_name_map = {p['playerId']: p['name'] for p in series_data.get('players', [])}
+
         for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
             tournament_id = int(tournament_id_str)
             week_num = tournament_id_to_week_num.get(tournament_id, 'N/A')
-            
+
             for game in games_list:
                 arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
                 started_at = game.get('startedAt', 'N/A')
                 if started_at != 'N/A':
                     started_at = started_at.split('T')[0] # Format YYYY-MM-DD
-                
-                for p_idx, player_id in enumerate(game['playerIds']):
-                    points = 'N/A'
-                    if 'resultPoints' in game and len(game['resultPoints']) > p_idx:
-                        points = game['resultPoints'][p_idx]
-                    
-                    position = 'N/A'
+
+                # Build per-player info for opponent display
+                game_player_info = []
+                for idx, pid in enumerate(game['playerIds']):
+                    p_points = 'N/A'
+                    if 'resultPoints' in game and len(game['resultPoints']) > idx:
+                        p_points = game['resultPoints'][idx]
+                    p_position = 'N/A'
                     if 'resultPositions' in game:
                         try:
-                            position = game['resultPositions'].index(player_id) + 1
+                            p_position = game['resultPositions'].index(pid) + 1
                         except ValueError:
                             pass
-                    
+                    game_player_info.append({
+                        'playerId': pid,
+                        'name': player_name_map.get(pid, 'Unknown'),
+                        'points': p_points,
+                        'position': p_position
+                    })
+
+                for p_idx, player_id in enumerate(game['playerIds']):
+                    info = game_player_info[p_idx]
+                    opponents = [p for p in game_player_info if p['playerId'] != player_id]
+
                     num_players = len(game['playerIds'])
-                    result_str = f"{position}" if position != 'N/A' else "N/A"
+                    result_str = f"{info['position']}" if info['position'] != 'N/A' else "N/A"
 
                     all_players_game_log[player_id].append({
                         'date': started_at,
@@ -113,9 +220,10 @@ def generate_player_pages(env, all_series_data):
                         'machine': arena_name,
                         'play_order': p_idx + 1,
                         'result': result_str,
-                        'position': position,
+                        'position': info['position'],
                         'players': num_players,
-                        'points': points
+                        'points': info['points'],
+                        'opponents': opponents
                     })
 
         finals_tournament_ids = None
@@ -240,12 +348,15 @@ def generate_player_pages(env, all_series_data):
     player_template = env.get_template('player.html')
     for player_id, data in player_categorized_seasons.items():
         player = data['player_info']
-        
+
         # Pass the specific player's chart data to the template
         player_chart_data = all_players_chart_data.get(player_id, {})
-        
+
         # Sort game log by date descending
         game_log = sorted(all_players_game_log[player_id], key=lambda x: x['date'], reverse=True)
+
+        # Build player bio
+        bio = _build_player_bio(data, all_players_game_performance.get(player_id, {}))
 
         with open(os.path.join(OUTPUT_DIR, f"player_{player_id}.html"), 'w') as f:
             f.write(player_template.render(
@@ -254,9 +365,10 @@ def generate_player_pages(env, all_series_data):
                 mflp_seasons=data['mflp_seasons'],
                 game_performance=data['game_performance'],
                 arena_cutoff_date=ARENA_DATA_CUTOFF_DATE.strftime("%B %Y"),
-                player_chart_data=player_chart_data, # Pass chart data
-                all_players_chart_data=all_players_chart_data, # Pass all data for comparison
-                game_log=game_log # Pass game log
+                player_chart_data=player_chart_data,
+                all_players_chart_data=all_players_chart_data,
+                game_log=game_log,
+                bio=bio
             ))
         print(f"Generated player_{player_id}.html")
 

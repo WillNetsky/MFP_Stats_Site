@@ -115,9 +115,7 @@ The generated site is written to the `output/` directory.
 ## TODO
 
 * Site-wide
-  * all links to seasons should follow the same format (LeagueType SeasonName Season Year) rather than the string from matchplay
   * Tournaments - Add all of the league adjacent tournaments from Cary's organizer ID, requires filtering relevant tournaments
-  * Table sorting should be more reactive (highlight header on mouseover... at least?)
   * Light and dark theme (one that holds between pages and plays well with the flair)
   * Use the <details> tag more universally, nest if possible for things like the leaderboard, player pages show it best ATM 
 * Season Data
@@ -126,8 +124,6 @@ The generated site is written to the `output/` directory.
   * IFPA wpprs given to winner (likely need to manually document this, or document the ifpa ids)
   * Chart of number of players with WPPRS overlayed (possible one-off? scatter of qualified players vs wpprs to the winner?)
 * Players
-  * No trophy flair for active seasons
-  * performance by machine broken other than "machine" and "total plays"
   * Bio section - ifpa# links to ifpa page
   * Bio section - get everybody's initials (manual)
   * Bio section - brief summary "player has played x seasons of MFP, x of MFLP, won X times, won X weeks etc" sorta generative
@@ -136,7 +132,7 @@ The generated site is written to the `output/` directory.
   * Bio section - OG office flair (players who played at seasons/tournaments that took place at The Office)
   * Add opponents to game log table (p1 name x pts, etc)
 * Charts
-  * Make buttons smaller
+  * Make interesting somehow?
 * Leaderboards
   * Paginate all time leaders
 * Frivolities

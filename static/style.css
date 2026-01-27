@@ -105,6 +105,20 @@ th[onclick]:hover {
     font-size: 1.2em;
 }
 
+/* Player bio section */
+.player-bio {
+    margin-bottom: 1rem;
+}
+
+.bio-trophies {
+    font-size: 1.5em;
+    margin-bottom: 0.25rem;
+}
+
+.bio-trophies .trophy {
+    margin-right: 2px;
+}
+
 /* Wider container for player and season pages */
 .player-page .container,
 .season-page .container {
