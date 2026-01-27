@@ -1,0 +1,113 @@
+{
+    "data": {
+        "tournamentId": 223425,
+        "name": "Finals for MFPinball Winter Season",
+        "status": "planned",
+        "type": "group_bracket",
+        "startUtc": "2026-03-31T01:30:00.000000Z",
+        "startLocal": "2026-03-30 18:30:00",
+        "endUtc": "2026-03-31T01:30:00.000000Z",
+        "endLocal": "2026-03-30 18:30:00",
+        "completedAt": null,
+        "organizerId": 60,
+        "locationId": 6612,
+        "seriesId": null,
+        "description": "PAPA style finals, 3 games per round, 4 players per group, top 2 from each group move on to semi finals.  Then top 2 from each group from semi finals move on to finals. Scoring for finals is 3,2,1,0\nTop seed in a group picks games.\nTop seed in first game of a round picks position followed by the next highest seed and so on.  Following games position is chosen by last to first from previous game.  \n**You cannot pick the same game twice during the entire finals**",
+        "pointsMap": [
+            [
+                "3"
+            ],
+            [
+                "3",
+                "0"
+            ],
+            [
+                "3",
+                "1.5",
+                "0"
+            ],
+            [
+                "3",
+                "2",
+                "1",
+                "0"
+            ]
+        ],
+        "tiebreakerPointsMap": [
+            [
+                "0.50"
+            ],
+            [
+                "0.50",
+                "0.00"
+            ],
+            [
+                "0.50",
+                "0.25",
+                "0.00"
+            ],
+            [
+                "0.50",
+                "0.25",
+                "0.12",
+                "0.00"
+            ]
+        ],
+        "test": false,
+        "timezone": "America/Los_Angeles",
+        "scorekeeping": "disabled",
+        "link": "HTTP://www.mfpinball.org/",
+        "linkedTournamentId": null,
+        "estimatedTgp": null,
+        "prizePool": null,
+        "pointsMapCustom": null,
+        "createdAt": "2025-11-30 22:58:24",
+        "updatedAt": "2025-11-30 23:37:42",
+        "motdText": null,
+        "motdColor": null,
+        "motdExpiration": null,
+        "managers": [],
+        "primaryConfigSettings": [
+            "bracketSize",
+            "gamesPerRound",
+            "scoring",
+            "seeding"
+        ],
+        "organizer": {
+            "userId": 60,
+            "businessProfileId": null,
+            "name": "Cary Carmichael",
+            "firstName": "Cary",
+            "lastName": "Carmichael",
+            "ifpaId": 19422,
+            "role": "organizer",
+            "flag": "",
+            "location": "Seaside, CA",
+            "pronouns": "he",
+            "initials": "",
+            "ratingsOptOut": false,
+            "statsOptOut": false,
+            "videoOptOut": false,
+            "profileOptOut": false,
+            "historyOptOut": false,
+            "historyOnlyCompleted": false,
+            "avatar": null,
+            "banner": null,
+            "tournamentAvatar": null,
+            "createdAt": "2015-05-31T19:59:43.000000Z"
+        },
+        "organizerHasPremiumFeatures": true,
+        "arenas": [],
+        "seeding": "manual",
+        "arenaAssignment": "manual",
+        "playerOrderOpen": "scorekeepers",
+        "playoffsCutoffs": [],
+        "roundCount": 3,
+        "bracketSize": 16,
+        "suggestions": "restricted",
+        "groupBracketDoubleByes": 0,
+        "tiebreaker": "disabled",
+        "gamesPerRound": 3,
+        "scoring": "pinburgh"
+    }
+}

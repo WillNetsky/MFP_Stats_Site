@@ -1,0 +1,214 @@
+{
+    "data": [
+        {
+            "gameId": 4496758,
+            "roundId": 675402,
+            "tournamentId": 148333,
+            "challengeId": null,
+            "arenaId": 12267,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2024-06-25T04:00:25.000000Z",
+            "duration": 1106,
+            "bye": false,
+            "playerIds": [
+                13716,
+                84838,
+                39977,
+                13708
+            ],
+            "userIds": [
+                3108,
+                12915,
+                4414,
+                60
+            ],
+            "resultPositions": [
+                84838,
+                39977,
+                13716,
+                13708
+            ],
+            "resultPoints": [
+                "3.00",
+                "7.00",
+                "5.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 12267,
+                "name": "The Walking Dead",
+                "status": "active",
+                "opdbId": "G5nz5-M3d38",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 4496759,
+            "roundId": 675402,
+            "tournamentId": 148333,
+            "challengeId": null,
+            "arenaId": 36012,
+            "bankId": null,
+            "index": 1,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2024-06-25T04:00:37.000000Z",
+            "duration": 2110,
+            "bye": false,
+            "playerIds": [
+                84838,
+                39977,
+                13716,
+                13708
+            ],
+            "userIds": [
+                12915,
+                4414,
+                3108,
+                60
+            ],
+            "resultPositions": [
+                13708,
+                13716,
+                39977,
+                84838
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "5.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 36012,
+                "name": "The Walking Cora",
+                "status": "active",
+                "opdbId": null,
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 4496760,
+            "roundId": 675402,
+            "tournamentId": 148333,
+            "challengeId": null,
+            "arenaId": 107036,
+            "bankId": null,
+            "index": 2,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2024-06-25T04:01:02.000000Z",
+            "duration": 3650,
+            "bye": false,
+            "playerIds": [
+                13708,
+                13716,
+                39977,
+                84838
+            ],
+            "userIds": [
+                60,
+                3108,
+                4414,
+                12915
+            ],
+            "resultPositions": [
+                39977,
+                13716,
+                84838,
+                13708
+            ],
+            "resultPoints": [
+                "1.00",
+                "5.00",
+                "7.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 107036,
+                "name": "Godzilla",
+                "status": "inactive",
+                "opdbId": "GweeP-Ml9pZ-ARZoY",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        }
+    ]
+}

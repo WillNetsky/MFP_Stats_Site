@@ -1,0 +1,3244 @@
+{
+    "data": [
+        {
+            "gameId": 6379076,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 6617,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:38:17.000000Z",
+            "duration": 1181,
+            "bye": false,
+            "playerIds": [
+                476904,
+                123864,
+                202713,
+                190358
+            ],
+            "userIds": [
+                null,
+                26039,
+                29382,
+                25049
+            ],
+            "resultPositions": [
+                190358,
+                476904,
+                202713,
+                123864
+            ],
+            "resultPoints": [
+                "5.00",
+                "1.00",
+                "3.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 6617,
+                "name": "James Bond Dr.No (Pro)",
+                "status": "active",
+                "opdbId": "GQKyP-Mx0O4",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379077,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 35728,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:38:17.000000Z",
+            "duration": 1270,
+            "bye": false,
+            "playerIds": [
+                327547,
+                13716,
+                127357,
+                31058
+            ],
+            "userIds": [
+                52231,
+                3108,
+                13586,
+                3281
+            ],
+            "resultPositions": [
+                31058,
+                13716,
+                327547,
+                127357
+            ],
+            "resultPoints": [
+                "3.00",
+                "5.00",
+                "1.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354431,
+                    "gameId": 6379077,
+                    "roundId": 962381,
+                    "tournamentId": 210804,
+                    "playerId": 13716,
+                    "userId": 3108,
+                    "results": [
+                        31058,
+                        13716,
+                        327547,
+                        127357
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "13716": null,
+                        "31058": null,
+                        "127357": null,
+                        "327547": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 35728,
+                "name": "The Addams Family",
+                "status": "active",
+                "opdbId": "G4ODR-MDXEy",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379078,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 86180,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:38:17.000000Z",
+            "duration": 1289,
+            "bye": false,
+            "playerIds": [
+                30759,
+                490148,
+                117813,
+                142513
+            ],
+            "userIds": [
+                3280,
+                52272,
+                21217,
+                18106
+            ],
+            "resultPositions": [
+                117813,
+                30759,
+                142513,
+                490148
+            ],
+            "resultPoints": [
+                "5.00",
+                "1.00",
+                "7.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 86180,
+                "name": "Deadpool (Premium)",
+                "status": "active",
+                "opdbId": "G6lnq-MRj7Z",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379079,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 143672,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:38:17.000000Z",
+            "duration": 1072,
+            "bye": false,
+            "playerIds": [
+                262198,
+                13708,
+                245985,
+                97321
+            ],
+            "userIds": [
+                22564,
+                60,
+                27132,
+                10235
+            ],
+            "resultPositions": [
+                13708,
+                262198,
+                245985,
+                97321
+            ],
+            "resultPoints": [
+                "5.00",
+                "7.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 143672,
+                "name": "Iron Man",
+                "status": "active",
+                "opdbId": "GRVq4-MLyxq",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379080,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 164645,
+            "bankId": null,
+            "index": 0,
+            "set": 4,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:38:17.000000Z",
+            "duration": 905,
+            "bye": false,
+            "playerIds": [
+                164121,
+                71359,
+                290095,
+                79530
+            ],
+            "userIds": [
+                19892,
+                10713,
+                39572,
+                6943
+            ],
+            "resultPositions": [
+                79530,
+                290095,
+                71359,
+                164121
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "5.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 164645,
+                "name": "Metallica Remastered (Premium)",
+                "status": "active",
+                "opdbId": "GO0q3-MOEy8-ARol7",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379081,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 178046,
+            "bankId": null,
+            "index": 0,
+            "set": 5,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:39:44.000000Z",
+            "duration": 970,
+            "bye": false,
+            "playerIds": [
+                490151,
+                201655,
+                307101,
+                52838
+            ],
+            "userIds": [
+                41246,
+                29260,
+                33700,
+                6045
+            ],
+            "resultPositions": [
+                307101,
+                201655,
+                52838,
+                490151
+            ],
+            "resultPoints": [
+                "1.00",
+                "5.00",
+                "7.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 178046,
+                "name": "Stranger Things (Pro)",
+                "status": "inactive",
+                "opdbId": "Gzy89-MNEeO",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379082,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 183820,
+            "bankId": null,
+            "index": 0,
+            "set": 6,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:38:17.000000Z",
+            "duration": 1412,
+            "bye": false,
+            "playerIds": [
+                73342,
+                15322,
+                98350,
+                283381
+            ],
+            "userIds": [
+                8185,
+                4141,
+                18237,
+                31319
+            ],
+            "resultPositions": [
+                98350,
+                15322,
+                283381,
+                73342
+            ],
+            "resultPoints": [
+                "1.00",
+                "5.00",
+                "7.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 183820,
+                "name": "King Kong: Myth of Terror Island (Premium)",
+                "status": "active",
+                "opdbId": "GEL0V-MyN8E-A1Dkr",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379083,
+            "roundId": 962381,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 12267,
+            "bankId": null,
+            "index": 0,
+            "set": 7,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T02:38:17.000000Z",
+            "duration": 854,
+            "bye": false,
+            "playerIds": [
+                50532,
+                109691,
+                464246,
+                13710
+            ],
+            "userIds": [
+                7178,
+                15019,
+                null,
+                2642
+            ],
+            "resultPositions": [
+                13710,
+                464246,
+                109691,
+                50532
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "5.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 12267,
+                "name": "The Walking Dead",
+                "status": "active",
+                "opdbId": "G5nz5-M3d38",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379175,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 74194,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 1212,
+            "bye": false,
+            "playerIds": [
+                31058,
+                117813,
+                190358,
+                307101
+            ],
+            "userIds": [
+                3281,
+                21217,
+                25049,
+                33700
+            ],
+            "resultPositions": [
+                117813,
+                31058,
+                190358,
+                307101
+            ],
+            "resultPoints": [
+                "5.00",
+                "7.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 74194,
+                "name": "Pabst Can Crusher",
+                "status": "active",
+                "opdbId": "GRYX4-MRjVP",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379176,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 21753,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 781,
+            "bye": false,
+            "playerIds": [
+                13708,
+                13710,
+                79530,
+                98350
+            ],
+            "userIds": [
+                60,
+                2642,
+                6943,
+                18237
+            ],
+            "resultPositions": [
+                13708,
+                98350,
+                13710,
+                79530
+            ],
+            "resultPoints": [
+                "7.00",
+                "3.00",
+                "1.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 21753,
+                "name": "Paragon",
+                "status": "active",
+                "opdbId": "GrXy3-ML0Ey",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379177,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 71495,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 914,
+            "bye": false,
+            "playerIds": [
+                201655,
+                476904,
+                15322,
+                262198
+            ],
+            "userIds": [
+                29260,
+                null,
+                4141,
+                22564
+            ],
+            "resultPositions": [
+                262198,
+                15322,
+                201655,
+                476904
+            ],
+            "resultPoints": [
+                "3.00",
+                "1.00",
+                "5.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354464,
+                    "gameId": 6379177,
+                    "roundId": 962405,
+                    "tournamentId": 210804,
+                    "playerId": 262198,
+                    "userId": 22564,
+                    "results": [
+                        262198,
+                        15322,
+                        201655,
+                        476904
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "15322": null,
+                        "201655": null,
+                        "262198": null,
+                        "476904": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 71495,
+                "name": "Iron Maiden \u201881",
+                "status": "active",
+                "opdbId": "G4yZN-MDEP7",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379178,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 11733,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 1073,
+            "bye": false,
+            "playerIds": [
+                464246,
+                290095,
+                13716,
+                30759
+            ],
+            "userIds": [
+                null,
+                39572,
+                3108,
+                3280
+            ],
+            "resultPositions": [
+                464246,
+                30759,
+                13716,
+                290095
+            ],
+            "resultPoints": [
+                "7.00",
+                "1.00",
+                "3.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354467,
+                    "gameId": 6379178,
+                    "roundId": 962405,
+                    "tournamentId": 210804,
+                    "playerId": 13716,
+                    "userId": 3108,
+                    "results": [
+                        464246,
+                        30759,
+                        13716,
+                        290095
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "13716": null,
+                        "30759": null,
+                        "290095": null,
+                        "464246": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 11733,
+                "name": "Laser Cue",
+                "status": "active",
+                "opdbId": "GRvJV-MJ4bR",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379179,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 170600,
+            "bankId": null,
+            "index": 0,
+            "set": 4,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 814,
+            "bye": false,
+            "playerIds": [
+                109691,
+                245985,
+                71359,
+                327547
+            ],
+            "userIds": [
+                15019,
+                27132,
+                10713,
+                52231
+            ],
+            "resultPositions": [
+                245985,
+                109691,
+                71359,
+                327547
+            ],
+            "resultPoints": [
+                "5.00",
+                "7.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 170600,
+                "name": "Black Knight 2000",
+                "status": "inactive",
+                "opdbId": "GrxPP-Ml91r",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379180,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 135066,
+            "bankId": null,
+            "index": 0,
+            "set": 5,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 1256,
+            "bye": false,
+            "playerIds": [
+                283381,
+                52838,
+                142513,
+                202713
+            ],
+            "userIds": [
+                31319,
+                6045,
+                18106,
+                29382
+            ],
+            "resultPositions": [
+                142513,
+                202713,
+                52838,
+                283381
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "7.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 135066,
+                "name": "Radical!",
+                "status": "active",
+                "opdbId": "G59ZY-MD8p7",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379181,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 112193,
+            "bankId": null,
+            "index": 0,
+            "set": 6,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 558,
+            "bye": false,
+            "playerIds": [
+                127357,
+                73342,
+                490148,
+                490151
+            ],
+            "userIds": [
+                13586,
+                8185,
+                52272,
+                41246
+            ],
+            "resultPositions": [
+                73342,
+                127357,
+                490151,
+                490148
+            ],
+            "resultPoints": [
+                "5.00",
+                "7.00",
+                "1.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 112193,
+                "name": "Dragonfist",
+                "status": "active",
+                "opdbId": "GRQkJ-MDxpK",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379182,
+            "roundId": 962405,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 11738,
+            "bankId": null,
+            "index": 0,
+            "set": 7,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:01:58.000000Z",
+            "duration": 831,
+            "bye": false,
+            "playerIds": [
+                123864,
+                97321,
+                50532,
+                164121
+            ],
+            "userIds": [
+                26039,
+                10235,
+                7178,
+                19892
+            ],
+            "resultPositions": [
+                164121,
+                97321,
+                123864,
+                50532
+            ],
+            "resultPoints": [
+                "3.00",
+                "5.00",
+                "1.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11738,
+                "name": "Rick and Morty",
+                "status": "active",
+                "opdbId": "GQKb2-MYek0",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379287,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 178046,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 1262,
+            "bye": false,
+            "playerIds": [
+                98350,
+                31058,
+                13708,
+                117813
+            ],
+            "userIds": [
+                18237,
+                3281,
+                60,
+                21217
+            ],
+            "resultPositions": [
+                98350,
+                31058,
+                117813,
+                13708
+            ],
+            "resultPoints": [
+                "7.00",
+                "5.00",
+                "1.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 178046,
+                "name": "Stranger Things (Pro)",
+                "status": "inactive",
+                "opdbId": "Gzy89-MNEeO",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379288,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 17754,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 1055,
+            "bye": false,
+            "playerIds": [
+                142513,
+                262198,
+                30759,
+                464246
+            ],
+            "userIds": [
+                18106,
+                22564,
+                3280,
+                null
+            ],
+            "resultPositions": [
+                142513,
+                262198,
+                30759,
+                464246
+            ],
+            "resultPoints": [
+                "7.00",
+                "5.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 17754,
+                "name": "Medieval Madness",
+                "status": "active",
+                "opdbId": "G5pe4-MePZv",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379289,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 164645,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 1125,
+            "bye": false,
+            "playerIds": [
+                245985,
+                190358,
+                13710,
+                15322
+            ],
+            "userIds": [
+                27132,
+                25049,
+                2642,
+                4141
+            ],
+            "resultPositions": [
+                15322,
+                245985,
+                190358,
+                13710
+            ],
+            "resultPoints": [
+                "5.00",
+                "3.00",
+                "1.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 164645,
+                "name": "Metallica Remastered (Premium)",
+                "status": "active",
+                "opdbId": "GO0q3-MOEy8-ARol7",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379290,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 143672,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 1170,
+            "bye": false,
+            "playerIds": [
+                13716,
+                202713,
+                109691,
+                201655
+            ],
+            "userIds": [
+                3108,
+                29382,
+                15019,
+                29260
+            ],
+            "resultPositions": [
+                13716,
+                109691,
+                202713,
+                201655
+            ],
+            "resultPoints": [
+                "7.00",
+                "3.00",
+                "5.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354511,
+                    "gameId": 6379290,
+                    "roundId": 962455,
+                    "tournamentId": 210804,
+                    "playerId": 13716,
+                    "userId": 3108,
+                    "results": [
+                        13716,
+                        109691,
+                        202713,
+                        201655
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "13716": null,
+                        "109691": null,
+                        "201655": null,
+                        "202713": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 143672,
+                "name": "Iron Man",
+                "status": "active",
+                "opdbId": "GRVq4-MLyxq",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379291,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 6617,
+            "bankId": null,
+            "index": 0,
+            "set": 4,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 1078,
+            "bye": false,
+            "playerIds": [
+                307101,
+                79530,
+                164121,
+                73342
+            ],
+            "userIds": [
+                33700,
+                6943,
+                19892,
+                8185
+            ],
+            "resultPositions": [
+                164121,
+                307101,
+                79530,
+                73342
+            ],
+            "resultPoints": [
+                "5.00",
+                "3.00",
+                "7.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354513,
+                    "gameId": 6379291,
+                    "roundId": 962455,
+                    "tournamentId": 210804,
+                    "playerId": 79530,
+                    "userId": 6943,
+                    "results": [
+                        164121,
+                        307101,
+                        79530,
+                        73342
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "73342": null,
+                        "79530": null,
+                        "164121": null,
+                        "307101": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 6617,
+                "name": "James Bond Dr.No (Pro)",
+                "status": "active",
+                "opdbId": "GQKyP-Mx0O4",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379292,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 111383,
+            "bankId": null,
+            "index": 0,
+            "set": 5,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 1044,
+            "bye": false,
+            "playerIds": [
+                290095,
+                127357,
+                476904,
+                71359
+            ],
+            "userIds": [
+                39572,
+                13586,
+                null,
+                10713
+            ],
+            "resultPositions": [
+                127357,
+                290095,
+                476904,
+                71359
+            ],
+            "resultPoints": [
+                "5.00",
+                "7.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 111383,
+                "name": "Jurassic Park (Premium)",
+                "status": "inactive",
+                "opdbId": "GK17D-MKNKd-A15Yn",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379293,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 86180,
+            "bankId": null,
+            "index": 0,
+            "set": 6,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 815,
+            "bye": false,
+            "playerIds": [
+                97321,
+                327547,
+                52838,
+                123864
+            ],
+            "userIds": [
+                10235,
+                52231,
+                6045,
+                26039
+            ],
+            "resultPositions": [
+                123864,
+                52838,
+                327547,
+                97321
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "5.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 86180,
+                "name": "Deadpool (Premium)",
+                "status": "active",
+                "opdbId": "G6lnq-MRj7Z",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379294,
+            "roundId": 962455,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 164539,
+            "bankId": null,
+            "index": 0,
+            "set": 7,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:23:57.000000Z",
+            "duration": 1156,
+            "bye": false,
+            "playerIds": [
+                490148,
+                490151,
+                283381,
+                50532
+            ],
+            "userIds": [
+                52272,
+                41246,
+                31319,
+                7178
+            ],
+            "resultPositions": [
+                283381,
+                490151,
+                490148,
+                50532
+            ],
+            "resultPoints": [
+                "3.00",
+                "5.00",
+                "7.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354498,
+                    "gameId": 6379294,
+                    "roundId": 962455,
+                    "tournamentId": 210804,
+                    "playerId": 283381,
+                    "userId": 31319,
+                    "results": [
+                        283381,
+                        490151,
+                        490148,
+                        50532
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "50532": null,
+                        "283381": null,
+                        "490148": null,
+                        "490151": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 164539,
+                "name": "Indianapolis 500",
+                "status": "active",
+                "opdbId": "Gr8l3-MDWr0",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379342,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 62422,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 993,
+            "bye": false,
+            "playerIds": [
+                15322,
+                98350,
+                262198,
+                142513
+            ],
+            "userIds": [
+                4141,
+                18237,
+                22564,
+                18106
+            ],
+            "resultPositions": [
+                262198,
+                15322,
+                142513,
+                98350
+            ],
+            "resultPoints": [
+                "5.00",
+                "1.00",
+                "7.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354550,
+                    "gameId": 6379342,
+                    "roundId": 962470,
+                    "tournamentId": 210804,
+                    "playerId": 262198,
+                    "userId": 22564,
+                    "results": [
+                        262198,
+                        15322,
+                        142513,
+                        98350
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "15322": null,
+                        "98350": null,
+                        "142513": null,
+                        "262198": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 62422,
+                "name": "Dolly Parton",
+                "status": "active",
+                "opdbId": "G43Yq-MJ7o4",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379343,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 73715,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 1170,
+            "bye": false,
+            "playerIds": [
+                117813,
+                164121,
+                31058,
+                13708
+            ],
+            "userIds": [
+                21217,
+                19892,
+                3281,
+                60
+            ],
+            "resultPositions": [
+                13708,
+                117813,
+                31058,
+                164121
+            ],
+            "resultPoints": [
+                "5.00",
+                "1.00",
+                "3.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 73715,
+                "name": "Surf Champ",
+                "status": "active",
+                "opdbId": "GrZwo-MDnWP",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379344,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 19053,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 1035,
+            "bye": false,
+            "playerIds": [
+                190358,
+                30759,
+                13716,
+                245985
+            ],
+            "userIds": [
+                25049,
+                3280,
+                3108,
+                27132
+            ],
+            "resultPositions": [
+                13716,
+                245985,
+                30759,
+                190358
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "7.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354552,
+                    "gameId": 6379344,
+                    "roundId": 962470,
+                    "tournamentId": 210804,
+                    "playerId": 13716,
+                    "userId": 3108,
+                    "results": [
+                        13716,
+                        245985,
+                        30759,
+                        190358
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "13716": null,
+                        "30759": null,
+                        "190358": null,
+                        "245985": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 19053,
+                "name": "Flash Gordon",
+                "status": "active",
+                "opdbId": "G5728-MDbjD",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379345,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 71495,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 884,
+            "bye": false,
+            "playerIds": [
+                307101,
+                464246,
+                127357,
+                109691
+            ],
+            "userIds": [
+                33700,
+                null,
+                13586,
+                15019
+            ],
+            "resultPositions": [
+                127357,
+                307101,
+                464246,
+                109691
+            ],
+            "resultPoints": [
+                "5.00",
+                "3.00",
+                "7.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 71495,
+                "name": "Iron Maiden \u201881",
+                "status": "active",
+                "opdbId": "G4yZN-MDEP7",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379346,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 15580,
+            "bankId": null,
+            "index": 0,
+            "set": 4,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 1036,
+            "bye": false,
+            "playerIds": [
+                202713,
+                283381,
+                123864,
+                13710
+            ],
+            "userIds": [
+                29382,
+                31319,
+                26039,
+                2642
+            ],
+            "resultPositions": [
+                283381,
+                13710,
+                123864,
+                202713
+            ],
+            "resultPoints": [
+                "1.00",
+                "7.00",
+                "3.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354555,
+                    "gameId": 6379346,
+                    "roundId": 962470,
+                    "tournamentId": 210804,
+                    "playerId": 283381,
+                    "userId": 31319,
+                    "results": [
+                        283381,
+                        13710,
+                        123864,
+                        202713
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "13710": null,
+                        "123864": null,
+                        "202713": null,
+                        "283381": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 15580,
+                "name": "Black Belt",
+                "status": "inactive",
+                "opdbId": "G562j-MDyoK",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379347,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 11738,
+            "bankId": null,
+            "index": 0,
+            "set": 5,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 869,
+            "bye": false,
+            "playerIds": [
+                52838,
+                79530,
+                490151,
+                290095
+            ],
+            "userIds": [
+                6045,
+                6943,
+                41246,
+                39572
+            ],
+            "resultPositions": [
+                52838,
+                290095,
+                79530,
+                490151
+            ],
+            "resultPoints": [
+                "7.00",
+                "3.00",
+                "1.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11738,
+                "name": "Rick and Morty",
+                "status": "active",
+                "opdbId": "GQKb2-MYek0",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379348,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 74194,
+            "bankId": null,
+            "index": 0,
+            "set": 6,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 1076,
+            "bye": false,
+            "playerIds": [
+                476904,
+                73342,
+                201655
+            ],
+            "userIds": [
+                null,
+                8185,
+                29260
+            ],
+            "resultPositions": [
+                476904,
+                73342,
+                201655
+            ],
+            "resultPoints": [
+                "7.00",
+                "4.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354557,
+                    "gameId": 6379348,
+                    "roundId": 962470,
+                    "tournamentId": 210804,
+                    "playerId": 73342,
+                    "userId": 8185,
+                    "results": [
+                        476904,
+                        73342,
+                        201655
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "73342": null,
+                        "201655": null,
+                        "476904": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 74194,
+                "name": "Pabst Can Crusher",
+                "status": "active",
+                "opdbId": "GRYX4-MRjVP",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379349,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 194342,
+            "bankId": null,
+            "index": 0,
+            "set": 7,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 815,
+            "bye": false,
+            "playerIds": [
+                71359,
+                327547,
+                97321
+            ],
+            "userIds": [
+                10713,
+                52231,
+                10235
+            ],
+            "resultPositions": [
+                97321,
+                327547,
+                71359
+            ],
+            "resultPoints": [
+                "1.00",
+                "4.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354551,
+                    "gameId": 6379349,
+                    "roundId": 962470,
+                    "tournamentId": 210804,
+                    "playerId": 97321,
+                    "userId": 10235,
+                    "results": [
+                        97321,
+                        327547,
+                        71359
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "71359": null,
+                        "97321": null,
+                        "327547": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 194342,
+                "name": "Taxi",
+                "status": "active",
+                "opdbId": "GrN90-MJrnj",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379350,
+            "roundId": 962470,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 11733,
+            "bankId": null,
+            "index": 0,
+            "set": 8,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T03:45:30.000000Z",
+            "duration": 507,
+            "bye": false,
+            "playerIds": [
+                490148,
+                50532,
+                74820
+            ],
+            "userIds": [
+                52272,
+                7178,
+                6896
+            ],
+            "resultPositions": [
+                74820,
+                50532,
+                490148
+            ],
+            "resultPoints": [
+                "1.00",
+                "4.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11733,
+                "name": "Laser Cue",
+                "status": "active",
+                "opdbId": "GRvJV-MJ4bR",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379414,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 34875,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 1685,
+            "bye": false,
+            "playerIds": [
+                117813,
+                262198,
+                15322,
+                13716
+            ],
+            "userIds": [
+                21217,
+                22564,
+                4141,
+                3108
+            ],
+            "resultPositions": [
+                13716,
+                15322,
+                117813,
+                262198
+            ],
+            "resultPoints": [
+                "3.00",
+                "1.00",
+                "5.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354605,
+                    "gameId": 6379414,
+                    "roundId": 962483,
+                    "tournamentId": 210804,
+                    "playerId": 13716,
+                    "userId": 3108,
+                    "results": [
+                        13716,
+                        15322,
+                        117813,
+                        262198
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "13716": null,
+                        "15322": null,
+                        "117813": null,
+                        "262198": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 34875,
+                "name": "Family Guy",
+                "status": "active",
+                "opdbId": "G5LW9-MQ6N5",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379415,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 6617,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 1014,
+            "bye": false,
+            "playerIds": [
+                98350,
+                142513,
+                245985,
+                13708
+            ],
+            "userIds": [
+                18237,
+                18106,
+                27132,
+                60
+            ],
+            "resultPositions": [
+                245985,
+                13708,
+                142513,
+                98350
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "7.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 6617,
+                "name": "James Bond Dr.No (Pro)",
+                "status": "active",
+                "opdbId": "GQKyP-Mx0O4",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379416,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 179612,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 1213,
+            "bye": false,
+            "playerIds": [
+                52838,
+                307101,
+                31058,
+                127357
+            ],
+            "userIds": [
+                6045,
+                33700,
+                3281,
+                13586
+            ],
+            "resultPositions": [
+                52838,
+                307101,
+                31058,
+                127357
+            ],
+            "resultPoints": [
+                "7.00",
+                "5.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 179612,
+                "name": "RollerCoaster Tycoon",
+                "status": "inactive",
+                "opdbId": "Grybw-M5R0n",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379417,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 17754,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 897,
+            "bye": false,
+            "playerIds": [
+                13710,
+                283381,
+                290095,
+                476904
+            ],
+            "userIds": [
+                2642,
+                31319,
+                39572,
+                null
+            ],
+            "resultPositions": [
+                283381,
+                290095,
+                476904,
+                13710
+            ],
+            "resultPoints": [
+                "1.00",
+                "7.00",
+                "5.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354584,
+                    "gameId": 6379417,
+                    "roundId": 962483,
+                    "tournamentId": 210804,
+                    "playerId": 283381,
+                    "userId": 31319,
+                    "results": [
+                        283381,
+                        290095,
+                        476904,
+                        13710
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "13710": null,
+                        "283381": null,
+                        "290095": null,
+                        "476904": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 17754,
+                "name": "Medieval Madness",
+                "status": "active",
+                "opdbId": "G5pe4-MePZv",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379418,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 183820,
+            "bankId": null,
+            "index": 0,
+            "set": 4,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 1034,
+            "bye": false,
+            "playerIds": [
+                464246,
+                164121,
+                97321,
+                30759
+            ],
+            "userIds": [
+                null,
+                19892,
+                10235,
+                3280
+            ],
+            "resultPositions": [
+                164121,
+                30759,
+                97321,
+                464246
+            ],
+            "resultPoints": [
+                "1.00",
+                "7.00",
+                "3.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 183820,
+                "name": "King Kong: Myth of Terror Island (Premium)",
+                "status": "active",
+                "opdbId": "GEL0V-MyN8E-A1Dkr",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379419,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 178046,
+            "bankId": null,
+            "index": 0,
+            "set": 5,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 1116,
+            "bye": false,
+            "playerIds": [
+                79530,
+                123864,
+                109691,
+                190358
+            ],
+            "userIds": [
+                6943,
+                26039,
+                15019,
+                25049
+            ],
+            "resultPositions": [
+                109691,
+                190358,
+                79530,
+                123864
+            ],
+            "resultPoints": [
+                "3.00",
+                "1.00",
+                "7.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 178046,
+                "name": "Stranger Things (Pro)",
+                "status": "inactive",
+                "opdbId": "Gzy89-MNEeO",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379420,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 164538,
+            "bankId": null,
+            "index": 0,
+            "set": 6,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 895,
+            "bye": false,
+            "playerIds": [
+                73342,
+                202713,
+                327547
+            ],
+            "userIds": [
+                8185,
+                29382,
+                52231
+            ],
+            "resultPositions": [
+                73342,
+                202713,
+                327547
+            ],
+            "resultPoints": [
+                "7.00",
+                "4.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 1354588,
+                    "gameId": 6379420,
+                    "roundId": 962483,
+                    "tournamentId": 210804,
+                    "playerId": 73342,
+                    "userId": 8185,
+                    "results": [
+                        73342,
+                        202713,
+                        327547
+                    ],
+                    "arenaId": null,
+                    "scores": {
+                        "73342": null,
+                        "202713": null,
+                        "327547": null
+                    },
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 164538,
+                "name": "Foo Fighters (LE)",
+                "status": "active",
+                "opdbId": "GpeoL-MkPz1-A944p",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379421,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 8469,
+            "bankId": null,
+            "index": 0,
+            "set": 7,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 1051,
+            "bye": false,
+            "playerIds": [
+                71359,
+                201655,
+                490151
+            ],
+            "userIds": [
+                10713,
+                29260,
+                41246
+            ],
+            "resultPositions": [
+                490151,
+                71359,
+                201655
+            ],
+            "resultPoints": [
+                "4.00",
+                "1.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 8469,
+                "name": "Godzilla",
+                "status": "active",
+                "opdbId": "G5po2-MeP6B",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": 48258,
+                    "scorbitronInstalled": 1,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 6379422,
+            "roundId": 962483,
+            "tournamentId": 210804,
+            "challengeId": null,
+            "arenaId": 35728,
+            "bankId": null,
+            "index": 0,
+            "set": 8,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2025-09-30T04:05:07.000000Z",
+            "duration": 502,
+            "bye": false,
+            "playerIds": [
+                74820,
+                50532,
+                490148
+            ],
+            "userIds": [
+                6896,
+                7178,
+                52272
+            ],
+            "resultPositions": [
+                74820,
+                490148,
+                50532
+            ],
+            "resultPoints": [
+                "7.00",
+                "1.00",
+                "4.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 35728,
+                "name": "The Addams Family",
+                "status": "active",
+                "opdbId": "G4ODR-MDXEy",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        }
+    ]
+}
