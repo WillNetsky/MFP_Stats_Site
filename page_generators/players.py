@@ -180,6 +180,7 @@ def generate_player_pages(env, all_series_data):
                 'year': year,
                 'season_name': season_name_parsed,
                 'league_name': league_name_parsed,
+                'status': series_data.get('status', 'unknown'),
                 'summary_stats': {
                     'final_position': final_position,
                     'qualifying_position': qualifying_position,

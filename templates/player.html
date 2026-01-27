@@ -188,7 +188,7 @@
                         {% for season_data in mfp_seasons %}
                             {% set stats = season_data.summary_stats %}
                             {% set pos = stats.final_position %}
-                            <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
+                            <tr class="{% if season_data.status == 'completed' %}{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}{% endif %}">
                                 <td>{{ season_data.year }}</td>
                                 <td>{{ season_data.season_name }}</td>
                                 <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>
@@ -254,7 +254,7 @@
                         {% for season_data in mflp_seasons %}
                             {% set stats = season_data.summary_stats %}
                             {% set pos = stats.final_position %}
-                            <tr class="{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}">
+                            <tr class="{% if season_data.status == 'completed' %}{% if pos == 1 %}gold-finish{% elif pos == 2 %}silver-finish{% elif pos == 3 %}bronze-finish{% elif pos == 4 %}fourth-finish{% endif %}{% endif %}">
                                 <td>{{ season_data.year }}</td>
                                 <td>{{ season_data.season_name }}</td>
                                 <td><a href="season_{{ season_data.seriesId }}.html">{{ season_data.league_name }}</a></td>

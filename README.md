@@ -1,71 +1,147 @@
 # Matchplay Pinball League Stats Site Generator
 
-This project generates a static website to display statistics for pinball leagues managed through Matchplay Events. It fetches data from the Matchplay API, processes it, and renders dynamic HTML pages with season overviews, player statistics, and various leaderboards.
+This project generates a static website to display statistics for pinball leagues managed through Matchplay Events. It fetches data from the Matchplay API, processes it, and renders HTML pages with season overviews, player statistics, leaderboards, charts, and frivolities.
 
 ## Features
 
-*   **Automated Data Fetching:** Pulls the latest league data from the Matchplay API.
-*   **Static Site Generation:** Creates a fast, deployable static HTML website.
-*   **Season Overviews:** Displays detailed information for each league season, including top finishers.
-*   **Player Profiles:** Dedicated pages for each player with their season-by-season performance.
-*   **Leaderboards:** All-time leaderboards for various metrics (e.g., total points, weekly wins, most improved player).
-*   **Responsive Design:** Tables are designed to scroll horizontally on smaller screens for better mobile experience.
-*   **Dark Mode Toggle:** Users can switch between light, dark, and auto themes.
-*   **Search & Filtering:** Easily find players and filter seasons by year.
-*   **Automated Deployment:** Configured for Continuous Deployment via GitHub Actions to GitHub Pages.
+*   **Automated Data Fetching:** Pulls league data from the Matchplay API with 24-hour cache expiry.
+*   **Static Site Generation:** Creates a deployable static HTML website.
+*   **Season Overviews:** Detailed information for each league season, including standings, top finishers, and finals results. Separate tracking for MFPinball and MFLadies leagues.
+*   **Player Profiles:** Dedicated pages for each player with season-by-season performance, game logs, machine win rates, and Chart.js visualizations. Active seasons are highlighted with a glowing border.
+*   **Leaderboards:** All-time leaderboards for total points, weekly wins, perfect nights, most improved player, and more.
+*   **Charts:** Chart.js visualizations of player trends and league data.
+*   **Frivolities:** Fun stats including perfect nights (35 points), almost perfect nights (34), wooden nickels (5), biggest week-to-week drops, tournaments on this day, and one-hit wonders.
+*   **Score Color-Coding:** Dynamic gradient from red (5) through white (20) to green (34) and gold (35).
+*   **Sortable Tables:** Click column headers to sort any data table.
+*   **Responsive Design:** Tables scroll horizontally on smaller screens.
+*   **Dark Mode Toggle:** Switch between light, dark, and auto themes.
+*   **Search & Filtering:** Find players and filter seasons by year.
+*   **Automated Deployment:** Continuous deployment via GitHub Actions to GitHub Pages, with daily scheduled builds.
 
 ## Technologies Used
 
 *   **Python:** Core scripting language.
 *   **Jinja2:** Templating engine for HTML generation.
 *   **requests:** For interacting with the Matchplay API.
+*   **pandas:** Data manipulation and analysis.
 *   **python-dotenv:** For managing environment variables (API keys).
 *   **argparse:** For command-line argument parsing.
-*   **Pico.css:** A minimalist CSS framework for styling.
+*   **Pico.css:** A minimalist CSS framework for styling (loaded via CDN).
+*   **Chart.js:** JavaScript charting library for player and league visualizations (loaded via CDN).
 *   **GitHub Actions:** For CI/CD automation.
 *   **GitHub Pages:** For static site hosting.
 
 ## Project Structure
 
-The project is organized into modular Python scripts:
+```
+├── main.py                  # Entry point: --fetch and/or --generate
+├── api_client.py            # Matchplay API interactions with caching
+├── api_explorer.py          # Utility for exploring API endpoints (development)
+├── data_processor.py        # Data loading, parsing, and transformation
+├── site_generator.py        # Orchestrates page generation and static asset copying
+├── config.py                # Centralized configuration (excluded series, paths, thresholds)
+├── page_generators/         # Modular page generation
+│   ├── caching.py           # Memoization decorator for API calls
+│   ├── charts.py            # Charts page generation
+│   ├── frivolities.py       # Fun stats page generation
+│   ├── helpers.py           # Jinja2 filters (score colors, number formatting)
+│   ├── leaderboards.py      # Leaderboard calculations and page generation
+│   ├── players.py           # Individual player page generation
+│   └── seasons.py           # Season list and individual season page generation
+├── templates/               # Jinja2 HTML templates
+│   ├── base.html            # Base layout with nav, scripts, and score coloring
+│   ├── _navbar.html         # Navigation component
+│   ├── index.html           # Home page
+│   ├── seasons.html         # Season list with year filters
+│   ├── season.html          # Individual season detail
+│   ├── players.html         # Player list with search
+│   ├── player.html          # Individual player profile
+│   ├── charts.html          # Chart.js visualizations
+│   ├── leaderboards.html    # Leaderboard container
+│   ├── leaderboard_tables.html  # Leaderboard table components
+│   └── frivolities.html     # Fun stats and sortable tables
+├── static/
+│   └── style.css            # Custom styles (Pico.css overrides, trophy colors, score badges)
+├── data/                    # Cached API responses (series, tournaments, games, finals, arenas)
+├── output/                  # Generated static site (gitignored)
+├── player_page_example_files/   # Baseball Reference examples used as design inspiration
+├── .github/workflows/
+│   └── deploy.yml           # CI/CD: fetch, generate, deploy to gh-pages
+├── requirements.txt         # Python dependencies
+├── matchplay-openapi.yaml   # Matchplay API OpenAPI specification
+└── .env                     # API key and user ID (gitignored)
+```
 
-*   `main.py`: The main entry point for running data fetching and site generation.
-*   `api_client.py`: Handles all interactions with the Matchplay Events API.
-*   `data_processor.py`: Contains logic for loading, parsing, and transforming raw data.
-*   `site_generator.py`: Responsible for rendering Jinja2 templates and writing HTML files to the `output` directory.
-*   `config.py`: Centralized configuration settings for the project (e.g., excluded series, directory paths).
-*   `requirements.txt`: Lists all Python dependencies.
-*   `matchplay-openapi.yaml`: OpenAPI specification for the Matchplay API.
-*   `templates/`: Contains Jinja2 HTML templates (`.html` files).
-*   `static/`: Contains static assets like CSS files.
-*   `data/`: Stores cached API responses and mapping files (e.g., `finals_mapping.json`).
-*   `.github/workflows/deploy.yml`: GitHub Actions workflow definition for automated deployment.
-*   `player_page_example_files/`: Example files for player pages (if applicable, otherwise consider removing or clarifying).
+## Setup
+
+1.  Clone the repository.
+2.  Create a Python virtual environment and install dependencies:
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    ```
+3.  Create a `.env` file in the project root with your Matchplay API credentials:
+    ```
+    MATCHPLAY_API_KEY = "your_api_key_here"
+    USER_ID = "your_user_id_here"
+    ```
+
+## Usage
+
+```bash
+# Fetch latest data from the API and generate the site
+python main.py --fetch --generate
+
+# Fetch data only (updates cached JSON in data/)
+python main.py --fetch
+
+# Generate site only (uses cached data, default if no flags given)
+python main.py --generate
+python main.py
+```
+
+The generated site is written to the `output/` directory.
 
 ## Customization
 
-*   **Excluded Series:** Modify the `EXCLUDED_SERIES_NAMES` list in `config.py` to control which series are included or excluded from the generated statistics.
-*   **Templates:** The HTML structure and content can be customized by editing the Jinja2 templates located in the `templates/` directory.
-*   **Static Assets:** Update CSS styles or add new static files in the `static/` directory.
+*   **Excluded Series:** Modify the `EXCLUDED_SERIES_NAMES` list in `config.py` to control which series are included or excluded from processing.
+*   **League Names:** Update `MFLADIES_LEAGUE_NAMES` in `config.py` to recognize additional name variations for the MFLadies league.
+*   **Leaderboard Thresholds:** Adjust `MIN_WEEKS_FOR_IMPROVEMENT` in `config.py` to change the minimum weeks required for the Most Improved Player leaderboard.
+*   **Cache Duration:** Change `CACHE_EXPIRY_HOURS` in `config.py` to control how long fetched API data is considered fresh.
+*   **Templates:** Edit the Jinja2 templates in `templates/` to change the HTML structure and content.
+*   **Static Assets:** Update CSS styles or add new static files in `static/`.
 
-## To Do
+## TODO
 
-* Player Data
-  * Final position changed to final position (qualiyfing position)
-  * Add trophy emoji to end of position column and remove trophy column
-* Charts
-  * Make chart taller in relation to the buttons
-* Weekly Data
-  * Players stats by game (arena)
-  * Games won (and 2nd, 3rd, 4th)
-  * 28 and then not perfect
+* Site-wide
+  * all links to seasons should follow the same format (LeagueType SeasonName Season Year) rather than the string from matchplay
+  * Tournaments - Add all of the league adjacent tournaments from Cary's organizer ID, requires filtering relevant tournaments
+  * Table sorting should be more reactive (highlight header on mouseover... at least?)
+  * Light and dark theme (one that holds between pages and plays well with the flair)
+  * Use the <details> tag more universally, nest if possible for things like the leaderboard, player pages show it best ATM 
 * Season Data
-  * Racing bar chart
-  * Finals displayed as bracket with the actual results
-  * toggle between week # scores and nth best scores
-* Seasons.html
+  * Racing horizontal bar chart
+  * toggle between week # scores and nth best scores on season page
   * IFPA wpprs given to winner (likely need to manually document this, or document the ifpa ids)
-  * Chart of number of players with WPPRS overlayed
+  * Chart of number of players with WPPRS overlayed (possible one-off? scatter of qualified players vs wpprs to the winner?)
+* Players
+  * No trophy flair for active seasons
+  * performance by machine broken other than "machine" and "total plays"
+  * Bio section - ifpa# links to ifpa page
+  * Bio section - get everybody's initials (manual)
+  * Bio section - brief summary "player has played x seasons of MFP, x of MFLP, won X times, won X weeks etc" sorta generative
+      include things like "They win at Dolly Parton 75% of the time" limit by qualifying games/weeks, otherwise "they have played x weeks", include something for every player
+  * Bio section - trophies won
+  * Bio section - OG office flair (players who played at seasons/tournaments that took place at The Office)
+  * Add opponents to game log table (p1 name x pts, etc)
+* Charts
+  * Make buttons smaller
 * Leaderboards
-  * Biggest week to week drop (and raise)
-  * Most games won (weekly data)
+  * Paginate all time leaders
+* Frivolities
+  
+* Constants to research and document (should separate historian role vs scorekeeper)
+  * when arena data becomes trustworthy
+  * when Bee took over strikes (this is when strikes begins to count)
+  * date of transition from The Office to Lynn's Arcade

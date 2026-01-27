@@ -392,21 +392,37 @@ def find_biggest_drops(all_series_data):
     biggest_drops.sort(key=lambda x: x['drop'], reverse=True)
     return biggest_drops
 
+def _load_tournament_local_date(tournament_id):
+    """Loads the local start date from a tournament details file."""
+    detail_path = os.path.join(DATA_DIR, f"tournament_details_{tournament_id}.json")
+    if os.path.exists(detail_path):
+        with open(detail_path, 'r') as f:
+            detail = json.load(f)
+        start_local = detail.get('data', {}).get('startLocal')
+        if start_local:
+            try:
+                return datetime.strptime(start_local.split(' ')[0], "%Y-%m-%d")
+            except ValueError:
+                pass
+    return None
+
 def find_tournaments_on_this_day(all_series_data):
     """
     Finds tournaments that happened on the current day (month and day) in any year.
+    Uses tournament detail startLocal to get the correct local date rather than
+    the game startedAt UTC timestamp (which can be off by a day).
     """
     today = datetime.now()
     today_month = today.month
     today_day = today.day
-    
+
     tournaments_on_this_day = []
 
     for series_data_raw in all_series_data:
         series = series_data_raw['data']
         series_id = series['seriesId']
         series_name = series['name']
-        
+
         year, season_name, league_name = parse_series_name(series_name)
         data_year = extract_year_from_series_data(series_data_raw)
         if data_year:
@@ -415,41 +431,35 @@ def find_tournaments_on_this_day(all_series_data):
         tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series.get('tournamentIds', []))}
         player_name_map = {p['playerId']: p['name'] for p in series.get('players', [])}
 
-        for tournament_id_str, games_list in series_data_raw.get('tournament_games_data', {}).items():
-            tournament_id = int(tournament_id_str)
+        for tournament_id in series.get('tournamentIds', []):
             week_num = tournament_id_to_week_num.get(tournament_id, 'N/A')
-            
-            # Check the date of the first game in the tournament
-            if games_list:
-                first_game = games_list[0]
-                started_at = first_game.get('startedAt')
-                if started_at:
-                    try:
-                        game_date = datetime.strptime(started_at.split('T')[0], "%Y-%m-%d")
-                        if game_date.month == today_month and game_date.day == today_day:
-                            
-                            # Find the winner of the tournament
-                            winner_name = "Unknown"
-                            winner_id = None
-                            if 'tournamentPoints' in series and str(tournament_id) in series['tournamentPoints']:
-                                player_points_map = series['tournamentPoints'][str(tournament_id)]
-                                if player_points_map:
-                                    winner_id_str = max(player_points_map, key=lambda p_id: float(player_points_map[p_id]))
-                                    winner_id = int(winner_id_str)
-                                    winner_name = player_name_map.get(winner_id, "Unknown")
 
-                            tournaments_on_this_day.append({
-                                'date': game_date.strftime("%Y-%m-%d"),
-                                'year': game_date.year,
-                                'seriesId': series_id,
-                                'seriesName': series_name,
-                                'week_num': week_num,
-                                'winner_name': winner_name,
-                                'winner_id': winner_id
-                            })
-                    except ValueError:
-                        pass
-    
+            # Use local start date from tournament details
+            tournament_date = _load_tournament_local_date(tournament_id)
+            if not tournament_date:
+                continue
+
+            if tournament_date.month == today_month and tournament_date.day == today_day:
+                # Find the winner of the tournament
+                winner_name = "Unknown"
+                winner_id = None
+                if 'tournamentPoints' in series and str(tournament_id) in series['tournamentPoints']:
+                    player_points_map = series['tournamentPoints'][str(tournament_id)]
+                    if player_points_map:
+                        winner_id_str = max(player_points_map, key=lambda p_id: float(player_points_map[p_id]))
+                        winner_id = int(winner_id_str)
+                        winner_name = player_name_map.get(winner_id, "Unknown")
+
+                tournaments_on_this_day.append({
+                    'date': tournament_date.strftime("%Y-%m-%d"),
+                    'year': tournament_date.year,
+                    'seriesId': series_id,
+                    'seriesName': series_name,
+                    'week_num': week_num,
+                    'winner_name': winner_name,
+                    'winner_id': winner_id
+                })
+
     # Sort by year descending
     tournaments_on_this_day.sort(key=lambda x: x['year'], reverse=True)
     return tournaments_on_this_day
@@ -490,10 +500,13 @@ def find_one_hit_wonders(all_series_data):
                 if week_num is None:
                     continue
 
-                # Get date for this tournament if available
+                # Get date for this tournament: prefer local date from details, fall back to game data
                 tournament_date = "Unknown Date"
-                if 'tournament_games_data' in series_data_raw and tournament_id_str in series_data_raw['tournament_games_data']:
-                    games = series_data_raw['tournament_games_data'][tournament_id_str]
+                local_date = _load_tournament_local_date(current_tournament_id)
+                if local_date:
+                    tournament_date = local_date.strftime("%Y-%m-%d")
+                elif 'tournament_games_data' in series_data_raw and current_tournament_id in series_data_raw['tournament_games_data']:
+                    games = series_data_raw['tournament_games_data'][current_tournament_id]
                     if games:
                         first_game = games[0]
                         started_at = first_game.get('startedAt')
