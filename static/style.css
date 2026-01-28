@@ -52,6 +52,15 @@ thead {
     background-color: #f2f2f2;
 }
 
+th[onclick] {
+    cursor: pointer;
+    user-select: none;
+}
+
+th[onclick]:hover {
+    background-color: #d9d9d9;
+}
+
 .active-season {
     animation: glowing 2s infinite;
     border: 1px solid #00ff00;
@@ -94,6 +103,20 @@ thead {
 .fourth-finish .trophy-icon::after {
     content: '4️⃣';
     font-size: 1.2em;
+}
+
+/* Player bio section */
+.player-bio {
+    margin-bottom: 1rem;
+}
+
+.bio-trophies {
+    font-size: 1.5em;
+    margin-bottom: 0.25rem;
+}
+
+.bio-trophies .trophy {
+    margin-right: 2px;
 }
 
 /* Wider container for player and season pages */

@@ -149,13 +149,13 @@
             min-width: 150px;
         }
         .chart-toggle-button {
-            padding: 8px 15px;
+            padding: 4px 10px;
             background-color: var(--primary);
             color: var(--primary-inverse);
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.8em;
             flex-shrink: 0;
         }
         .chart-toggle-button.active {
@@ -221,6 +221,13 @@
     <details open>
         <summary><h1>Usama Farage</h1></summary>
         <p>IFPA Number: 14561</p>
+
+        
+        <div class="player-bio">
+            
+            <p>Has played 1 MFPinball season. Attended 1 league nights, winning 0.</p>
+        </div>
+        
     </details>
 
     
@@ -334,6 +341,7 @@
                         <th onclick="sortTable('game-log-table', 7)">Position</th>
                         <th onclick="sortTable('game-log-table', 8)">Result</th>
                         <th onclick="sortTable('game-log-table', 9, true)">Points</th>
+                        <th>Opponents</th>
                     </tr>
                 </thead>
                 <tbody id="game-log-body">
@@ -347,7 +355,7 @@
             </div>
         </div>
         <!-- Data injection for game log -->
-        <div id="game-log-data" data-game-log="[{&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;Surf Champ&#34;, &#34;play_order&#34;: 1, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;No Fear&#34;, &#34;play_order&#34;: 3, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 3, &#34;points&#34;: &#34;1.00&#34;}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;Iron Maiden \u201881&#34;, &#34;play_order&#34;: 3, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 3, &#34;points&#34;: &#34;1.00&#34;}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;The Walking Dead&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;1&#34;, &#34;position&#34;: 1, &#34;players&#34;: 3, &#34;points&#34;: &#34;7.00&#34;}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;Big Buck Hunter&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;1&#34;, &#34;position&#34;: 1, &#34;players&#34;: 3, &#34;points&#34;: &#34;7.00&#34;}]" style="display: none;"></div>
+        <div id="game-log-data" data-game-log="[{&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;Surf Champ&#34;, &#34;play_order&#34;: 1, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 50534, &#34;name&#34;: &#34;Sneha Kolar&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 50532, &#34;name&#34;: &#34;Jasmine Phillips&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 49307, &#34;name&#34;: &#34;\u201cRC\u201d&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}]}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;No Fear&#34;, &#34;play_order&#34;: 3, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 3, &#34;points&#34;: &#34;1.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 142513, &#34;name&#34;: &#34;Brian Simpson&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 127357, &#34;name&#34;: &#34;Ivy Simpson&#34;, &#34;points&#34;: &#34;4.00&#34;, &#34;position&#34;: 2}]}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;Iron Maiden \u201881&#34;, &#34;play_order&#34;: 3, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 3, &#34;points&#34;: &#34;1.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 79530, &#34;name&#34;: &#34;Dexter Farm&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 219316, &#34;name&#34;: &#34;Tyler Powles&#34;, &#34;points&#34;: &#34;4.00&#34;, &#34;position&#34;: 2}]}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;The Walking Dead&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;1&#34;, &#34;position&#34;: 1, &#34;players&#34;: 3, &#34;points&#34;: &#34;7.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 219316, &#34;name&#34;: &#34;Tyler Powles&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 3}, {&#34;playerId&#34;: 195333, &#34;name&#34;: &#34;Justin Quebec&#34;, &#34;points&#34;: &#34;4.00&#34;, &#34;position&#34;: 2}]}, {&#34;date&#34;: &#34;2022-10-18&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Fall&#34;, &#34;year&#34;: &#34;2022&#34;, &#34;week&#34;: 6, &#34;machine&#34;: &#34;Big Buck Hunter&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;1&#34;, &#34;position&#34;: 1, &#34;players&#34;: 3, &#34;points&#34;: &#34;7.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 163117, &#34;name&#34;: &#34;Joshua Phillips&#34;, &#34;points&#34;: &#34;4.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 31099, &#34;name&#34;: &#34;Jairo Picazo&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 3}]}]" style="display: none;"></div>
     </details>
 
     <details>
@@ -360,7 +368,7 @@
         </div>
 
         <!-- Data injection for machine performance -->
-        <div id="machine-performance-data" data-machine-perf="{&#34;Surf Champ&#34;: {&#34;2022&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;No Fear&#34;: {&#34;2022&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;Iron Maiden \u201881&#34;: {&#34;2022&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;The Walking Dead&#34;: {&#34;2022&#34;: {&#34;1st_place&#34;: 1, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 0, &#34;4th_place&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Big Buck Hunter&#34;: {&#34;2022&#34;: {&#34;1st_place&#34;: 1, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 0, &#34;4th_place&#34;: 0, &#34;total_plays&#34;: 1}}}" style="display: none;"></div>
+        <div id="machine-performance-data" data-machine-perf="{&#34;Surf Champ&#34;: {&#34;2022&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;No Fear&#34;: {&#34;2022&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;Iron Maiden \u201881&#34;: {&#34;2022&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;The Walking Dead&#34;: {&#34;2022&#34;: {&#34;1st&#34;: 1, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Big Buck Hunter&#34;: {&#34;2022&#34;: {&#34;1st&#34;: 1, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 0, &#34;total_plays&#34;: 1}}}" style="display: none;"></div>
 
         <div class="table-container">
             <table id="game-performance-table">
@@ -615,7 +623,7 @@
             if (pageData.length === 0) {
                 const row = tbody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 10;
+                cell.colSpan = 11;
                 cell.textContent = "No games found.";
                 return;
             }
@@ -671,6 +679,16 @@
                     pointsCell.appendChild(badge);
                 } else {
                     pointsCell.textContent = displayPoints;
+                }
+
+                // Opponents cell
+                const oppCell = row.insertCell();
+                if (game.opponents && game.opponents.length > 0) {
+                    oppCell.innerHTML = game.opponents.map(opp => {
+                        const pts = parseFloat(opp.points);
+                        const displayPts = Number.isInteger(pts) ? parseInt(pts) : pts;
+                        return `<a href="player_${opp.playerId}.html">${opp.name}</a> (${isNaN(pts) ? 'N/A' : displayPts})`;
+                    }).join(', ');
                 }
             });
 
@@ -988,7 +1006,7 @@
     </main>
 
     <footer class="container">
-        <small>Last updated: 2026-01-27 08:41:38</small>
+        <small>Last updated: 2026-01-28 08:36:25</small>
     </footer>
 
     <script>

@@ -149,13 +149,13 @@
             min-width: 150px;
         }
         .chart-toggle-button {
-            padding: 8px 15px;
+            padding: 4px 10px;
             background-color: var(--primary);
             color: var(--primary-inverse);
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 0.8em;
             flex-shrink: 0;
         }
         .chart-toggle-button.active {
@@ -221,6 +221,13 @@
     <details open>
         <summary><h1>Brianna Denny</h1></summary>
         <p>IFPA Number: 22855</p>
+
+        
+        <div class="player-bio">
+            
+            <p>Has played 1 MFPinball season. Attended 2 league nights, winning 0.</p>
+        </div>
+        
     </details>
 
     
@@ -334,6 +341,7 @@
                         <th onclick="sortTable('game-log-table', 7)">Position</th>
                         <th onclick="sortTable('game-log-table', 8)">Result</th>
                         <th onclick="sortTable('game-log-table', 9, true)">Points</th>
+                        <th>Opponents</th>
                     </tr>
                 </thead>
                 <tbody id="game-log-body">
@@ -347,7 +355,7 @@
             </div>
         </div>
         <!-- Data injection for game log -->
-        <div id="game-log-data" data-game-log="[{&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Hokus Pokus&#34;, &#34;play_order&#34;: 1, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 4, &#34;points&#34;: &#34;3.00&#34;}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Jurassic Park (Pro)&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;2&#34;, &#34;position&#34;: 2, &#34;players&#34;: 4, &#34;points&#34;: &#34;5.00&#34;}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;No Fear: Dangerous Sports&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Jacks Open&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Paragon&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 4, &#34;points&#34;: &#34;3.00&#34;}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;Game of Thrones&#34;, &#34;play_order&#34;: 3, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;The Walking Cora&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;1&#34;, &#34;position&#34;: 1, &#34;players&#34;: 4, &#34;points&#34;: &#34;7.00&#34;}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;Funhouse&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;2&#34;, &#34;position&#34;: 2, &#34;players&#34;: 4, &#34;points&#34;: &#34;5.00&#34;}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;Jacks Open&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;2&#34;, &#34;position&#34;: 2, &#34;players&#34;: 4, &#34;points&#34;: &#34;5.00&#34;}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;The Hobbit (LE)&#34;, &#34;play_order&#34;: 1, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;}]" style="display: none;"></div>
+        <div id="game-log-data" data-game-log="[{&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Hokus Pokus&#34;, &#34;play_order&#34;: 1, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 4, &#34;points&#34;: &#34;3.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 215530, &#34;name&#34;: &#34;Daniel Cooper&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 117812, &#34;name&#34;: &#34;Matt Sheahan&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 19225, &#34;name&#34;: &#34;Nick Vibe&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 4}]}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Jurassic Park (Pro)&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;2&#34;, &#34;position&#34;: 2, &#34;players&#34;: 4, &#34;points&#34;: &#34;5.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 91376, &#34;name&#34;: &#34;Anthony Garcia CA&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 122793, &#34;name&#34;: &#34;Kelly Greenhoe&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 4}, {&#34;playerId&#34;: 50534, &#34;name&#34;: &#34;Sneha Kolar&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}]}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;No Fear: Dangerous Sports&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 123864, &#34;name&#34;: &#34;Vincent Ruggiero&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 84838, &#34;name&#34;: &#34;Eric Garcia&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 13713, &#34;name&#34;: &#34;Philip Ryder&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}]}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Jacks Open&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 127358, &#34;name&#34;: &#34;April Wilson&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 123865, &#34;name&#34;: &#34;Whitney Clark&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}, {&#34;playerId&#34;: 13712, &#34;name&#34;: &#34;Fred Hamilton&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}]}, {&#34;date&#34;: &#34;2020-02-04&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 4, &#34;machine&#34;: &#34;Paragon&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;3&#34;, &#34;position&#34;: 3, &#34;players&#34;: 4, &#34;points&#34;: &#34;3.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 141534, &#34;name&#34;: &#34;Joe Salas&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 142514, &#34;name&#34;: &#34;Stoon&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 4}, {&#34;playerId&#34;: 95694, &#34;name&#34;: &#34;Tasha Lindstrom&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}]}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;Game of Thrones&#34;, &#34;play_order&#34;: 3, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 141535, &#34;name&#34;: &#34;Nick Grice&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}, {&#34;playerId&#34;: 91376, &#34;name&#34;: &#34;Anthony Garcia CA&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 123864, &#34;name&#34;: &#34;Vincent Ruggiero&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}]}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;The Walking Cora&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;1&#34;, &#34;position&#34;: 1, &#34;players&#34;: 4, &#34;points&#34;: &#34;7.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 117913, &#34;name&#34;: &#34;Juan Maga\u00f1a Black&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 91374, &#34;name&#34;: &#34;Cip Garcia&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}, {&#34;playerId&#34;: 123865, &#34;name&#34;: &#34;Whitney Clark&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 4}]}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;Funhouse&#34;, &#34;play_order&#34;: 4, &#34;result&#34;: &#34;2&#34;, &#34;position&#34;: 2, &#34;players&#34;: 4, &#34;points&#34;: &#34;5.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 84838, &#34;name&#34;: &#34;Eric Garcia&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 74820, &#34;name&#34;: &#34;Will Chernetsky&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}, {&#34;playerId&#34;: 50532, &#34;name&#34;: &#34;Jasmine Phillips&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 4}]}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;Jacks Open&#34;, &#34;play_order&#34;: 2, &#34;result&#34;: &#34;2&#34;, &#34;position&#34;: 2, &#34;players&#34;: 4, &#34;points&#34;: &#34;5.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 215530, &#34;name&#34;: &#34;Daniel Cooper&#34;, &#34;points&#34;: &#34;1.00&#34;, &#34;position&#34;: 4}, {&#34;playerId&#34;: 61526, &#34;name&#34;: &#34;Tyler Heath&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}, {&#34;playerId&#34;: 13709, &#34;name&#34;: &#34;Matthew Talley&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}]}, {&#34;date&#34;: &#34;2020-01-28&#34;, &#34;league&#34;: &#34;MFPinball&#34;, &#34;season&#34;: &#34;Winter&#34;, &#34;year&#34;: &#34;2020&#34;, &#34;week&#34;: 3, &#34;machine&#34;: &#34;The Hobbit (LE)&#34;, &#34;play_order&#34;: 1, &#34;result&#34;: &#34;4&#34;, &#34;position&#34;: 4, &#34;players&#34;: 4, &#34;points&#34;: &#34;1.00&#34;, &#34;opponents&#34;: [{&#34;playerId&#34;: 91376, &#34;name&#34;: &#34;Anthony Garcia CA&#34;, &#34;points&#34;: &#34;5.00&#34;, &#34;position&#34;: 2}, {&#34;playerId&#34;: 141532, &#34;name&#34;: &#34;Dale Green&#34;, &#34;points&#34;: &#34;7.00&#34;, &#34;position&#34;: 1}, {&#34;playerId&#34;: 61526, &#34;name&#34;: &#34;Tyler Heath&#34;, &#34;points&#34;: &#34;3.00&#34;, &#34;position&#34;: 3}]}]" style="display: none;"></div>
     </details>
 
     <details>
@@ -360,7 +368,7 @@
         </div>
 
         <!-- Data injection for machine performance -->
-        <div id="machine-performance-data" data-machine-perf="{&#34;Game of Thrones&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;The Walking Cora&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 1, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 0, &#34;4th_place&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Funhouse&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 1, &#34;3rd_place&#34;: 0, &#34;4th_place&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Jacks Open&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 1, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 1, &#34;total_plays&#34;: 2}}, &#34;The Hobbit (LE)&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;Hokus Pokus&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Jurassic Park (Pro)&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 1, &#34;3rd_place&#34;: 0, &#34;4th_place&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;No Fear: Dangerous Sports&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;Paragon&#34;: {&#34;2020&#34;: {&#34;1st_place&#34;: 0, &#34;2nd_place&#34;: 0, &#34;3rd_place&#34;: 1, &#34;4th_place&#34;: 0, &#34;total_plays&#34;: 1}}}" style="display: none;"></div>
+        <div id="machine-performance-data" data-machine-perf="{&#34;Game of Thrones&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;The Walking Cora&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 1, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Funhouse&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 1, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Jacks Open&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 1, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 1, &#34;total_plays&#34;: 2}}, &#34;The Hobbit (LE)&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;Hokus Pokus&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 1, &#34;4th&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;Jurassic Park (Pro)&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 1, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 0, &#34;total_plays&#34;: 1}}, &#34;No Fear: Dangerous Sports&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 0, &#34;4th&#34;: 1, &#34;total_plays&#34;: 1}}, &#34;Paragon&#34;: {&#34;2020&#34;: {&#34;1st&#34;: 0, &#34;2nd&#34;: 0, &#34;2nd_3p&#34;: 0, &#34;3rd&#34;: 1, &#34;4th&#34;: 0, &#34;total_plays&#34;: 1}}}" style="display: none;"></div>
 
         <div class="table-container">
             <table id="game-performance-table">
@@ -615,7 +623,7 @@
             if (pageData.length === 0) {
                 const row = tbody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 10;
+                cell.colSpan = 11;
                 cell.textContent = "No games found.";
                 return;
             }
@@ -671,6 +679,16 @@
                     pointsCell.appendChild(badge);
                 } else {
                     pointsCell.textContent = displayPoints;
+                }
+
+                // Opponents cell
+                const oppCell = row.insertCell();
+                if (game.opponents && game.opponents.length > 0) {
+                    oppCell.innerHTML = game.opponents.map(opp => {
+                        const pts = parseFloat(opp.points);
+                        const displayPts = Number.isInteger(pts) ? parseInt(pts) : pts;
+                        return `<a href="player_${opp.playerId}.html">${opp.name}</a> (${isNaN(pts) ? 'N/A' : displayPts})`;
+                    }).join(', ');
                 }
             });
 
@@ -988,7 +1006,7 @@
     </main>
 
     <footer class="container">
-        <small>Last updated: 2026-01-27 08:41:38</small>
+        <small>Last updated: 2026-01-28 08:36:25</small>
     </footer>
 
     <script>
