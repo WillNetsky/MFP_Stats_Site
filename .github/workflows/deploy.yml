@@ -3,7 +3,7 @@ name: Deploy Static Site to GitHub Pages
 on:
   push:
     branches:
-      - main # Trigger on pushes to the main branch
+      - master # Trigger on pushes to the main branch
   schedule:
     - cron: '0 8 * * *' # Daily build at midnight Pacific Time (08:00 UTC)
   workflow_dispatch: # Allows manual triggering from GitHub UI
