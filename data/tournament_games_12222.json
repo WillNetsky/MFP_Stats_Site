@@ -1,0 +1,1327 @@
+{
+    "data": [
+        {
+            "gameId": 309312,
+            "roundId": 56060,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 19382,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:16:38.000000Z",
+            "duration": 1183,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13710,
+                13717,
+                13709,
+                32095
+            ],
+            "userIds": [
+                2642,
+                null,
+                1461,
+                3218
+            ],
+            "resultPositions": [
+                13709,
+                13710,
+                32095,
+                13717
+            ],
+            "resultPoints": [
+                "5.00",
+                "1.00",
+                "7.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 19382,
+                "name": "Scared Stiff",
+                "status": "inactive",
+                "opdbId": "G4xbP-Mp45Y",
+                "categoryId": null,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309313,
+            "roundId": 56060,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 8470,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:16:38.000000Z",
+            "duration": 770,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13716,
+                13712,
+                50532
+            ],
+            "userIds": [
+                3108,
+                2866,
+                7178
+            ],
+            "resultPositions": [
+                13712,
+                13716,
+                50532
+            ],
+            "resultPoints": [
+                "4.00",
+                "7.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 14872,
+                    "gameId": 309313,
+                    "roundId": 56060,
+                    "tournamentId": 12222,
+                    "playerId": 13712,
+                    "userId": 2866,
+                    "results": [
+                        13712,
+                        13716,
+                        35461
+                    ],
+                    "arenaId": null,
+                    "scores": null,
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 8470,
+                "name": "High Speed II",
+                "status": "inactive",
+                "opdbId": null,
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309314,
+            "roundId": 56060,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 11734,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:16:38.000000Z",
+            "duration": 1195,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                31099,
+                38763,
+                13708
+            ],
+            "userIds": [
+                null,
+                null,
+                60
+            ],
+            "resultPositions": [
+                13708,
+                31099,
+                38763
+            ],
+            "resultPoints": [
+                "4.00",
+                "1.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11734,
+                "name": "Total Nuclear Annihilation",
+                "status": "inactive",
+                "opdbId": "GRD79-M0odk",
+                "categoryId": 6,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309315,
+            "roundId": 56060,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 6609,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:16:38.000000Z",
+            "duration": 765,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                18561,
+                15322,
+                50534
+            ],
+            "userIds": [
+                5626,
+                4141,
+                4762
+            ],
+            "resultPositions": [
+                15322,
+                50534,
+                18561
+            ],
+            "resultPoints": [
+                "1.00",
+                "7.00",
+                "4.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 6609,
+                "name": "Game of Thrones",
+                "status": "inactive",
+                "opdbId": "G41d5-MKNwX",
+                "categoryId": 8,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309344,
+            "roundId": 56071,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 16789,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:36:51.000000Z",
+            "duration": 1045,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13712,
+                13709,
+                13708,
+                15322
+            ],
+            "userIds": [
+                2866,
+                1461,
+                60,
+                4141
+            ],
+            "resultPositions": [
+                13709,
+                13708,
+                15322,
+                13712
+            ],
+            "resultPoints": [
+                "1.00",
+                "7.00",
+                "5.00",
+                "3.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 16789,
+                "name": "Monster Bash",
+                "status": "inactive",
+                "opdbId": "Gr3EW-MD3Nj",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309345,
+            "roundId": 56071,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 12568,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:36:51.000000Z",
+            "duration": 583,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                31099,
+                13710,
+                13716
+            ],
+            "userIds": [
+                null,
+                2642,
+                3108
+            ],
+            "resultPositions": [
+                13710,
+                13716,
+                31099
+            ],
+            "resultPoints": [
+                "1.00",
+                "7.00",
+                "4.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 12568,
+                "name": "Playboy '78",
+                "status": "inactive",
+                "opdbId": null,
+                "categoryId": 6,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309346,
+            "roundId": 56071,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 11736,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:36:51.000000Z",
+            "duration": 1069,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                50534,
+                13717,
+                32095
+            ],
+            "userIds": [
+                4762,
+                null,
+                3218
+            ],
+            "resultPositions": [
+                13717,
+                50534,
+                32095
+            ],
+            "resultPoints": [
+                "4.00",
+                "7.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11736,
+                "name": "Pirates of the Caribbean",
+                "status": "inactive",
+                "opdbId": "GR7ZX-MQ23b",
+                "categoryId": 8,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309347,
+            "roundId": 56071,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 11735,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:36:51.000000Z",
+            "duration": 591,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                38763,
+                50532,
+                18561
+            ],
+            "userIds": [
+                null,
+                7178,
+                5626
+            ],
+            "resultPositions": [
+                18561,
+                38763,
+                50532
+            ],
+            "resultPoints": [
+                "4.00",
+                "1.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11735,
+                "name": "Spider-Man",
+                "status": "inactive",
+                "opdbId": "G5D94-MLnXq",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309352,
+            "roundId": 56074,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 17446,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:54:45.000000Z",
+            "duration": 1387,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13708,
+                13709,
+                13710,
+                15322
+            ],
+            "userIds": [
+                60,
+                1461,
+                2642,
+                4141
+            ],
+            "resultPositions": [
+                13710,
+                13709,
+                13708,
+                15322
+            ],
+            "resultPoints": [
+                "3.00",
+                "5.00",
+                "7.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 17446,
+                "name": "Big Buck Hunter",
+                "status": "inactive",
+                "opdbId": "G4N6n-MLxER",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309353,
+            "roundId": 56074,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 6617,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:54:45.000000Z",
+            "duration": 544,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13716,
+                50534,
+                13717
+            ],
+            "userIds": [
+                3108,
+                4762,
+                null
+            ],
+            "resultPositions": [
+                13717,
+                50534,
+                13716
+            ],
+            "resultPoints": [
+                "1.00",
+                "4.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 14879,
+                    "gameId": 309353,
+                    "roundId": 56074,
+                    "tournamentId": 12222,
+                    "playerId": 50534,
+                    "userId": 4762,
+                    "results": [
+                        13717,
+                        36388,
+                        13716
+                    ],
+                    "arenaId": null,
+                    "scores": null,
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 6617,
+                "name": "James Bond Dr.No (Pro)",
+                "status": "active",
+                "opdbId": "GQKyP-Mx0O4",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309354,
+            "roundId": 56074,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 6611,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:54:45.000000Z",
+            "duration": 546,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                18561,
+                38763,
+                13712
+            ],
+            "userIds": [
+                5626,
+                null,
+                2866
+            ],
+            "resultPositions": [
+                18561,
+                13712,
+                38763
+            ],
+            "resultPoints": [
+                "7.00",
+                "1.00",
+                "4.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 14878,
+                    "gameId": 309354,
+                    "roundId": 56074,
+                    "tournamentId": 12222,
+                    "playerId": 13712,
+                    "userId": 2866,
+                    "results": [
+                        18561,
+                        13712,
+                        38763
+                    ],
+                    "arenaId": null,
+                    "scores": null,
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 6611,
+                "name": "Rollergames",
+                "status": "inactive",
+                "opdbId": "Gr1Ko-MnKyx",
+                "categoryId": 6,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309355,
+            "roundId": 56074,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 6609,
+            "bankId": null,
+            "index": 0,
+            "set": 3,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T02:54:45.000000Z",
+            "duration": 1230,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                32095,
+                31099,
+                50532
+            ],
+            "userIds": [
+                3218,
+                null,
+                7178
+            ],
+            "resultPositions": [
+                32095,
+                31099,
+                50532
+            ],
+            "resultPoints": [
+                "7.00",
+                "4.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [
+                {
+                    "suggestionId": 14880,
+                    "gameId": 309355,
+                    "roundId": 56074,
+                    "tournamentId": 12222,
+                    "playerId": 32095,
+                    "userId": 3218,
+                    "results": [
+                        32095,
+                        31099,
+                        35461
+                    ],
+                    "arenaId": null,
+                    "scores": null,
+                    "scorbitData": null,
+                    "partial": false
+                }
+            ],
+            "arena": {
+                "arenaId": 6609,
+                "name": "Game of Thrones",
+                "status": "inactive",
+                "opdbId": "G41d5-MKNwX",
+                "categoryId": 8,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309403,
+            "roundId": 56079,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 11729,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T03:17:58.000000Z",
+            "duration": 1055,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                18561,
+                13709,
+                13717,
+                13710
+            ],
+            "userIds": [
+                5626,
+                1461,
+                null,
+                2642
+            ],
+            "resultPositions": [
+                18561,
+                13709,
+                13717,
+                13710
+            ],
+            "resultPoints": [
+                "7.00",
+                "5.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11729,
+                "name": "World Cup Soccer",
+                "status": "inactive",
+                "opdbId": "G42E2-MQP9e",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309404,
+            "roundId": 56079,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 8469,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T03:17:58.000000Z",
+            "duration": 1228,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                50534,
+                13712,
+                32095,
+                13708
+            ],
+            "userIds": [
+                4762,
+                2866,
+                3218,
+                60
+            ],
+            "resultPositions": [
+                13712,
+                13708,
+                50534,
+                32095
+            ],
+            "resultPoints": [
+                "3.00",
+                "7.00",
+                "1.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 8469,
+                "name": "Godzilla",
+                "status": "active",
+                "opdbId": "G5po2-MeP6B",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309405,
+            "roundId": 56079,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 11736,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T03:17:58.000000Z",
+            "duration": 1256,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                15322,
+                13716,
+                50532,
+                31099
+            ],
+            "userIds": [
+                4141,
+                3108,
+                7178,
+                null
+            ],
+            "resultPositions": [
+                31099,
+                50532,
+                13716,
+                15322
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "5.00",
+                "7.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11736,
+                "name": "Pirates of the Caribbean",
+                "status": "inactive",
+                "opdbId": "GR7ZX-MQ23b",
+                "categoryId": 8,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309409,
+            "roundId": 56081,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 11732,
+            "bankId": null,
+            "index": 0,
+            "set": 0,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T03:38:59.000000Z",
+            "duration": 1041,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13708,
+                18561,
+                13710,
+                13709
+            ],
+            "userIds": [
+                60,
+                5626,
+                2642,
+                1461
+            ],
+            "resultPositions": [
+                13710,
+                13709,
+                18561,
+                13708
+            ],
+            "resultPoints": [
+                "1.00",
+                "3.00",
+                "7.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 11732,
+                "name": "Star Trek '13",
+                "status": "inactive",
+                "opdbId": null,
+                "categoryId": 8,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309410,
+            "roundId": 56081,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 6614,
+            "bankId": null,
+            "index": 0,
+            "set": 1,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T03:38:59.000000Z",
+            "duration": 657,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13712,
+                31099,
+                13717,
+                50534
+            ],
+            "userIds": [
+                2866,
+                null,
+                null,
+                4762
+            ],
+            "resultPositions": [
+                13712,
+                31099,
+                13717,
+                50534
+            ],
+            "resultPoints": [
+                "7.00",
+                "5.00",
+                "3.00",
+                "1.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 6614,
+                "name": "Road Kings",
+                "status": "inactive",
+                "opdbId": "G4NKJ-Mo1Xj",
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        },
+        {
+            "gameId": 309411,
+            "roundId": 56081,
+            "tournamentId": 12222,
+            "challengeId": null,
+            "arenaId": 6619,
+            "bankId": null,
+            "index": 0,
+            "set": 2,
+            "playerIdAdvantage": null,
+            "scorekeeperId": 60,
+            "status": "completed",
+            "startedAt": "2017-10-24T03:38:59.000000Z",
+            "duration": 1021,
+            "bye": false,
+            "scorbitId": null,
+            "scorbitLog": null,
+            "playerIds": [
+                13716,
+                15322,
+                50532,
+                32095
+            ],
+            "userIds": [
+                3108,
+                4141,
+                7178,
+                3218
+            ],
+            "resultPositions": [
+                13716,
+                32095,
+                15322,
+                50532
+            ],
+            "resultPoints": [
+                "7.00",
+                "3.00",
+                "1.00",
+                "5.00"
+            ],
+            "resultScores": [
+                null,
+                null,
+                null,
+                null
+            ],
+            "scorbitVerified": false,
+            "resultCountMismatch": false,
+            "suggestions": [],
+            "arena": {
+                "arenaId": 6619,
+                "name": "Tron",
+                "status": "inactive",
+                "opdbId": "GrkL5-MLvrX",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        }
+    ]
+}

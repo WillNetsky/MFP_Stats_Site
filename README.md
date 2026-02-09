@@ -2,6 +2,15 @@
 
 This project generates a static website to display statistics for pinball leagues managed through Matchplay Events. It fetches data from the Matchplay API, processes it, and renders HTML pages with season overviews, player statistics, leaderboards, charts, and frivolities.
 
+## Overarching Ideas
+* This site is meant to be like baseballreference.com for the competitive pinball sanctioned by MFPinball.org
+* Each league (MFPinball and MFLadies) are separate but entirely equal and must always be treated as such on every page 
+* Player pages should show the full extent of what players have done in the leagues and be similar to what you would see on the back of a baseball card
+* Season pages should try to describe the results of the season as best as possible
+* Leaderboards page is for comparing the best players
+* Frivolities page is similar to the leaderboards page, but for finding statistical oddities
+* Charts page is for everything else
+
 ## Features
 
 *   **Automated Data Fetching:** Pulls league data from the Matchplay API with 24-hour cache expiry.
@@ -117,27 +126,45 @@ The generated site is written to the `output/` directory.
 * Site-wide
   * Tournaments - Add all of the league adjacent tournaments from Cary's organizer ID, requires filtering relevant tournaments
   * Light and dark theme (one that holds between pages and plays well with the flair)
-  * Use the <details> tag more universally, nest if possible for things like the leaderboard, player pages show it best ATM 
-* Season Data
+  * Use the <details> tag more universally
+  * Better display in portrait on web
+* Seasons
+  * Portrait sized windows of seasons with finals overlay the semi-finals and finals columns
+  * <details> tag on each league type
   * Racing horizontal bar chart
   * toggle between week # scores and nth best scores on season page
   * IFPA wpprs given to winner (likely need to manually document this, or document the ifpa ids)
   * Chart of number of players with WPPRS overlayed (possible one-off? scatter of qualified players vs wpprs to the winner?)
 * Players
-  * Bio section - ifpa# links to ifpa page
-  * Bio section - get everybody's initials (manual)
+  * players.html - we need to fix this, a list of all links to players is useless, maybe change to a table of all players basic stats
+  * Bio section - ifpa# links to ifpa page (simple url manipulation)
+  * Bio section - get everybody's initials (manual, historical)
   * Bio section - brief summary "player has played x seasons of MFP, x of MFLP, won X times, won X weeks etc" sorta generative
       include things like "They win at Dolly Parton 75% of the time" limit by qualifying games/weeks, otherwise "they have played x weeks", include something for every player
-  * Bio section - trophies won
+  * Bio section - trophies won (they link to where they were won if not list all as achievements)
   * Bio section - OG office flair (players who played at seasons/tournaments that took place at The Office)
   * Add opponents to game log table (p1 name x pts, etc)
 * Charts
-  * Make interesting somehow?
+  * BUG: "Statistic:" is on a separate line from it's dropdown, unlike "Select Player:" and "Compare With:"
+  * As many stats as possible
+  * Big ass scatter plots with all available data
 * Leaderboards
-  * Paginate all time leaders
+  * Paginate all time leaders, unecessary if players.html becomes the sortable version of all players as a table
+  * Top Season Performances - probably include more players, with pagination probably not a big deal to include all
+  * use <details> tag for each individual table within each league type
 * Frivolities
+  * use <details> tag for each individual table within each league type
+  * "The Players Formally Known As" players with only a first name (may be better to add as a player page flair)
   
 * Constants to research and document (should separate historian role vs scorekeeper)
-  * when arena data becomes trustworthy
-  * when Bee took over strikes (this is when strikes begins to count)
+  * when arena data becomes trustworthy (can likely be easily found with a grep in ../MFP_Statistics)
+  * strikes IFPA start date
+  * when Bee took over strikes (this is when strikes begins to count, similar but different to the IFPA start date)
   * date of transition from The Office to Lynn's Arcade
+* Future Ideas
+  * Pages for each week, possibly when we add the tournaments since they're also individual tournaments in matchplay
+  * Integration with Twitch vods(starting with the winter 2026 season)
+  * Pages for each arena, with every game played and players (eventually integrate with player bio section (player is #1 all time at dolly parton))
+  * separate pages for years? I dont think anyone cares about this particuilar split, but yearly statistics are probably useful
+  * more flair images (wooden nickel, perfect night etc)
+  * images for every trophy design

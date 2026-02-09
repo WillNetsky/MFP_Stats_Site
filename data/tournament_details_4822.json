@@ -1,0 +1,299 @@
+{
+    "data": {
+        "tournamentId": 4822,
+        "name": "MFP, 2016 Fall Season #7",
+        "status": "completed",
+        "type": "group_matchplay",
+        "startUtc": "2016-11-21T18:00:00.000000Z",
+        "startLocal": "2016-11-21 10:00:00",
+        "endUtc": "2016-11-21T18:00:00.000000Z",
+        "endLocal": "2016-11-21 10:00:00",
+        "completedAt": "2016-11-22T04:45:53.000000Z",
+        "organizerId": 60,
+        "locationId": 577,
+        "seriesId": 152,
+        "description": "10 Nights per Season. 5 Games per Night. Best 5 Nights are tallied.",
+        "pointsMap": [
+            [
+                7
+            ],
+            [
+                7,
+                1
+            ],
+            [
+                7,
+                4,
+                1
+            ],
+            [
+                7,
+                5,
+                3,
+                1
+            ]
+        ],
+        "tiebreakerPointsMap": [
+            [
+                "0.50"
+            ],
+            [
+                "0.50",
+                "0.00"
+            ],
+            [
+                "0.50",
+                "0.25",
+                "0.00"
+            ],
+            [
+                "0.50",
+                "0.25",
+                "0.12",
+                "0.00"
+            ]
+        ],
+        "test": false,
+        "timezone": "America/Los_Angeles",
+        "scorekeeping": "user",
+        "link": null,
+        "linkedTournamentId": null,
+        "estimatedTgp": null,
+        "prizePool": null,
+        "pointsMapCustom": null,
+        "createdAt": "2016-10-03 17:15:39",
+        "updatedAt": "2026-01-01 05:34:10",
+        "motdText": null,
+        "motdColor": null,
+        "motdExpiration": null,
+        "managers": [],
+        "primaryConfigSettings": [],
+        "organizer": {
+            "userId": 60,
+            "businessProfileId": null,
+            "name": "Cary Carmichael",
+            "firstName": "Cary",
+            "lastName": "Carmichael",
+            "ifpaId": 19422,
+            "role": "organizer",
+            "flag": "",
+            "location": "Seaside, CA",
+            "pronouns": "he",
+            "initials": "",
+            "ratingsOptOut": false,
+            "statsOptOut": false,
+            "videoOptOut": false,
+            "profileOptOut": false,
+            "historyOptOut": false,
+            "historyOnlyCompleted": false,
+            "avatar": null,
+            "banner": null,
+            "tournamentAvatar": null,
+            "createdAt": "2015-05-31T19:59:43.000000Z"
+        },
+        "organizerHasPremiumFeatures": true,
+        "arenas": [
+            {
+                "arenaId": 6609,
+                "name": "Game of Thrones",
+                "status": "inactive",
+                "opdbId": "G41d5-MKNwX",
+                "categoryId": 8,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 6616,
+                "name": "Dirty Harry",
+                "status": "inactive",
+                "opdbId": "GrJ2Z-M61Xd",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 6617,
+                "name": "James Bond Dr.No (Pro)",
+                "status": "active",
+                "opdbId": "GQKyP-Mx0O4",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 6618,
+                "name": "SOP",
+                "status": "inactive",
+                "opdbId": null,
+                "categoryId": null,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 6619,
+                "name": "Tron",
+                "status": "inactive",
+                "opdbId": "GrkL5-MLvrX",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 6620,
+                "name": "Congo",
+                "status": "inactive",
+                "opdbId": "GrNd0-MJNW1",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "inactive",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 6621,
+                "name": "GXY",
+                "status": "inactive",
+                "opdbId": null,
+                "categoryId": null,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 8469,
+                "name": "Godzilla",
+                "status": "active",
+                "opdbId": "G5po2-MeP6B",
+                "categoryId": 4,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            },
+            {
+                "arenaId": 8470,
+                "name": "High Speed II",
+                "status": "inactive",
+                "opdbId": null,
+                "categoryId": 5,
+                "organizerId": 60,
+                "labels": [],
+                "labelColor": null,
+                "tournamentArena": {
+                    "status": "active",
+                    "preferred": null,
+                    "scorbitVenuemachineId": null,
+                    "scorbitronInstalled": null,
+                    "amazingRaceSeed": null,
+                    "bestGameBlocked": false,
+                    "bestGameQueueClosed": false,
+                    "labels": [],
+                    "labelColor": null
+                }
+            }
+        ],
+        "seeding": "random",
+        "firstRoundPairing": "random",
+        "pairing": "swiss",
+        "playerOrder": "position",
+        "playerOrderOpen": "scorekeepers",
+        "arenaAssignment": "balanced",
+        "suggestions": "restricted",
+        "duration": 5,
+        "gamesPerRound": 1,
+        "playoffsCutoffs": [],
+        "tiebreaker": "disabled",
+        "scoring": "ifpa"
+    }
+}

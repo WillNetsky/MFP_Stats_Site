@@ -1,0 +1,109 @@
+{
+    "data": {
+        "tournamentId": 223421,
+        "name": "MFPinball Winter Season #8",
+        "status": "planned",
+        "type": "group_matchplay",
+        "startUtc": "2026-03-10T02:30:00.000000Z",
+        "startLocal": "2026-03-09 19:30:00",
+        "endUtc": "2026-03-10T02:30:00.000000Z",
+        "endLocal": "2026-03-09 19:30:00",
+        "completedAt": null,
+        "organizerId": 60,
+        "locationId": 6612,
+        "seriesId": 5198,
+        "description": "Monterey Flipper Pinball is a league where the best 6 nights of 10 are taken to produce the results.  5 games of group matchplay are played each night.  Scoring for league is 7,5,3,1 or 7,4,1.",
+        "pointsMap": [
+            [
+                7
+            ],
+            [
+                7,
+                1
+            ],
+            [
+                7,
+                4,
+                1
+            ],
+            [
+                7,
+                5,
+                3,
+                1
+            ]
+        ],
+        "tiebreakerPointsMap": [
+            [
+                "0.50"
+            ],
+            [
+                "0.50",
+                "0.00"
+            ],
+            [
+                "0.50",
+                "0.25",
+                "0.00"
+            ],
+            [
+                "0.50",
+                "0.25",
+                "0.12",
+                "0.00"
+            ]
+        ],
+        "test": false,
+        "timezone": "America/Los_Angeles",
+        "scorekeeping": "disabled",
+        "link": "HTTP://www.mfpinball.org/",
+        "linkedTournamentId": null,
+        "estimatedTgp": null,
+        "prizePool": null,
+        "pointsMapCustom": null,
+        "createdAt": "2025-11-30 22:55:26",
+        "updatedAt": "2026-01-29 03:04:31",
+        "motdText": null,
+        "motdColor": null,
+        "motdExpiration": null,
+        "managers": [],
+        "primaryConfigSettings": [],
+        "organizer": {
+            "userId": 60,
+            "businessProfileId": null,
+            "name": "Cary Carmichael",
+            "firstName": "Cary",
+            "lastName": "Carmichael",
+            "ifpaId": 19422,
+            "role": "organizer",
+            "flag": "",
+            "location": "Seaside, CA",
+            "pronouns": "he",
+            "initials": "",
+            "ratingsOptOut": false,
+            "statsOptOut": false,
+            "videoOptOut": false,
+            "profileOptOut": false,
+            "historyOptOut": false,
+            "historyOnlyCompleted": false,
+            "avatar": null,
+            "banner": null,
+            "tournamentAvatar": null,
+            "createdAt": "2015-05-31T19:59:43.000000Z"
+        },
+        "organizerHasPremiumFeatures": true,
+        "arenas": [],
+        "seeding": "random",
+        "firstRoundPairing": "random",
+        "pairing": "swiss",
+        "playerOrder": "balanced",
+        "playerOrderOpen": "scorekeepers",
+        "arenaAssignment": "balanced",
+        "suggestions": "restricted",
+        "duration": 5,
+        "gamesPerRound": 1,
+        "playoffsCutoffs": [],
+        "tiebreaker": "disabled",
+        "scoring": "ifpa"
+    }
+}

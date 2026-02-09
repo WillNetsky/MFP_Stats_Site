@@ -1,0 +1,793 @@
+{
+    "data": {
+        "seriesId": 1877,
+        "name": "Tuesday Night Strikes Winter 2020",
+        "status": "completed",
+        "organizerId": 60,
+        "test": false,
+        "removedResults": 0,
+        "playoffsCutoffs": [],
+        "scoring": "bg_linear",
+        "estimatedTgp": null,
+        "organizer": {
+            "userId": 60,
+            "name": "Cary Carmichael",
+            "firstName": "Cary",
+            "lastName": "Carmichael",
+            "ifpaId": 19422,
+            "role": "organizer",
+            "flag": "",
+            "location": "Seaside, CA",
+            "pronouns": "he",
+            "initials": "",
+            "ratingsOptOut": false,
+            "statsOptOut": false,
+            "videoOptOut": false,
+            "profileOptOut": false,
+            "historyOptOut": false,
+            "historyOnlyCompleted": false,
+            "avatar": null,
+            "banner": null,
+            "tournamentAvatar": null,
+            "createdAt": "2015-05-31T19:59:43.000000Z"
+        },
+        "standings": [
+            {
+                "playerId": 13716,
+                "position": 1,
+                "points": 685,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 13709,
+                "position": 2,
+                "points": 670,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 164121,
+                "position": 3,
+                "points": 392,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 15322,
+                "position": 4,
+                "points": 294,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 91376,
+                "position": 5,
+                "points": 291,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 13708,
+                "position": 6,
+                "points": 288,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 142512,
+                "position": 7,
+                "points": 285,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 113279,
+                "position": 8,
+                "points": 278,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 130058,
+                "position": 9,
+                "points": 199,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 123864,
+                "position": 10,
+                "points": 191,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 175639,
+                "position": 10,
+                "points": 191,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 127357,
+                "position": 12,
+                "points": 190,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 170833,
+                "position": 13,
+                "points": 189,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 170834,
+                "position": 13,
+                "points": 189,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 163123,
+                "position": 15,
+                "points": 188,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 150134,
+                "position": 16,
+                "points": 186,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 173006,
+                "position": 16,
+                "points": 186,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 171856,
+                "position": 18,
+                "points": 100,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 165837,
+                "position": 19,
+                "points": 99,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 84838,
+                "position": 20,
+                "points": 98,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 162773,
+                "position": 21,
+                "points": 97,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 163120,
+                "position": 21,
+                "points": 97,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 13710,
+                "position": 21,
+                "points": 97,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 215530,
+                "position": 24,
+                "points": 96,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 171854,
+                "position": 24,
+                "points": 96,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 25042,
+                "position": 26,
+                "points": 95,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 39990,
+                "position": 27,
+                "points": 94,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 165916,
+                "position": 28,
+                "points": 93,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 177164,
+                "position": 28,
+                "points": 93,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 187263,
+                "position": 30,
+                "points": 92,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 165919,
+                "position": 30,
+                "points": 92,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 185444,
+                "position": 32,
+                "points": 90,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            },
+            {
+                "playerId": 142742,
+                "position": 32,
+                "points": 90,
+                "pointsAdjusted": [],
+                "onCutoffBubble": null,
+                "cutoffBubbleColor": null,
+                "onCutoffBubble2": null,
+                "manualTiebreakerGroup": null
+            }
+        ],
+        "tournamentPoints": {
+            "67263": {
+                "13716": 100,
+                "91376": 99,
+                "150134": 98,
+                "162773": 97,
+                "123864": 96,
+                "13709": 96,
+                "113279": 94
+            },
+            "67264": {
+                "171856": 100,
+                "15322": 99,
+                "13716": 98,
+                "163120": 97,
+                "13709": 96,
+                "123864": 95,
+                "170833": 95,
+                "142512": 93
+            },
+            "67266": {
+                "15322": 100,
+                "130058": 99,
+                "164121": 98,
+                "13710": 97,
+                "13716": 97,
+                "142512": 94,
+                "91376": 94,
+                "170833": 94,
+                "13708": 92,
+                "173006": 92,
+                "185444": 90,
+                "113279": 90,
+                "150134": 88,
+                "13709": 88
+            },
+            "67268": {
+                "13716": 100,
+                "164121": 99,
+                "142512": 98,
+                "13709": 98,
+                "215530": 96,
+                "170834": 95,
+                "39990": 94,
+                "173006": 94,
+                "187263": 92
+            },
+            "67269": {
+                "130058": 100,
+                "13708": 99,
+                "84838": 98,
+                "164121": 98,
+                "13716": 96,
+                "13709": 95,
+                "15322": 95,
+                "165916": 93,
+                "175639": 92,
+                "165919": 92
+            },
+            "67270": {
+                "13709": 100,
+                "175639": 99,
+                "91376": 98,
+                "164121": 97,
+                "171854": 96,
+                "163123": 94,
+                "13716": 94,
+                "170834": 94,
+                "113279": 94,
+                "127357": 91,
+                "142742": 90
+            },
+            "67272": {
+                "13716": 100,
+                "127357": 99,
+                "165837": 99,
+                "13708": 97,
+                "13709": 97,
+                "25042": 95,
+                "163123": 94,
+                "177164": 93
+            }
+        },
+        "playerLabels": [],
+        "players": [
+            {
+                "playerId": 13708,
+                "name": "Cary Carmichael",
+                "ifpaId": 19422,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 60,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 13709,
+                "name": "Matthew Talley",
+                "ifpaId": 20166,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 1461,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 13710,
+                "name": "Nikki Carmichael",
+                "ifpaId": 36495,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 2642,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 13716,
+                "name": "John Tracey",
+                "ifpaId": 41012,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 3108,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 15322,
+                "name": "Philip Priddy",
+                "ifpaId": 42615,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 4141,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 25042,
+                "name": "Quinn Tomlinson",
+                "ifpaId": 42624,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 3789,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 39990,
+                "name": "Echa Schneider",
+                "ifpaId": 13275,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 3,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 84838,
+                "name": "Eric Garcia",
+                "ifpaId": 71349,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 12915,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 91376,
+                "name": "Anthony Garcia CA",
+                "ifpaId": 74571,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 21218,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 113279,
+                "name": "Justin Garcia",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 123864,
+                "name": "Vincent Ruggiero",
+                "ifpaId": 78822,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 26039,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 127357,
+                "name": "Ivy Simpson",
+                "ifpaId": 79383,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 13586,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 130058,
+                "name": "Greg Dunlap",
+                "ifpaId": 84,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 738,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 142512,
+                "name": "Tee Anderson",
+                "ifpaId": 82818,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 14906,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 142742,
+                "name": "Rene Garcia",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 150134,
+                "name": "Esmerelda Zarate",
+                "ifpaId": 86039,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 21220,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 162773,
+                "name": "Lindsay McClure",
+                "ifpaId": 86033,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 20635,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 163120,
+                "name": "Joel Kaiser",
+                "ifpaId": 84323,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 163123,
+                "name": "Stone Simpson",
+                "ifpaId": 88481,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 23403,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 164121,
+                "name": "Greg Gorelick",
+                "ifpaId": 86044,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 19892,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 165837,
+                "name": "OJ Ruiter",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 165916,
+                "name": "Tammy Ballinger",
+                "ifpaId": 86032,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 19080,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 165919,
+                "name": "Linda G",
+                "ifpaId": 18113,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 20363,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 170833,
+                "name": "Tim Priddy",
+                "ifpaId": 86036,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 13562,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 170834,
+                "name": "Glenn Howard-Erevia",
+                "ifpaId": 86045,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 19112,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 171854,
+                "name": "Jeffrey Cabutage",
+                "ifpaId": 86037,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 22059,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 171856,
+                "name": "Miranda Fritchey",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 173006,
+                "name": "Alex Dowden",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 175639,
+                "name": "John Condry",
+                "ifpaId": 69762,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 177164,
+                "name": "Jennifer King CA",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 185444,
+                "name": "Eric Cotter",
+                "ifpaId": null,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": null,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 187263,
+                "name": "Dan Irv",
+                "ifpaId": 92782,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 26055,
+                "labels": [],
+                "labelColor": null
+            },
+            {
+                "playerId": 215530,
+                "name": "Daniel Cooper",
+                "ifpaId": 78821,
+                "status": "active",
+                "organizerId": 60,
+                "claimedBy": 40375,
+                "labels": [],
+                "labelColor": null
+            }
+        ],
+        "tournamentIds": [
+            67263,
+            67264,
+            67266,
+            67268,
+            67269,
+            67270,
+            67272
+        ],
+        "rsvpConfiguration": null
+    }
+}
