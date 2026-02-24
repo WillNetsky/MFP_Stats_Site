@@ -35,11 +35,28 @@ jobs:
           restore-keys: |
             matchplay-data-
 
-      - name: Fetch data and Generate site 🚀
+      - name: Fetch data 📡
         env:
-          MATCHPLAY_API_KEY: ${{ secrets.MATCHPLAY_API_KEY }} # Access API key from GitHub Secrets
-          USER_ID: ${{ secrets.USER_ID }} # Access User ID from GitHub Secrets
-        run: python main.py --fetch --generate
+          MATCHPLAY_API_KEY: ${{ secrets.MATCHPLAY_API_KEY }}
+          USER_ID: ${{ secrets.USER_ID }}
+        run: python main.py --fetch
+
+      - name: Debug fetched data 🔍
+        run: |
+          echo "=== data/ directory contents ==="
+          ls -lh data/ || echo "data/ directory missing"
+          echo "=== series files ==="
+          ls data/series_*.json 2>/dev/null | head -20 || echo "no series files found"
+          echo "=== series file count ==="
+          ls data/series_*.json 2>/dev/null | wc -l || echo "0"
+          echo "=== sample series file (first one) ==="
+          ls data/series_*.json 2>/dev/null | head -1 | xargs cat 2>/dev/null | head -50 || echo "no series files to sample"
+
+      - name: Generate site 🚀
+        env:
+          MATCHPLAY_API_KEY: ${{ secrets.MATCHPLAY_API_KEY }}
+          USER_ID: ${{ secrets.USER_ID }}
+        run: python main.py --generate
 
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v3 # Action to deploy to gh-pages branch
