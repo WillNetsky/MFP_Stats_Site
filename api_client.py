@@ -19,8 +19,10 @@ HEADERS = {
     "Accept": "application/json"
 }
 
+FORCE_REFRESH = False
+
 def is_cache_stale(filepath):
-    if not os.path.exists(filepath):
+    if FORCE_REFRESH or not os.path.exists(filepath):
         return True
     file_mod_time = os.path.getmtime(filepath)
     current_time = time.time()
@@ -129,6 +131,25 @@ def fetch_tournament_details(tournament_id, series_status='active'):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching full tournament details for tournament {tournament_id}: {e}")
         return None
+
+def fetch_active_tournament():
+    """Check for any currently started tournament owned by the user. Returns (tournament_id, name) or (None, None)."""
+    try:
+        response = requests.get(
+            f"{BASE_URL}/tournaments",
+            headers=HEADERS,
+            params={'owner': USER_ID, 'status': 'started'},
+            timeout=5
+        )
+        response.raise_for_status()
+        data = response.json()
+        tournaments = data.get('data', [])
+        if tournaments:
+            t = tournaments[0]
+            return t.get('tournamentId') or t.get('id'), t.get('name', 'Tournament')
+    except Exception as e:
+        print(f"Could not check for active tournament: {e}")
+    return None, None
 
 def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
     print("Fetching data from Matchplay API...")

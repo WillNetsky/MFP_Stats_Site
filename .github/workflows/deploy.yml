@@ -39,18 +39,7 @@ jobs:
         env:
           MATCHPLAY_API_KEY: ${{ secrets.MATCHPLAY_API_KEY }}
           USER_ID: ${{ secrets.USER_ID }}
-        run: python main.py --fetch
-
-      - name: Debug fetched data 🔍
-        run: |
-          echo "=== data/ directory contents ==="
-          ls -lh data/ || echo "data/ directory missing"
-          echo "=== series files ==="
-          ls data/series_*.json 2>/dev/null | head -20 || echo "no series files found"
-          echo "=== series file count ==="
-          ls data/series_*.json 2>/dev/null | wc -l || echo "0"
-          echo "=== sample series file (first one) ==="
-          ls data/series_*.json 2>/dev/null | head -1 | xargs cat 2>/dev/null | head -50 || echo "no series files to sample"
+        run: python main.py --fetch --force
 
       - name: Generate site 🚀
         env:
