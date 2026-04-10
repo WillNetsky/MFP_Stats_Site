@@ -3,10 +3,7 @@ from collections import defaultdict
 from datetime import datetime
 from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, process_game_data, extract_year_from_series_data
 from api_client import fetch_finals_results
-from config import OUTPUT_DIR
-
-# Define the cutoff date for arena data
-ARENA_DATA_CUTOFF_DATE = datetime(2024, 1, 1) # Winter 2024 starts roughly here
+from config import OUTPUT_DIR, ARENA_DATA_CUTOFF_SERIES_ID
 
 MIN_GAMES_FOR_MACHINE_HIGHLIGHT = 5
 
@@ -154,16 +151,17 @@ def generate_player_pages(env, all_series_data):
                  pass
 
         game_data = process_game_data(series_data_raw)
-        
-        # Store game performance with date info
-        if series_start_date:
+
+        # Store game performance with date info (only for series with reliable arena data)
+        arena_data_reliable = series_id >= ARENA_DATA_CUTOFF_SERIES_ID
+        if series_start_date and arena_data_reliable:
             for player_id, games in game_data['by_machine'].items():
                 for game_name, stats in games.items():
                     # We store stats keyed by year to allow filtering later
                     year_key = series_start_date.year
                     if year_key not in all_players_game_performance[player_id][game_name]:
                          all_players_game_performance[player_id][game_name][year_key] = defaultdict(int)
-                    
+
                     all_players_game_performance[player_id][game_name][year_key]['1st'] += stats['1st']
                     all_players_game_performance[player_id][game_name][year_key]['2nd'] += stats['2nd_4p']
                     all_players_game_performance[player_id][game_name][year_key]['2nd_3p'] += stats['2nd_3p']
@@ -180,7 +178,10 @@ def generate_player_pages(env, all_series_data):
             week_num = tournament_id_to_week_num.get(tournament_id, 'N/A')
 
             for game in games_list:
-                arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
+                if arena_data_reliable:
+                    arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
+                else:
+                    arena_name = 'N/A'
                 started_at = game.get('startedAt', 'N/A')
                 if started_at != 'N/A':
                     started_at = started_at.split('T')[0] # Format YYYY-MM-DD
@@ -364,7 +365,6 @@ def generate_player_pages(env, all_series_data):
                 mfp_seasons=data['mfp_seasons'],
                 mflp_seasons=data['mflp_seasons'],
                 game_performance=data['game_performance'],
-                arena_cutoff_date=ARENA_DATA_CUTOFF_DATE.strftime("%B %Y"),
                 player_chart_data=player_chart_data,
                 all_players_chart_data=all_players_chart_data,
                 game_log=game_log,

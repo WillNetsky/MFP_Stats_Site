@@ -157,7 +157,7 @@ The generated site is written to the `output/` directory.
   * "The Players Formally Known As" players with only a first name (may be better to add as a player page flair)
   
 * Constants to research and document (should separate historian role vs scorekeeper)
-  * when arena data becomes trustworthy (can likely be easily found with a grep in ../MFP_Statistics)
+  * ~~when arena data becomes trustworthy~~ — Season id 748 (Fall 18) is the first season with correct arena data
   * strikes IFPA start date
   * when Bee took over strikes (this is when strikes begins to count, similar but different to the IFPA start date)
   * date of transition from The Office to Lynn's Arcade

@@ -31,6 +31,12 @@ MIN_WEEKS_FOR_IMPROVEMENT = 5
 # to appear on the Elo ratings leaderboard.
 MIN_GAMES_FOR_ELO = 50
 
+# -- Arena Data Configuration --
+# Series ID 748 (MFPinball Fall 2018) is the first season where arena data is
+# correct. Before this, arena objects were renamed in-place instead of creating
+# new ones, which retroactively corrupted historical machine names.
+ARENA_DATA_CUTOFF_SERIES_ID = 748
+
 # -- Caching Configuration --
 # How long cached API data is considered valid, in hours.
 # Data older than this will be re-fetched.
