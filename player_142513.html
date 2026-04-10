@@ -1064,30 +1064,20 @@
             // Clear existing options
             startYearSelect.innerHTML = '';
 
+            // Add "All Time" option first (default)
+            const allOption = document.createElement('option');
+            allOption.value = 'all';
+            allOption.textContent = 'All Time';
+            allOption.selected = true;
+            startYearSelect.appendChild(allOption);
+
             // Add year options
             sortedYears.forEach(year => {
                 const option = document.createElement('option');
                 option.value = year;
                 option.textContent = year;
-                if (year === 2024) { // Default to 2024 if available
-                    option.selected = true;
-                }
                 startYearSelect.appendChild(option);
             });
-
-            // Add "All Time" option
-            const allOption = document.createElement('option');
-            allOption.value = 'all';
-            allOption.textContent = 'All Time';
-            startYearSelect.appendChild(allOption);
-
-            // If 2024 wasn't in the list, select the most recent year
-            if (!sortedYears.includes(2024) && sortedYears.length > 0) {
-                 startYearSelect.value = sortedYears[0];
-            } else if (sortedYears.length === 0) {
-                 // Fallback if no data
-                 startYearSelect.value = 'all';
-            }
         }
 
         function populateGameLogYearFilter() {
@@ -1584,7 +1574,7 @@
     </main>
 
     <footer class="site-footer">
-        MFP Stats &middot; Data sourced from <a href="https://app.matchplay.events" target="_blank">Matchplay Events</a> &middot; Last updated: 2026-04-10 22:00:35
+        MFP Stats &middot; Data sourced from <a href="https://app.matchplay.events" target="_blank">Matchplay Events</a> &middot; Last updated: 2026-04-10 23:05:35
     </footer>
 
     <script>
