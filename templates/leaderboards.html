@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% from "leaderboard_tables.html" import render_leaderboard_tables %}
 
-{% block title %}Leaderboards - Pinball League Stats{% endblock %}
+{% block title %}Leaderboards — MFP Stats{% endblock %}
 
 {% block content %}
     <h1>Leaderboards</h1>
 
-    <details>
+    <details open>
         <summary>MFPinball</summary>
         <div class="tab-content" id="content-mfp">
             {{ render_leaderboard_tables(
@@ -16,7 +16,8 @@
                 mfp_top_seasons_leaderboard,
                 mfp_most_improved_leaderboard,
                 all_perfect_nights,
-                all_almost_perfect_nights
+                all_almost_perfect_nights,
+                elo_leaderboard=mfp_elo_leaderboard
             ) }}
         </div>
     </details>
@@ -31,7 +32,8 @@
                 mflp_top_seasons_leaderboard,
                 mflp_most_improved_leaderboard,
                 all_perfect_nights,
-                all_almost_perfect_nights
+                all_almost_perfect_nights,
+                elo_leaderboard=mflp_elo_leaderboard
             ) }}
         </div>
     </details>

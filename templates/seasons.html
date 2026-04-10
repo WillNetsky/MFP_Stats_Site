@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Seasons - Pinball League Stats{% endblock %}
+{% block title %}Seasons — MFP Stats{% endblock %}
 
 {% block content %}
     <h1>Seasons</h1>
 
-    <label for="year-filter">Filter by Year:</label>
-    <select id="year-filter" onchange="filterSeasons()">
-        <option value="all">All Years</option>
-        {% for year in years %}
-            <option value="{{ year }}">{{ year }}</option>
-        {% endfor %}
-    </select>
+    <div class="year-filter-bar">
+        <label for="year-filter">Filter by Year:</label>
+        <select id="year-filter" onchange="filterSeasons()">
+            <option value="all">All Years</option>
+            {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-    <h2>MFPinball Leagues</h2>
+    <div class="section-header">MFPinball Leagues</div>
     {% if mfp_seasons %}
         <div class="table-container">
             <table id="mfp-seasons-table">
@@ -28,8 +30,8 @@
                         <th onclick="sortTable('mfp-seasons-table', 6)">2nd Place</th>
                         <th onclick="sortTable('mfp-seasons-table', 7)">3rd Place</th>
                         <th onclick="sortTable('mfp-seasons-table', 8)">4th Place</th>
-                        <th onclick="sortTable('mfp-seasons-table', 9, true)">Qualified Players</th>
-                        <th onclick="sortTable('mfp-seasons-table', 10, true)">Qualifying Weeks</th>
+                        <th onclick="sortTable('mfp-seasons-table', 9, true)">Qualified</th>
+                        <th onclick="sortTable('mfp-seasons-table', 10, true)">Qual. Weeks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +57,7 @@
         <p>No MFPinball seasons available.</p>
     {% endif %}
 
-    <h2>MFLadies Pinball Leagues</h2>
+    <div class="section-header">MFLadies Pinball Leagues</div>
     {% if mflp_seasons %}
         <div class="table-container">
             <table id="mflp-seasons-table">
@@ -70,8 +72,8 @@
                         <th onclick="sortTable('mflp-seasons-table', 6)">2nd Place</th>
                         <th onclick="sortTable('mflp-seasons-table', 7)">3rd Place</th>
                         <th onclick="sortTable('mflp-seasons-table', 8)">4th Place</th>
-                        <th onclick="sortTable('mflp-seasons-table', 9, true)">Qualified Players</th>
-                        <th onclick="sortTable('mflp-seasons-table', 10, true)">Qualifying Weeks</th>
+                        <th onclick="sortTable('mflp-seasons-table', 9, true)">Qualified</th>
+                        <th onclick="sortTable('mflp-seasons-table', 10, true)">Qual. Weeks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,13 +103,8 @@
         function filterSeasons() {
             let year = document.getElementById('year-filter').value;
             let rows = document.getElementsByClassName('season-row');
-
             for (let i = 0; i < rows.length; i++) {
-                if (year === 'all' || rows[i].dataset.year === year) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
+                rows[i].style.display = (year === 'all' || rows[i].dataset.year === year) ? '' : 'none';
             }
         }
     </script>

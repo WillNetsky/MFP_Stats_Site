@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 
-{% block title %}Home - MFP Stats{% endblock %}
+{% block title %}MFP Stats — Monterey Flipper Pinball League Statistics{% endblock %}
 
 {% block content %}
-    <h1>Welcome to the Monterey Flipper Pinball Stats Website!</h1>
-    <p>This site provides detailed statistics for the Monterey Flipper Pinball and Monterey Flipper Ladies Pinball leagues.</p>
-    <p>Use the navigation bar to explore seasons, players, and leaderboards.</p>
+    <div class="home-hero">
+        <h1>Monterey Flipper Pinball Stats</h1>
+        <p>The complete statistical record for MFPinball and MFLadies Pinball leagues.</p>
+        {% if live_scores_url %}
+            <a href="{{ live_scores_url }}" role="button" target="_blank" style="margin-top: 0.4rem;">Live Scores — {{ active_tournament_name }}</a>
+        {% endif %}
+    </div>
+
+    <div class="home-nav-grid">
+        <a href="seasons.html" class="home-nav-card">
+            <h3>Seasons</h3>
+            <p>Browse every season from both leagues. Standings, finals results, and weekly scores.</p>
+        </a>
+        <a href="players.html" class="home-nav-card">
+            <h3>Players</h3>
+            <p>Individual player profiles with career stats, game logs, and machine performance.</p>
+        </a>
+        <a href="charts.html" class="home-nav-card">
+            <h3>Charts</h3>
+            <p>Compare player performance trends across seasons with interactive charts.</p>
+        </a>
+        <a href="leaderboards.html" class="home-nav-card">
+            <h3>Leaderboards</h3>
+            <p>All-time leaders in points, wins, top finishes, and most improved players.</p>
+        </a>
+        <a href="frivolities.html" class="home-nav-card">
+            <h3>Frivolities</h3>
+            <p>Perfect nights, wooden nickels, biggest drops, one-hit wonders, and more.</p>
+        </a>
+    </div>
 {% endblock %}

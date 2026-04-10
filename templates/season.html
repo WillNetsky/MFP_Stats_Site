@@ -1,76 +1,77 @@
 {% extends "base.html" %}
 
-{% block title %}{{ season.name }} - Pinball League Stats{% endblock %}
+{% block title %}{{ season.name }} — MFP Stats{% endblock %}
 
 {% block body_class %}season-page{% endblock %}
+{% block main_class %}container-wide{% endblock %}
 
 {% block content %}
     <h1>{{ season.name }}</h1>
-
-    <p><a href="https://app.matchplay.events/series/{{ season.seriesId }}" target="_blank">View on Matchplay.events</a></p>
+    <p class="text-small text-muted"><a href="https://app.matchplay.events/series/{{ season.seriesId }}" target="_blank">View on Matchplay.events</a></p>
 
     {% if has_finals == "Yes" and finals_data.rounds %}
-        <h2>Finals Results</h2>
+        <div class="section-header">Finals Results</div>
         <div class="grid">
             {% for round_data in finals_data.rounds %}
                 <div class="column">
                     <h3>{{ "Semi-Finals" if loop.index == 1 else "Finals" if loop.index == 2 else "Round " ~ loop.index }}</h3>
                     {% for group_name, group_data in round_data.groups.items() %}
-                        <table role="grid">
-                            <thead>
-                                <tr>
-                                    <th>Player</th>
-                                    {% for arena in group_data.arenas %}
-                                        <th>{{ arena }}</th>
-                                    {% endfor %}
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for player_id, player_data in group_data.players.items() %}
-                                    <tr {% if player_data.is_leader %}style="font-weight: bold;"{% endif %}>
-                                        <td><a href="player_{{ player_id }}.html">{{ player_data.name }}</a></td>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Player</th>
                                         {% for arena in group_data.arenas %}
-                                            <td>{{ player_data.games.get(arena, '-') }}</td>
+                                            <th>{{ arena }}</th>
                                         {% endfor %}
-                                        <td>{{ player_data.total_points | format_number }}</td>
+                                        <th>Total</th>
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {% for player_id, player_data in group_data.players.items() %}
+                                        <tr {% if player_data.is_leader %}style="font-weight: bold;"{% endif %}>
+                                            <td><a href="player_{{ player_id }}.html">{{ player_data.name }}</a></td>
+                                            {% for arena in group_data.arenas %}
+                                                <td>{{ player_data.games.get(arena, '-') }}</td>
+                                            {% endfor %}
+                                            <td>{{ player_data.total_points | format_number }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     {% endfor %}
                     {% if round_data.tiebreakers %}
-                        <h4>Tiebreakers</h4>
-                        <ul>
+                        <p class="text-small" style="margin-top: 0.3rem;"><strong>Tiebreakers:</strong>
                             {% for tiebreaker in round_data.tiebreakers %}
-                                <li>{{ tiebreaker.winner }} defeated {{ tiebreaker.loser }} on {{ tiebreaker.arena }}</li>
+                                {{ tiebreaker.winner }} def. {{ tiebreaker.loser }} on {{ tiebreaker.arena }}{% if not loop.last %}; {% endif %}
                             {% endfor %}
-                        </ul>
+                        </p>
                     {% endif %}
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
-    <h2>Player Performance in {{ season.name }}</h2>
+    <div class="section-header">Player Performance</div>
     {% if season_players_data %}
         <div class="table-container">
-            <table role="grid">
+            <table id="season-performance-table">
                 <thead>
                     <tr>
-                        <th>Player</th>
-                        <th>Qualifying Position</th>
-                        <th>Total Adjusted Points</th>
-                        <th>Total Raw Points</th>
-                        <th>Weeks Played</th>
-                        <th>Avg Points/Week</th>
-                        <th>1st</th>
-                        <th>2nd</th>
-                        <th>3rd</th>
-                        <th>4th (3rd in 3p)</th>
-                        <th>2nd (3p)</th>
+                        <th onclick="sortTable('season-performance-table', 0)">Player</th>
+                        <th onclick="sortTable('season-performance-table', 1, true)">Pos</th>
+                        <th onclick="sortTable('season-performance-table', 2, true)">Adj Pts</th>
+                        <th onclick="sortTable('season-performance-table', 3, true)">Raw Pts</th>
+                        <th onclick="sortTable('season-performance-table', 4, true)">Wks</th>
+                        <th onclick="sortTable('season-performance-table', 5, true)">Avg/Wk</th>
+                        <th onclick="sortTable('season-performance-table', 6, true)">1st</th>
+                        <th onclick="sortTable('season-performance-table', 7, true)">2nd</th>
+                        <th onclick="sortTable('season-performance-table', 8, true)">3rd</th>
+                        <th onclick="sortTable('season-performance-table', 9, true)">4th</th>
+                        <th onclick="sortTable('season-performance-table', 10, true)">2nd(3p)</th>
                         {% for i in range(1, 11) %}
-                            <th>Week {{ i }}</th>
+                            <th>W{{ i }}</th>
                         {% endfor %}
                     </tr>
                 </thead>

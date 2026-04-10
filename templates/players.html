@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Players - Pinball League Stats{% endblock %}
+{% block title %}Players — MFP Stats{% endblock %}
 
 {% block content %}
     <h1>Players</h1>
 
-    <input type="search" id="player-search" placeholder="Search for a player..." onkeyup="filterPlayers()">
+    <div class="year-filter-bar">
+        <input type="search" id="player-search" placeholder="Search for a player..." onkeyup="filterPlayers()" style="width: 300px; max-width: 100%;">
+    </div>
 
     <ul id="player-list">
         {% for player in players %}
@@ -15,23 +17,12 @@
 
     <script>
         function filterPlayers() {
-            // Get input element and filter value
-            let input = document.getElementById('player-search');
-            let filter = input.value.toUpperCase();
-
-            // Get ul and li elements
-            let ul = document.getElementById("player-list");
-            let li = ul.getElementsByTagName('li');
-
-            // Loop through all list items, and hide those who don't match the search query
+            let filter = document.getElementById('player-search').value.toUpperCase();
+            let li = document.getElementById('player-list').getElementsByTagName('li');
             for (let i = 0; i < li.length; i++) {
                 let a = li[i].getElementsByTagName("a")[0];
-                let txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
+                let txt = a.textContent || a.innerText;
+                li[i].style.display = txt.toUpperCase().indexOf(filter) > -1 ? "" : "none";
             }
         }
     </script>

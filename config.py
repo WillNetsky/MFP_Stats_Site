@@ -27,6 +27,10 @@ MFLADIES_LEAGUE_NAMES = [
 # to be eligible for the "Most Improved Player" leaderboard.
 MIN_WEEKS_FOR_IMPROVEMENT = 5
 
+# Minimum number of individual group games a player must have played
+# to appear on the Elo ratings leaderboard.
+MIN_GAMES_FOR_ELO = 50
+
 # -- Caching Configuration --
 # How long cached API data is considered valid, in hours.
 # Data older than this will be re-fetched.

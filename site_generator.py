@@ -5,6 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from data_processor import load_all_series_data
 from config import OUTPUT_DIR, TEMPLATES_DIR, STATIC_DIR
+from api_client import fetch_active_tournament
 from page_generators.helpers import score_color_filter, format_number_filter, json_attribute_filter
 from page_generators.seasons import generate_seasons_page, generate_season_pages
 from page_generators.players import generate_player_pages
@@ -43,9 +44,12 @@ def generate_site(excluded_series_names):
     # Add current timestamp to global variables
     env.globals['last_updated'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    active_tournament_id, active_tournament_name = fetch_active_tournament()
+    live_scores_url = f"https://app.matchplay.events/tournaments/{active_tournament_id}/bigboard" if active_tournament_id else None
+
     template = env.get_template('index.html')
     with open(os.path.join(OUTPUT_DIR, 'index.html'), 'w') as f:
-        f.write(template.render())
+        f.write(template.render(live_scores_url=live_scores_url, active_tournament_name=active_tournament_name))
     print("Generated index.html")
 
     generate_seasons_page(env, all_series_data)

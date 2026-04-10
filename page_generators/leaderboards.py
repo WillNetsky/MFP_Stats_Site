@@ -2,7 +2,8 @@ import os
 from copy import deepcopy
 from data_processor import load_finals_mapping, parse_series_name, apply_year_corrections_to_seasons_list, find_almost_perfect_nights, process_game_data
 from api_client import fetch_finals_results
-from config import OUTPUT_DIR, MIN_WEEKS_FOR_IMPROVEMENT
+from config import OUTPUT_DIR, MIN_WEEKS_FOR_IMPROVEMENT, MIN_GAMES_FOR_ELO
+from page_generators.elo import calculate_elo_ratings
 
 def generate_leaderboards_page(env, all_series_data, player_categorized_seasons):
     """Generates the all-time leaderboards page, separated by league type."""
@@ -291,6 +292,15 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
     mflp_top_seasons.sort(key=lambda x: x['score'], reverse=True)
     combined_top_seasons.sort(key=lambda x: x['score'], reverse=True)
 
+    elo_data = calculate_elo_ratings(all_series_data)
+
+    def _elo_leaderboard(ratings):
+        qualified = [p for p in ratings.values() if p['games'] >= MIN_GAMES_FOR_ELO]
+        return sorted(qualified, key=lambda p: p['rating'], reverse=True)
+
+    mfp_elo_leaderboard = _elo_leaderboard(elo_data['mfp'])
+    mflp_elo_leaderboard = _elo_leaderboard(elo_data['mflp'])
+
     template = env.get_template('leaderboards.html')
     with open(os.path.join(OUTPUT_DIR, 'leaderboards.html'), 'w') as f:
         f.write(template.render(
@@ -298,10 +308,12 @@ def generate_leaderboards_page(env, all_series_data, player_categorized_seasons)
             mfp_top_4_finishes_leaderboard=mfp_top_4_finishes_leaderboard,
             mfp_top_seasons_leaderboard=mfp_top_seasons[:25],
             mfp_most_improved_leaderboard=mfp_most_improved_leaderboard[:25],
+            mfp_elo_leaderboard=mfp_elo_leaderboard,
             mflp_total_points_leaderboard=mflp_total_points_leaderboard[:25],
             mflp_top_4_finishes_leaderboard=mflp_top_4_finishes_leaderboard,
             mflp_top_seasons_leaderboard=mflp_top_seasons[:25],
             mflp_most_improved_leaderboard=mflp_most_improved_leaderboard[:25],
+            mflp_elo_leaderboard=mflp_elo_leaderboard,
             combined_total_points_leaderboard=combined_total_points_leaderboard[:25],
             combined_top_4_finishes_leaderboard=combined_top_4_finishes_leaderboard,
             combined_top_seasons_leaderboard=combined_top_seasons[:25],

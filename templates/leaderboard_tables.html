@@ -5,25 +5,26 @@
     top_seasons_leaderboard,
     most_improved_leaderboard,
     all_perfect_nights,
-    all_almost_perfect_nights
+    all_almost_perfect_nights,
+    elo_leaderboard=none
 ) %}
 
-<h2>All-Time Total Points</h2>
+<div class="section-header">All-Time Total Points</div>
 <div class="table-container">
     <table id="{{ league_prefix }}-total-points-table">
         <thead>
             <tr>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 0, true)">Rank</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 0, true)">#</th>
                 <th onclick="sortTable('{{ league_prefix }}-total-points-table', 1)">Player</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 2, true)">Total Raw Points</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 3, true)">Weekly Wins</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 4, true)">Perfect Nights</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 5, true)">Total Games Played</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 6, true)">Total Games Won</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 7, true)">Total Adjusted Points</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 8, true)">Seasons Played</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 9, true)">Total Weeks Attended</th>
-                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 10, true)">Points/Week</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 2, true)">Raw Pts</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 3, true)">Wk Wins</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 4, true)">Perfects</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 5, true)">GP</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 6, true)">GW</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 7, true)">Adj Pts</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 8, true)">Seasons</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 9, true)">Weeks</th>
+                <th onclick="sortTable('{{ league_prefix }}-total-points-table', 10, true)">Pts/Wk</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +47,7 @@
     </table>
 </div>
 
-<h2>Top 4 Finishes</h2>
+<div class="section-header">Top 4 Finishes</div>
 <div class="table-container">
     <table id="{{ league_prefix }}-top-4-finishes-table">
         <thead>
@@ -72,7 +73,7 @@
     </table>
 </div>
 
-<h2>Top Season Performances</h2>
+<div class="section-header">Top Season Performances</div>
 <div class="table-container">
     <table id="{{ league_prefix }}-top-seasons-table">
         <thead>
@@ -80,12 +81,12 @@
                 <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 0)">Player</th>
                 <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 1)">Season</th>
                 <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 2, true)">Score</th>
-                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 3, true)">Weekly Wins</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 3, true)">Wk Wins</th>
                 <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 4, true)">1st</th>
                 <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 5, true)">2nd</th>
                 <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 6, true)">3rd</th>
-                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 7, true)">4th (3rd in 3p)</th>
-                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 8, true)">2nd (3p)</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 7, true)">4th</th>
+                <th onclick="sortTable('{{ league_prefix }}-top-seasons-table', 8, true)">2nd(3p)</th>
             </tr>
         </thead>
         <tbody>
@@ -106,7 +107,7 @@
     </table>
 </div>
 
-<h2>Most Improved</h2>
+<div class="section-header">Most Improved</div>
 <div class="table-container">
     <table id="{{ league_prefix }}-most-improved-table">
         <thead>
@@ -133,5 +134,35 @@
         </tbody>
     </table>
 </div>
+
+{% if elo_leaderboard is not none %}
+<div class="section-header">Glicko Ratings</div>
+<div class="table-container">
+    <table id="{{ league_prefix }}-elo-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('{{ league_prefix }}-elo-table', 0, true)">#</th>
+                <th onclick="sortTable('{{ league_prefix }}-elo-table', 1)">Player</th>
+                <th onclick="sortTable('{{ league_prefix }}-elo-table', 2, true)">Rating</th>
+                <th onclick="sortTable('{{ league_prefix }}-elo-table', 3, true)">±RD</th>
+                <th onclick="sortTable('{{ league_prefix }}-elo-table', 4, true)">Peak</th>
+                <th onclick="sortTable('{{ league_prefix }}-elo-table', 5, true)">Games</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in elo_leaderboard %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="player_{{ player.playerId }}.html">{{ player.name }}</a></td>
+                    <td>{{ player.rating | round(1) }}</td>
+                    <td>{{ player.rd | round(1) }}</td>
+                    <td>{{ player.peak | round(1) }}</td>
+                    <td>{{ player.games }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
 
 {% endmacro %}
