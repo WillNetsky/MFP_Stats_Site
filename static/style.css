@@ -1,157 +1,802 @@
+/* ============================================================
+   MFP Stats — Baseball-Reference Inspired Theme
+   ============================================================ */
+
+/* --- Google Fonts loaded in base.html --- */
+
 :root {
-    --pico-font-size: 100%;
-    --pico-line-height: 1.5;
-    --pico-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* Palette */
+    --bg:           #f2ede4;
+    --bg-alt:       #e9e3d8;
+    --surface:      #fff;
+    --surface-alt:  #f7f4ed;
+    --border:       #ccc;
+    --border-light: #ddd;
+    --text:         #333;
+    --text-muted:   #666;
+    --text-heading:  #1a1a1a;
+    --link:         #1a1a1a;
+    --link-hover:   #000;
+    --link-visited: #444;
+    --accent:       #c41e3a;
+    --navy:         #111;
+    --navy-light:   #222;
+    --gold:         #ffd700;
+    --green:        #2e7d32;
+    --red:          #c62828;
+
+    /* Typography */
+    --font-heading: 'Bitter', 'Georgia', serif;
+    --font-body:    'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono:    'IBM Plex Mono', 'Menlo', monospace;
+
+    /* Sizing */
+    --container-max: 1400px;
+    --radius:       3px;
+    --table-pad:    5px 8px;
+}
+
+[data-theme="dark"] {
+    --bg:           #1a1a1e;
+    --bg-alt:       #222226;
+    --surface:      #2a2a2e;
+    --surface-alt:  #333338;
+    --border:       #444;
+    --border-light: #555;
+    --text:         #d4d4d4;
+    --text-muted:   #999;
+    --text-heading: #e8e8e8;
+    --link:         #d4d4d4;
+    --link-hover:   #fff;
+    --link-visited: #999;
+    --navy:         #111;
+    --navy-light:   #222;
+    --gold:         #ffd700;
+    --green:        #4caf50;
+    --red:          #ef5350;
+}
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 14px;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-    font-family: var(--pico-font-family);
-    line-height: var(--pico-line-height);
-    color: var(--pico-primary-inverse);
-    background-color: var(--pico-background-color);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    color: var(--text);
+    background-color: var(--bg);
+    min-height: 100vh;
 }
 
+/* ---- Typography ---- */
 h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-heading);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.4em;
+}
+
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1.1rem; }
+h4 { font-size: 1rem; }
+
+p { margin-bottom: 0.6em; }
+
+a {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+a:hover {
+    color: var(--link-hover);
+}
+a:visited {
+    color: var(--link-visited);
+}
+
+/* ---- Layout ---- */
+.container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.container-wide {
+    max-width: 98vw;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+main.container,
+main.container-wide {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+/* ---- Navbar ---- */
+.site-nav {
+    background: var(--navy);
+    border-bottom: 3px solid var(--accent);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.site-nav .nav-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+}
+
+.site-nav .brand {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.6rem 1rem 0.6rem 0;
+    margin-right: 0.5rem;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    white-space: nowrap;
+}
+.site-nav .brand:hover {
+    color: var(--gold);
+    text-decoration: none;
+}
+.site-nav .brand:visited {
+    color: #fff;
+}
+.site-nav .brand:visited:hover {
+    color: var(--gold);
+}
+
+.site-nav .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 0;
+    flex-wrap: wrap;
+}
+
+.site-nav .nav-links a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.site-nav .nav-links a:visited {
+    color: rgba(255,255,255,0.85);
+}
+.site-nav .nav-links a:hover,
+.site-nav .nav-links a:visited:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    text-decoration: none;
+}
+.site-nav .nav-links a.active {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+
+.nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Theme toggle */
+.theme-toggle {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    transition: background 0.15s;
+}
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+
+/* ---- Section Headers (BR-style colored bars) ---- */
+.section-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 6px 12px;
+    margin: 1.2rem 0 0.6rem 0;
+    border-radius: var(--radius);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
     font-weight: 700;
 }
 
-/* Increase container width for larger screens */
-.container {
-    max-width: 95vw; /* Use 95% of viewport width */
+.section-header-alt {
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 12px;
+    margin: 1.2rem 0 0.6rem 0;
+    border-radius: var(--radius);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
 }
 
-/* Keep standard container behavior for smaller screens if needed,
-   but Pico's default breakpoints might override max-width if we aren't careful.
-   Pico sets max-width at various breakpoints. We want to override this for PC.
-*/
-@media (min-width: 992px) {
-    .container {
-        max-width: 95vw;
-    }
-}
-
+/* ---- Tables ---- */
 .table-container {
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 20px;
-}
-
-th, td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-    white-space: nowrap; /* Prevent table cell content from wrapping */
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
 }
 
 thead {
-    background-color: #f2f2f2;
+    background: var(--bg-alt);
+    border-bottom: 2px solid var(--border);
 }
+
+th {
+    padding: var(--table-pad);
+    text-align: left;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    white-space: nowrap;
+    border-right: 1px solid var(--border-light);
+    position: relative;
+}
+th:last-child { border-right: none; }
 
 th[onclick] {
     cursor: pointer;
     user-select: none;
+    padding-right: 16px;
 }
-
+th[onclick]::after {
+    content: '\2195';
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.65rem;
+    opacity: 0.4;
+}
 th[onclick]:hover {
-    background-color: #d9d9d9;
+    background: var(--border-light);
 }
 
-.active-season {
-    animation: glowing 2s infinite;
-    border: 1px solid #00ff00;
+td {
+    padding: var(--table-pad);
+    text-align: left;
+    white-space: nowrap;
+    border-right: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+}
+td:last-child { border-right: none; }
+
+/* Striped rows */
+tbody tr:nth-child(even) {
+    background: var(--surface-alt);
+}
+tbody tr:hover {
+    background: #e8e4db;
+}
+[data-theme="dark"] tbody tr:hover {
+    background: #3a3a3e;
 }
 
-@keyframes glowing {
-    0% { box-shadow: 0 0 3px #00ff00; }
-    50% { box-shadow: 0 0 10px #00ff00, 0 0 5px #00ff00 inset; }
-    100% { box-shadow: 0 0 3px #00ff00; }
+/* Compact numeric columns */
+td:has(.score-badge),
+th + th + th, /* roughly: later columns tend to be numeric */
+.num-col {
+    text-align: center;
 }
 
+/* ---- Score Badges ---- */
+.score-badge {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 2px;
+    min-width: 24px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+    line-height: 1.4;
+}
+
+/* ---- Finish Indicators (Season/Player tables) ---- */
 .gold-finish {
-    background-color: #ffd700; /* Gold */
+    background-color: rgba(255, 215, 0, 0.2) !important;
+    border-left: 3px solid var(--gold) !important;
 }
-
 .silver-finish {
-    background-color: #c0c0c0; /* Silver */
+    background-color: rgba(192, 192, 192, 0.15) !important;
+    border-left: 3px solid #c0c0c0 !important;
 }
-
 .bronze-finish {
-    background-color: #cd7f32; /* Bronze */
+    background-color: rgba(205, 127, 50, 0.15) !important;
+    border-left: 3px solid #cd7f32 !important;
+}
+.fourth-finish {
+    border-left: 3px solid var(--border) !important;
 }
 
-/* Specific medals for 1st, 2nd, 3rd and 4th */
-.gold-finish .trophy-icon::after {
-    content: '🥇';
-    font-size: 1.2em;
+.trophy-icon::after {
+    font-size: 1em;
+    margin-left: 2px;
+}
+.gold-finish .trophy-icon::after   { content: '1st'; font-weight: 700; color: #b8860b; font-size: 0.75rem; }
+.silver-finish .trophy-icon::after { content: '2nd'; font-weight: 700; color: #808080; font-size: 0.75rem; }
+.bronze-finish .trophy-icon::after { content: '3rd'; font-weight: 700; color: #cd7f32; font-size: 0.75rem; }
+.fourth-finish .trophy-icon::after { content: '4th'; font-weight: 700; color: var(--text-muted); font-size: 0.75rem; }
+
+/* ---- Active Season Indicator ---- */
+.active-season {
+    animation: active-pulse 2.5s ease-in-out infinite;
+    border-left: 3px solid var(--green) !important;
+}
+@keyframes active-pulse {
+    0%, 100% { box-shadow: inset 0 0 0 0 transparent; }
+    50% { box-shadow: inset 0 0 8px rgba(46, 125, 50, 0.15); }
 }
 
-.silver-finish .trophy-icon::after {
-    content: '🥈';
-    font-size: 1.2em;
-}
-
-.bronze-finish .trophy-icon::after {
-    content: '🥉';
-    font-size: 1.2em;
-}
-
-.fourth-finish .trophy-icon::after {
-    content: '4️⃣';
-    font-size: 1.2em;
-}
-
-/* Player bio section */
+/* ---- Player Bio ---- */
 .player-bio {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius);
     margin-bottom: 1rem;
 }
 
 .bio-trophies {
-    font-size: 1.5em;
-    margin-bottom: 0.25rem;
+    font-size: 1.4em;
+    margin-bottom: 0.3rem;
+    letter-spacing: 2px;
 }
-
 .bio-trophies .trophy {
-    margin-right: 2px;
+    margin-right: 1px;
 }
 
-/* Wider container for player and season pages */
-.player-page .container,
-.season-page .container {
-    max-width: 95vw;
+/* ---- Details/Summary (collapsible sections) ---- */
+details {
+    margin-bottom: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
 }
 
+details > summary {
+    background: var(--bg-alt);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-heading);
+    border-bottom: 1px solid var(--border);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+details > summary::before {
+    content: '\25B6';
+    font-size: 0.65rem;
+    transition: transform 0.2s;
+    color: var(--text-muted);
+}
+details[open] > summary::before {
+    transform: rotate(90deg);
+}
+details > summary::-webkit-details-marker { display: none; }
+
+details > summary h1,
+details > summary h2,
+details > summary h3 {
+    margin: 0;
+    font-size: inherit;
+    display: inline;
+}
+
+details > .tab-content,
+details > .table-container,
+details > div:not(.tab-content):not(.table-container) {
+    padding: 0.6rem 0.8rem;
+}
+
+/* Nested tables inside details shouldn't double-border */
+details .table-container {
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+/* ---- Forms / Controls ---- */
+select, input[type="text"], input[type="search"] {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 5px 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    line-height: 1.4;
+}
+select:focus, input:focus {
+    outline: 2px solid var(--link);
+    outline-offset: -1px;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-heading);
+}
+
+/* ---- Buttons ---- */
+button, .btn, [role="button"] {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1.4;
+}
+button:hover, .btn:hover, [role="button"]:hover {
+    background: var(--bg-alt);
+    text-decoration: none;
+}
+button:disabled, [aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary, a[role="button"]:not(.secondary):not([aria-disabled]) {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+}
+.btn-primary:hover, a[role="button"]:not(.secondary):not([aria-disabled]):hover {
+    background: var(--navy-light);
+    color: #fff;
+}
+a[role="button"]:visited {
+    color: #fff;
+}
+
+.btn-accent {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+/* Toggle buttons (league toggles) */
 .toggle-buttons {
     display: inline-flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 4px;
+    margin-bottom: 0.6rem;
+}
+.toggle-buttons-group {
+    display: flex;
+    gap: 4px;
 }
 
-/* Score Badge Styling */
-.score-badge {
-    padding: 2px 5px;
-    border-radius: 3px;
+.chart-toggle-button {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.chart-toggle-button.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+}
+.chart-toggle-button:hover {
+    opacity: 0.85;
+}
+
+/* ---- Filter Controls ---- */
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.6rem;
+    padding: 6px 0;
+}
+
+/* ---- Charts ---- */
+.chart-section {
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: var(--radius);
+    background: var(--surface);
+}
+
+.chart-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: center;
+    padding: 8px;
+    background: var(--bg-alt);
+    border-radius: var(--radius);
+}
+.chart-controls label {
+    white-space: nowrap;
+    margin-right: 0;
+}
+.chart-controls select {
+    flex-grow: 1;
+    min-width: 140px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    margin: 0 auto;
+}
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ---- Search Autocomplete ---- */
+.search-container {
+    position: relative;
     display: inline-block;
-    min-width: 25px;
+    flex-shrink: 1;
+    flex-grow: 1;
+    width: 0;
+    min-width: 0;
+}
+.search-container input[type="text"] {
+    width: 100%;
+}
+.search-results {
+    position: absolute;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    width: 100%;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    border-radius: var(--radius);
+}
+.search-results div {
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+.search-results div:hover {
+    background: var(--navy);
+    color: #fff;
+}
+
+.search-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.clear-search-button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 2px 6px;
+    width: auto;
+}
+.clear-search-button:hover {
+    color: var(--accent);
+}
+
+/* ---- Pagination ---- */
+#game-log-pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 0.85rem;
+}
+
+/* ---- Footer ---- */
+.site-footer {
+    border-top: 2px solid var(--border);
+    padding: 0.8rem 1rem;
     text-align: center;
-    color: black; /* Default text color for badges */
-    font-weight: bold;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--bg-alt);
+    margin-top: 2rem;
 }
 
-/* Dynamic Score Coloring */
-.score-badge[data-score] {
-    background-color: transparent; /* Default */
+/* ---- Home Page ---- */
+.home-hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    padding: 1.2rem 1.5rem;
+    border-radius: var(--radius);
+    margin-bottom: 1.2rem;
+}
+.home-hero h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+}
+.home-hero p {
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
 }
 
-/* Weekly Scores (5-35) */
-.score-badge[data-score^="35"] { background-color: #ffd700; } /* Gold */
-.score-badge[data-score^="34"] { background-color: #28a745; color: white; } /* Green */
-.score-badge[data-score^="20"] { background-color: #f8f9fa; } /* White/Light Grey */
-.score-badge[data-score^="5"] { background-color: #dc3545; color: white; } /* Red */
+.home-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+.home-nav-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.home-nav-card:hover {
+    border-color: var(--navy);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    text-decoration: none;
+    color: var(--text);
+}
+.home-nav-card:visited {
+    color: var(--text);
+}
+.home-nav-card h3 {
+    font-size: 1rem;
+    color: var(--navy);
+    margin-bottom: 0.25rem;
+}
+.home-nav-card p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+}
 
-/* Game Points (1-7) - Handled dynamically in JS or specific CSS rules if needed */
-/* We will use inline styles for the gradient effect requested */
+/* ---- Year Filter (Seasons page) ---- */
+.year-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+    padding: 6px 0;
+}
+
+/* ---- Player List (Players page) ---- */
+#player-list {
+    list-style: none;
+    column-count: 3;
+    column-gap: 2rem;
+    padding: 0;
+}
+#player-list li {
+    padding: 2px 0;
+    break-inside: avoid;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    #player-list {
+        column-count: 2;
+    }
+}
+@media (max-width: 480px) {
+    #player-list {
+        column-count: 1;
+    }
+}
+
+/* ---- Grid (for finals) ---- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+.grid .column {
+    min-width: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    html { font-size: 13px; }
+    .site-nav .nav-inner { padding: 0 0.5rem; }
+    .site-nav .brand { padding-right: 0.5rem; margin-right: 0.25rem; }
+    .site-nav .nav-links a { padding: 0.5rem; font-size: 0.8rem; }
+    .container, .container-wide { padding: 0 0.5rem; }
+    .home-nav-grid { grid-template-columns: 1fr 1fr; }
+    .chart-container { height: 350px; }
+}
+
+@media (max-width: 480px) {
+    .home-nav-grid { grid-template-columns: 1fr; }
+    .chart-controls { flex-direction: column; align-items: stretch; }
+}
+
+/* ---- Utility ---- */
+.text-muted { color: var(--text-muted); }
+.text-small { font-size: 0.82rem; }
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+
+/* Player/Season page wide containers */
+.player-page .container,
+.season-page .container {
+    max-width: 98vw;
+}
+
+/* ---- Print ---- */
+@media print {
+    .site-nav, .site-footer, .theme-toggle,
+    .chart-section, .filter-controls, #game-log-pagination { display: none; }
+    body { background: #fff; color: #000; font-size: 11px; }
+    .table-container { overflow: visible; border: none; }
+    details { border: none; }
+    details > summary { background: none; border-bottom: 1px solid #000; }
+}

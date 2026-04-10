@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jose Eschevarria - Pinball League Stats</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Jose Eschevarria — MFP Stats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
-        // Function to update score colors (simplified for light theme only)
+        // Theme persistence
+        (function() {
+            const saved = localStorage.getItem('mfp-theme');
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', saved);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('mfp-theme', next);
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) btn.textContent = next === 'dark' ? 'Light' : 'Dark';
+        }
+
+        // Score color function
         function updateScoreColors() {
             const badges = document.querySelectorAll('.score-badge');
-
             badges.forEach(badge => {
                 const score = parseFloat(badge.getAttribute('data-score'));
                 if (isNaN(score)) return;
@@ -19,22 +39,17 @@
                 let r, g, b;
 
                 if (score === 35) {
-                    // Gold
                     r = 255; g = 215; b = 0;
                 } else if (score <= 5) {
-                    // Red
                     r = 255; g = 0; b = 0;
                 } else if (score >= 34) {
-                    // Green
                     r = 0; g = 128; b = 0;
                 } else if (score < 20) {
-                    // Red to White
                     const t = (score - 5) / 15.0;
                     r = 255;
                     g = Math.floor(255 * t);
                     b = Math.floor(255 * t);
                 } else {
-                    // White to Green
                     const t = (score - 20) / 14.0;
                     r = Math.floor(255 * (1 - t));
                     g = Math.floor(255 * (1 - t) + 128 * t);
@@ -43,180 +58,40 @@
 
                 badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
 
-                // Adjust text color for contrast
                 const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                if (luminance > 0.5) {
-                    badge.style.color = 'black';
-                } else {
-                    badge.style.color = 'white';
-                }
+                badge.style.color = luminance > 0.5 ? 'black' : 'white';
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateScoreColors(); // Initial color update
+            updateScoreColors();
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) {
+                const theme = document.documentElement.getAttribute('data-theme');
+                btn.textContent = theme === 'dark' ? 'Light' : 'Dark';
+            }
         });
     </script>
     
-    
-    <style>
-        .search-container {
-            position: relative;
-            display: inline-block;
-            flex-shrink: 1;
-            flex-grow: 1;
-            width: 0;
-            min-width: 0;
-        }
-        .search-container input[type="text"] {
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid var(--form-element-border-color);
-            background-color: var(--form-element-background-color);
-            color: var(--color);
-            width: 100%;
-        }
-        .search-results {
-            position: absolute;
-            background-color: var(--background-color);
-            border: 1px solid var(--form-element-border-color);
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 100;
-            width: 100%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .search-results div {
-            padding: 8px 10px;
-            cursor: pointer;
-        }
-        .search-results div:hover {
-            background-color: var(--primary-hover);
-            color: var(--primary-inverse);
-        }
-        .search-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex-shrink: 1;
-            width: auto;
-        }
-        .clear-search-button {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 1em;
-            padding: 0 5px;
-            width: 50px;
-        }
-        .clear-search-button:hover {
-            color: var(--primary-hover);
-        }
-
-        /* Chart specific styles */
-        .chart-section {
-            margin-top: 30px;
-            margin-bottom: 20px;
-            border: 1px solid var(--form-element-border-color);
-            padding: 15px;
-            border-radius: 8px;
-        }
-        .chart-controls {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 10px;
-            background-color: var(--card-background-color);
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        .chart-controls label {
-            margin-right: 0;
-            white-space: nowrap;
-        }
-        .chart-controls select {
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid var(--form-element-border-color);
-            background-color: var(--form-element-background-color);
-            color: var(--color);
-            flex-grow: 1;
-            min-width: 150px;
-        }
-        .chart-toggle-button {
-            padding: 4px 10px;
-            background-color: var(--primary);
-            color: var(--primary-inverse);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8em;
-            flex-shrink: 0;
-        }
-        .chart-toggle-button.active {
-            background-color: var(--primary-hover);
-        }
-        .chart-toggle-button.active:hover {
-            background-color: var(--primary-hover);
-        }
-        .chart-toggle-button:hover {
-            opacity: 0.9;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            margin: 0 auto;
-        }
-        .chart-container canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Side-by-side buttons */
-        .toggle-buttons-group {
-            display: flex;
-            gap: 5px;
-        }
-
-        /* Filter controls for machine performance */
-        .filter-controls {
-            margin-bottom: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-        }
-        .filter-controls input, .filter-controls select {
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid var(--form-element-border-color);
-            background-color: var(--form-element-background-color);
-            color: var(--color);
-        }
-    </style>
-
 </head>
 <body class="player-page">
-    <nav class="container-fluid">
-    <ul>
-        <li><a href="index.html"><strong>MFP Stats</strong></a></li>
-    </ul>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="seasons.html">Seasons</a></li>
-        <li><a href="players.html">Players</a></li>
-        <li><a href="charts.html">Charts</a></li>
-        <li><a href="leaderboards.html">Leaderboards</a></li>
-        <li><a href="frivolities.html">Frivolities</a></li>
-    </ul>
+    <nav class="site-nav">
+    <div class="nav-inner">
+        <a class="brand" href="index.html">MFP Stats</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="seasons.html">Seasons</a>
+            <a href="players.html">Players</a>
+            <a href="charts.html">Charts</a>
+            <a href="leaderboards.html">Leaderboards</a>
+            <a href="frivolities.html">Frivolities</a>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()">Dark</button>
+        </div>
+    </div>
 </nav>
-    <main class="container">
+    <main class="container-wide">
         
     <details open>
         <summary><h1>Jose Eschevarria</h1></summary>
@@ -1005,41 +880,32 @@
 
     </main>
 
-    <footer class="container">
-        <small>Last updated: 2026-04-10 09:16:59</small>
+    <footer class="site-footer">
+        MFP Stats &middot; Data sourced from <a href="https://app.matchplay.events" target="_blank">Matchplay Events</a> &middot; Last updated: 2026-04-10 22:00:35
     </footer>
 
     <script>
         function sortTable(tableId, n, isNumeric = false) {
-            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             table = document.getElementById(tableId);
+            if (!table) return;
             switching = true;
-            // Set the sorting direction to ascending:
             dir = "asc";
-            /* Make a loop that will continue until
-            no switching has been done: */
             while (switching) {
-                // Start by saying: no switching is done:
                 switching = false;
                 rows = table.rows;
-                /* Loop through all table rows (except the
-                first, which contains table headers): */
                 for (i = 1; i < (rows.length - 1); i++) {
-                    // Start by saying there should be no switching:
                     shouldSwitch = false;
-                    /* Get the two elements you want to compare,
-                    one from current row and one from the next: */
                     x = rows[i].getElementsByTagName("TD")[n];
                     y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (!x || !y) continue;
 
-                    let xContent = x.textContent || x.innerText;
-                    let yContent = y.textContent || y.innerText;
+                    var xContent = x.textContent || x.innerText;
+                    var yContent = y.textContent || y.innerText;
 
-                    // Convert to number if isNumeric is true
                     if (isNumeric) {
-                        xContent = parseFloat(xContent.replace(/[^0-9.-]+/g,"")); // Remove non-numeric chars except . and -
-                        yContent = parseFloat(yContent.replace(/[^0-9.-]+/g,""));
-                        // Handle NaN from parseFloat if content is not a valid number
+                        xContent = parseFloat(xContent.replace(/[^0-9.\-]+/g, ""));
+                        yContent = parseFloat(yContent.replace(/[^0-9.\-]+/g, ""));
                         if (isNaN(xContent)) xContent = dir === "asc" ? -Infinity : Infinity;
                         if (isNaN(yContent)) yContent = dir === "asc" ? -Infinity : Infinity;
                     } else {
@@ -1047,32 +913,17 @@
                         yContent = yContent.toLowerCase();
                     }
 
-                    /* Check if the two rows should switch place,
-                    based on the direction, asc or desc: */
                     if (dir == "asc") {
-                        if (xContent > yContent) {
-                            // If so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
-                        }
+                        if (xContent > yContent) { shouldSwitch = true; break; }
                     } else if (dir == "desc") {
-                        if (xContent < yContent) {
-                            // If so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
-                        }
+                        if (xContent < yContent) { shouldSwitch = true; break; }
                     }
                 }
                 if (shouldSwitch) {
-                    /* If a switch has been marked, make the switch
-                    and mark that a switch has been done: */
                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                     switching = true;
-                    // Each time a switch is done, increase this count by 1:
                     switchcount++;
                 } else {
-                    /* If no switching has been done AND the direction is "asc",
-                    set the direction to "desc" and run the while loop again. */
                     if (switchcount == 0 && dir == "asc") {
                         dir = "desc";
                         switching = true;

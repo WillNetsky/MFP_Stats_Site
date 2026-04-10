@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboards - Pinball League Stats</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Leaderboards — MFP Stats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
-        // Function to update score colors (simplified for light theme only)
+        // Theme persistence
+        (function() {
+            const saved = localStorage.getItem('mfp-theme');
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', saved);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('mfp-theme', next);
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) btn.textContent = next === 'dark' ? 'Light' : 'Dark';
+        }
+
+        // Score color function
         function updateScoreColors() {
             const badges = document.querySelectorAll('.score-badge');
-
             badges.forEach(badge => {
                 const score = parseFloat(badge.getAttribute('data-score'));
                 if (isNaN(score)) return;
@@ -19,22 +39,17 @@
                 let r, g, b;
 
                 if (score === 35) {
-                    // Gold
                     r = 255; g = 215; b = 0;
                 } else if (score <= 5) {
-                    // Red
                     r = 255; g = 0; b = 0;
                 } else if (score >= 34) {
-                    // Green
                     r = 0; g = 128; b = 0;
                 } else if (score < 20) {
-                    // Red to White
                     const t = (score - 5) / 15.0;
                     r = 255;
                     g = Math.floor(255 * t);
                     b = Math.floor(255 * t);
                 } else {
-                    // White to Green
                     const t = (score - 20) / 14.0;
                     r = Math.floor(255 * (1 - t));
                     g = Math.floor(255 * (1 - t) + 128 * t);
@@ -43,61 +58,64 @@
 
                 badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
 
-                // Adjust text color for contrast
                 const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                if (luminance > 0.5) {
-                    badge.style.color = 'black';
-                } else {
-                    badge.style.color = 'white';
-                }
+                badge.style.color = luminance > 0.5 ? 'black' : 'white';
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateScoreColors(); // Initial color update
+            updateScoreColors();
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) {
+                const theme = document.documentElement.getAttribute('data-theme');
+                btn.textContent = theme === 'dark' ? 'Light' : 'Dark';
+            }
         });
     </script>
     
 </head>
 <body class="">
-    <nav class="container-fluid">
-    <ul>
-        <li><a href="index.html"><strong>MFP Stats</strong></a></li>
-    </ul>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="seasons.html">Seasons</a></li>
-        <li><a href="players.html">Players</a></li>
-        <li><a href="charts.html">Charts</a></li>
-        <li><a href="leaderboards.html">Leaderboards</a></li>
-        <li><a href="frivolities.html">Frivolities</a></li>
-    </ul>
+    <nav class="site-nav">
+    <div class="nav-inner">
+        <a class="brand" href="index.html">MFP Stats</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="seasons.html">Seasons</a>
+            <a href="players.html">Players</a>
+            <a href="charts.html">Charts</a>
+            <a href="leaderboards.html">Leaderboards</a>
+            <a href="frivolities.html">Frivolities</a>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()">Dark</button>
+        </div>
+    </div>
 </nav>
     <main class="container">
         
     <h1>Leaderboards</h1>
 
-    <details>
+    <details open>
         <summary>MFPinball</summary>
         <div class="tab-content" id="content-mfp">
             
 
-<h2>All-Time Total Points</h2>
+<div class="section-header">All-Time Total Points</div>
 <div class="table-container">
     <table id="mfp-total-points-table">
         <thead>
             <tr>
-                <th onclick="sortTable('mfp-total-points-table', 0, true)">Rank</th>
+                <th onclick="sortTable('mfp-total-points-table', 0, true)">#</th>
                 <th onclick="sortTable('mfp-total-points-table', 1)">Player</th>
-                <th onclick="sortTable('mfp-total-points-table', 2, true)">Total Raw Points</th>
-                <th onclick="sortTable('mfp-total-points-table', 3, true)">Weekly Wins</th>
-                <th onclick="sortTable('mfp-total-points-table', 4, true)">Perfect Nights</th>
-                <th onclick="sortTable('mfp-total-points-table', 5, true)">Total Games Played</th>
-                <th onclick="sortTable('mfp-total-points-table', 6, true)">Total Games Won</th>
-                <th onclick="sortTable('mfp-total-points-table', 7, true)">Total Adjusted Points</th>
-                <th onclick="sortTable('mfp-total-points-table', 8, true)">Seasons Played</th>
-                <th onclick="sortTable('mfp-total-points-table', 9, true)">Total Weeks Attended</th>
-                <th onclick="sortTable('mfp-total-points-table', 10, true)">Points/Week</th>
+                <th onclick="sortTable('mfp-total-points-table', 2, true)">Raw Pts</th>
+                <th onclick="sortTable('mfp-total-points-table', 3, true)">Wk Wins</th>
+                <th onclick="sortTable('mfp-total-points-table', 4, true)">Perfects</th>
+                <th onclick="sortTable('mfp-total-points-table', 5, true)">GP</th>
+                <th onclick="sortTable('mfp-total-points-table', 6, true)">GW</th>
+                <th onclick="sortTable('mfp-total-points-table', 7, true)">Adj Pts</th>
+                <th onclick="sortTable('mfp-total-points-table', 8, true)">Seasons</th>
+                <th onclick="sortTable('mfp-total-points-table', 9, true)">Weeks</th>
+                <th onclick="sortTable('mfp-total-points-table', 10, true)">Pts/Wk</th>
             </tr>
         </thead>
         <tbody>
@@ -456,7 +474,7 @@
     </table>
 </div>
 
-<h2>Top 4 Finishes</h2>
+<div class="section-header">Top 4 Finishes</div>
 <div class="table-container">
     <table id="mfp-top-4-finishes-table">
         <thead>
@@ -706,7 +724,7 @@
     </table>
 </div>
 
-<h2>Top Season Performances</h2>
+<div class="section-header">Top Season Performances</div>
 <div class="table-container">
     <table id="mfp-top-seasons-table">
         <thead>
@@ -714,12 +732,12 @@
                 <th onclick="sortTable('mfp-top-seasons-table', 0)">Player</th>
                 <th onclick="sortTable('mfp-top-seasons-table', 1)">Season</th>
                 <th onclick="sortTable('mfp-top-seasons-table', 2, true)">Score</th>
-                <th onclick="sortTable('mfp-top-seasons-table', 3, true)">Weekly Wins</th>
+                <th onclick="sortTable('mfp-top-seasons-table', 3, true)">Wk Wins</th>
                 <th onclick="sortTable('mfp-top-seasons-table', 4, true)">1st</th>
                 <th onclick="sortTable('mfp-top-seasons-table', 5, true)">2nd</th>
                 <th onclick="sortTable('mfp-top-seasons-table', 6, true)">3rd</th>
-                <th onclick="sortTable('mfp-top-seasons-table', 7, true)">4th (3rd in 3p)</th>
-                <th onclick="sortTable('mfp-top-seasons-table', 8, true)">2nd (3p)</th>
+                <th onclick="sortTable('mfp-top-seasons-table', 7, true)">4th</th>
+                <th onclick="sortTable('mfp-top-seasons-table', 8, true)">2nd(3p)</th>
             </tr>
         </thead>
         <tbody>
@@ -1028,7 +1046,7 @@
     </table>
 </div>
 
-<h2>Most Improved</h2>
+<div class="section-header">Most Improved</div>
 <div class="table-container">
     <table id="mfp-most-improved-table">
         <thead>
@@ -1273,6 +1291,1242 @@
 </div>
 
 
+<div class="section-header">Glicko Ratings</div>
+<div class="table-container">
+    <table id="mfp-elo-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('mfp-elo-table', 0, true)">#</th>
+                <th onclick="sortTable('mfp-elo-table', 1)">Player</th>
+                <th onclick="sortTable('mfp-elo-table', 2, true)">Rating</th>
+                <th onclick="sortTable('mfp-elo-table', 3, true)">±RD</th>
+                <th onclick="sortTable('mfp-elo-table', 4, true)">Peak</th>
+                <th onclick="sortTable('mfp-elo-table', 5, true)">Games</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr>
+                    <td>1</td>
+                    <td><a href="player_20122.html">Tony Lavigna</a></td>
+                    <td>1712.6</td>
+                    <td>8.5</td>
+                    <td>1787.7</td>
+                    <td>702</td>
+                </tr>
+            
+                <tr>
+                    <td>2</td>
+                    <td><a href="player_15302.html">Michael Mattsson</a></td>
+                    <td>1697.0</td>
+                    <td>8.7</td>
+                    <td>1843.6</td>
+                    <td>672</td>
+                </tr>
+            
+                <tr>
+                    <td>3</td>
+                    <td><a href="player_39977.html">Xavier Marin</a></td>
+                    <td>1695.2</td>
+                    <td>8.3</td>
+                    <td>1730.4</td>
+                    <td>709</td>
+                </tr>
+            
+                <tr>
+                    <td>4</td>
+                    <td><a href="player_13716.html">John Tracey</a></td>
+                    <td>1689.1</td>
+                    <td>5.9</td>
+                    <td>1861.3</td>
+                    <td>1406</td>
+                </tr>
+            
+                <tr>
+                    <td>5</td>
+                    <td><a href="player_13709.html">Matthew Talley</a></td>
+                    <td>1685.9</td>
+                    <td>6.1</td>
+                    <td>1861.8</td>
+                    <td>1348</td>
+                </tr>
+            
+                <tr>
+                    <td>6</td>
+                    <td><a href="player_13713.html">Philip Ryder</a></td>
+                    <td>1667.6</td>
+                    <td>8.6</td>
+                    <td>1756.6</td>
+                    <td>673</td>
+                </tr>
+            
+                <tr>
+                    <td>7</td>
+                    <td><a href="player_164121.html">Greg Gorelick</a></td>
+                    <td>1663.5</td>
+                    <td>9.4</td>
+                    <td>1665.9</td>
+                    <td>525</td>
+                </tr>
+            
+                <tr>
+                    <td>8</td>
+                    <td><a href="player_31058.html">Nick Fitzpatrick</a></td>
+                    <td>1663.1</td>
+                    <td>13.4</td>
+                    <td>1759.2</td>
+                    <td>279</td>
+                </tr>
+            
+                <tr>
+                    <td>9</td>
+                    <td><a href="player_130058.html">Greg Dunlap</a></td>
+                    <td>1661.9</td>
+                    <td>10.4</td>
+                    <td>1791.9</td>
+                    <td>445</td>
+                </tr>
+            
+                <tr>
+                    <td>10</td>
+                    <td><a href="player_13712.html">Fred Hamilton</a></td>
+                    <td>1656.6</td>
+                    <td>8.9</td>
+                    <td>1791.3</td>
+                    <td>625</td>
+                </tr>
+            
+                <tr>
+                    <td>11</td>
+                    <td><a href="player_13711.html">John Dreller</a></td>
+                    <td>1653.5</td>
+                    <td>29.0</td>
+                    <td>1988.7</td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td>12</td>
+                    <td><a href="player_13708.html">Cary Carmichael</a></td>
+                    <td>1648.9</td>
+                    <td>6.0</td>
+                    <td>1782.2</td>
+                    <td>1376</td>
+                </tr>
+            
+                <tr>
+                    <td>13</td>
+                    <td><a href="player_18568.html">Ernie Deakyne</a></td>
+                    <td>1643.0</td>
+                    <td>12.0</td>
+                    <td>1842.2</td>
+                    <td>340</td>
+                </tr>
+            
+                <tr>
+                    <td>14</td>
+                    <td><a href="player_109691.html">Nate King</a></td>
+                    <td>1636.6</td>
+                    <td>7.7</td>
+                    <td>1640.0</td>
+                    <td>780</td>
+                </tr>
+            
+                <tr>
+                    <td>15</td>
+                    <td><a href="player_74016.html">Lucy Cachux</a></td>
+                    <td>1628.2</td>
+                    <td>7.9</td>
+                    <td>1690.1</td>
+                    <td>745</td>
+                </tr>
+            
+                <tr>
+                    <td>16</td>
+                    <td><a href="player_141532.html">Dale Green</a></td>
+                    <td>1627.8</td>
+                    <td>30.9</td>
+                    <td>1773.0</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>17</td>
+                    <td><a href="player_74820.html">Will Chernetsky</a></td>
+                    <td>1625.8</td>
+                    <td>6.3</td>
+                    <td>1836.5</td>
+                    <td>1187</td>
+                </tr>
+            
+                <tr>
+                    <td>18</td>
+                    <td><a href="player_15322.html">Philip Priddy</a></td>
+                    <td>1624.1</td>
+                    <td>5.6</td>
+                    <td>1859.6</td>
+                    <td>1490</td>
+                </tr>
+            
+                <tr>
+                    <td>19</td>
+                    <td><a href="player_32094.html">Breanna Lane</a></td>
+                    <td>1622.7</td>
+                    <td>24.0</td>
+                    <td>1661.1</td>
+                    <td>85</td>
+                </tr>
+            
+                <tr>
+                    <td>20</td>
+                    <td><a href="player_31059.html">Jaden Lavigna</a></td>
+                    <td>1613.8</td>
+                    <td>11.0</td>
+                    <td>1822.8</td>
+                    <td>397</td>
+                </tr>
+            
+                <tr>
+                    <td>21</td>
+                    <td><a href="player_84838.html">Eric Garcia</a></td>
+                    <td>1612.5</td>
+                    <td>7.6</td>
+                    <td>1625.5</td>
+                    <td>792</td>
+                </tr>
+            
+                <tr>
+                    <td>22</td>
+                    <td><a href="player_25042.html">Quinn Tomlinson</a></td>
+                    <td>1611.4</td>
+                    <td>9.7</td>
+                    <td>1633.0</td>
+                    <td>510</td>
+                </tr>
+            
+                <tr>
+                    <td>23</td>
+                    <td><a href="player_83673.html">Ross stevens</a></td>
+                    <td>1601.2</td>
+                    <td>29.9</td>
+                    <td>1651.7</td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td>24</td>
+                    <td><a href="player_115082.html">Paul Seagal</a></td>
+                    <td>1597.1</td>
+                    <td>21.3</td>
+                    <td>1643.6</td>
+                    <td>100</td>
+                </tr>
+            
+                <tr>
+                    <td>25</td>
+                    <td><a href="player_13719.html">Kenny Pappas</a></td>
+                    <td>1596.4</td>
+                    <td>31.3</td>
+                    <td>1650.0</td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td>26</td>
+                    <td><a href="player_283381.html">Kevin Johnston</a></td>
+                    <td>1593.2</td>
+                    <td>10.7</td>
+                    <td>1622.0</td>
+                    <td>400</td>
+                </tr>
+            
+                <tr>
+                    <td>27</td>
+                    <td><a href="player_18566.html">Greg Friedman</a></td>
+                    <td>1592.8</td>
+                    <td>11.9</td>
+                    <td>1703.3</td>
+                    <td>349</td>
+                </tr>
+            
+                <tr>
+                    <td>28</td>
+                    <td><a href="player_171854.html">Jeffrey Cabutage</a></td>
+                    <td>1592.4</td>
+                    <td>15.5</td>
+                    <td>1857.5</td>
+                    <td>190</td>
+                </tr>
+            
+                <tr>
+                    <td>29</td>
+                    <td><a href="player_211265.html">Sam Stanko</a></td>
+                    <td>1590.1</td>
+                    <td>15.3</td>
+                    <td>1596.1</td>
+                    <td>190</td>
+                </tr>
+            
+                <tr>
+                    <td>30</td>
+                    <td><a href="player_262198.html">Matt Nielsen</a></td>
+                    <td>1589.7</td>
+                    <td>8.5</td>
+                    <td>1590.7</td>
+                    <td>627</td>
+                </tr>
+            
+                <tr>
+                    <td>31</td>
+                    <td><a href="player_19225.html">Nick Vibe</a></td>
+                    <td>1586.8</td>
+                    <td>16.5</td>
+                    <td>1845.4</td>
+                    <td>174</td>
+                </tr>
+            
+                <tr>
+                    <td>32</td>
+                    <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                    <td>1586.7</td>
+                    <td>6.7</td>
+                    <td>1596.2</td>
+                    <td>1010</td>
+                </tr>
+            
+                <tr>
+                    <td>33</td>
+                    <td><a href="player_52838.html">Mike Hubbard</a></td>
+                    <td>1584.1</td>
+                    <td>6.6</td>
+                    <td>1683.0</td>
+                    <td>1050</td>
+                </tr>
+            
+                <tr>
+                    <td>34</td>
+                    <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                    <td>1583.2</td>
+                    <td>5.8</td>
+                    <td>1893.6</td>
+                    <td>1369</td>
+                </tr>
+            
+                <tr>
+                    <td>35</td>
+                    <td><a href="player_187263.html">Dan Irv</a></td>
+                    <td>1580.8</td>
+                    <td>14.9</td>
+                    <td>1679.8</td>
+                    <td>200</td>
+                </tr>
+            
+                <tr>
+                    <td>36</td>
+                    <td><a href="player_61526.html">Tyler Heath</a></td>
+                    <td>1580.5</td>
+                    <td>7.3</td>
+                    <td>1948.1</td>
+                    <td>850</td>
+                </tr>
+            
+                <tr>
+                    <td>37</td>
+                    <td><a href="player_18561.html">Rob Pavelec</a></td>
+                    <td>1576.6</td>
+                    <td>13.0</td>
+                    <td>1962.1</td>
+                    <td>285</td>
+                </tr>
+            
+                <tr>
+                    <td>38</td>
+                    <td><a href="player_190358.html">Amy Wolfrum</a></td>
+                    <td>1571.0</td>
+                    <td>13.6</td>
+                    <td>1574.0</td>
+                    <td>240</td>
+                </tr>
+            
+                <tr>
+                    <td>39</td>
+                    <td><a href="player_117813.html">Harry Franklin</a></td>
+                    <td>1568.5</td>
+                    <td>8.0</td>
+                    <td>1790.6</td>
+                    <td>725</td>
+                </tr>
+            
+                <tr>
+                    <td>40</td>
+                    <td><a href="player_93200.html">David Seagal</a></td>
+                    <td>1567.9</td>
+                    <td>19.3</td>
+                    <td>1827.9</td>
+                    <td>120</td>
+                </tr>
+            
+                <tr>
+                    <td>41</td>
+                    <td><a href="player_49307.html">“RC”</a></td>
+                    <td>1561.9</td>
+                    <td>10.8</td>
+                    <td>1747.2</td>
+                    <td>404</td>
+                </tr>
+            
+                <tr>
+                    <td>42</td>
+                    <td><a href="player_174629.html">Paige Peck</a></td>
+                    <td>1561.4</td>
+                    <td>15.4</td>
+                    <td>1647.8</td>
+                    <td>194</td>
+                </tr>
+            
+                <tr>
+                    <td>43</td>
+                    <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                    <td>1558.7</td>
+                    <td>12.0</td>
+                    <td>1558.7</td>
+                    <td>320</td>
+                </tr>
+            
+                <tr>
+                    <td>44</td>
+                    <td><a href="player_142512.html">Tee Anderson</a></td>
+                    <td>1557.7</td>
+                    <td>8.7</td>
+                    <td>1571.7</td>
+                    <td>602</td>
+                </tr>
+            
+                <tr>
+                    <td>45</td>
+                    <td><a href="player_123864.html">Vincent Ruggiero</a></td>
+                    <td>1555.5</td>
+                    <td>7.3</td>
+                    <td>1623.9</td>
+                    <td>845</td>
+                </tr>
+            
+                <tr>
+                    <td>46</td>
+                    <td><a href="player_171853.html">Tiffani Cabutage</a></td>
+                    <td>1555.4</td>
+                    <td>15.4</td>
+                    <td>1892.6</td>
+                    <td>190</td>
+                </tr>
+            
+                <tr>
+                    <td>47</td>
+                    <td><a href="player_122793.html">Kelly Greenhoe</a></td>
+                    <td>1551.9</td>
+                    <td>22.4</td>
+                    <td>1915.7</td>
+                    <td>95</td>
+                </tr>
+            
+                <tr>
+                    <td>48</td>
+                    <td><a href="player_388453.html">Quinn Sandberg</a></td>
+                    <td>1550.7</td>
+                    <td>28.7</td>
+                    <td>1613.7</td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td>49</td>
+                    <td><a href="player_91376.html">Anthony Garcia CA</a></td>
+                    <td>1550.6</td>
+                    <td>7.3</td>
+                    <td>1698.2</td>
+                    <td>868</td>
+                </tr>
+            
+                <tr>
+                    <td>50</td>
+                    <td><a href="player_30759.html">Mark Fitzpatrick</a></td>
+                    <td>1549.3</td>
+                    <td>10.2</td>
+                    <td>1780.3</td>
+                    <td>443</td>
+                </tr>
+            
+                <tr>
+                    <td>51</td>
+                    <td><a href="player_170833.html">Tim Priddy</a></td>
+                    <td>1546.9</td>
+                    <td>10.2</td>
+                    <td>1585.4</td>
+                    <td>444</td>
+                </tr>
+            
+                <tr>
+                    <td>52</td>
+                    <td><a href="player_245985.html">Mitch Fadem</a></td>
+                    <td>1542.7</td>
+                    <td>9.6</td>
+                    <td>1547.7</td>
+                    <td>502</td>
+                </tr>
+            
+                <tr>
+                    <td>53</td>
+                    <td><a href="player_163123.html">Stone Simpson</a></td>
+                    <td>1541.0</td>
+                    <td>15.2</td>
+                    <td>1561.5</td>
+                    <td>203</td>
+                </tr>
+            
+                <tr>
+                    <td>54</td>
+                    <td><a href="player_77946.html">Paul Carmichael</a></td>
+                    <td>1541.0</td>
+                    <td>29.6</td>
+                    <td>1541.0</td>
+                    <td>60</td>
+                </tr>
+            
+                <tr>
+                    <td>55</td>
+                    <td><a href="player_53318.html">Robert James</a></td>
+                    <td>1539.6</td>
+                    <td>15.9</td>
+                    <td>1669.6</td>
+                    <td>180</td>
+                </tr>
+            
+                <tr>
+                    <td>56</td>
+                    <td><a href="player_32095.html">Steven R Thomas</a></td>
+                    <td>1538.2</td>
+                    <td>9.9</td>
+                    <td>1849.5</td>
+                    <td>503</td>
+                </tr>
+            
+                <tr>
+                    <td>57</td>
+                    <td><a href="player_102892.html">Cipi Cup</a></td>
+                    <td>1537.4</td>
+                    <td>27.5</td>
+                    <td>1564.8</td>
+                    <td>60</td>
+                </tr>
+            
+                <tr>
+                    <td>58</td>
+                    <td><a href="player_189235.html">Darren Roberts</a></td>
+                    <td>1537.2</td>
+                    <td>12.5</td>
+                    <td>1667.0</td>
+                    <td>290</td>
+                </tr>
+            
+                <tr>
+                    <td>59</td>
+                    <td><a href="player_74816.html">Derek Tanner</a></td>
+                    <td>1536.3</td>
+                    <td>17.1</td>
+                    <td>1738.5</td>
+                    <td>160</td>
+                </tr>
+            
+                <tr>
+                    <td>60</td>
+                    <td><a href="player_91374.html">Cip Garcia</a></td>
+                    <td>1534.6</td>
+                    <td>13.9</td>
+                    <td>1760.3</td>
+                    <td>245</td>
+                </tr>
+            
+                <tr>
+                    <td>61</td>
+                    <td><a href="player_163120.html">Joel Kaiser</a></td>
+                    <td>1534.5</td>
+                    <td>20.9</td>
+                    <td>1789.2</td>
+                    <td>109</td>
+                </tr>
+            
+                <tr>
+                    <td>62</td>
+                    <td><a href="player_390025.html">Christopher Taylor</a></td>
+                    <td>1533.3</td>
+                    <td>30.0</td>
+                    <td>1730.8</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>63</td>
+                    <td><a href="player_142513.html">Brian Simpson</a></td>
+                    <td>1532.7</td>
+                    <td>7.6</td>
+                    <td>1582.5</td>
+                    <td>784</td>
+                </tr>
+            
+                <tr>
+                    <td>64</td>
+                    <td><a href="player_95694.html">Tasha Lindstrom</a></td>
+                    <td>1531.1</td>
+                    <td>9.3</td>
+                    <td>1757.8</td>
+                    <td>534</td>
+                </tr>
+            
+                <tr>
+                    <td>65</td>
+                    <td><a href="player_170834.html">Glenn Howard-Erevia</a></td>
+                    <td>1528.9</td>
+                    <td>19.6</td>
+                    <td>1702.1</td>
+                    <td>120</td>
+                </tr>
+            
+                <tr>
+                    <td>66</td>
+                    <td><a href="player_195331.html">Bobby Reagan</a></td>
+                    <td>1527.8</td>
+                    <td>16.8</td>
+                    <td>1575.2</td>
+                    <td>165</td>
+                </tr>
+            
+                <tr>
+                    <td>67</td>
+                    <td><a href="player_48232.html">Levi Jimenez</a></td>
+                    <td>1526.2</td>
+                    <td>24.4</td>
+                    <td>1687.2</td>
+                    <td>80</td>
+                </tr>
+            
+                <tr>
+                    <td>68</td>
+                    <td><a href="player_105061.html">Barrett Lindstrom</a></td>
+                    <td>1526.0</td>
+                    <td>8.8</td>
+                    <td>1733.8</td>
+                    <td>599</td>
+                </tr>
+            
+                <tr>
+                    <td>69</td>
+                    <td><a href="player_89426.html">Keith Hayes</a></td>
+                    <td>1525.5</td>
+                    <td>21.0</td>
+                    <td>1777.7</td>
+                    <td>104</td>
+                </tr>
+            
+                <tr>
+                    <td>70</td>
+                    <td><a href="player_113284.html">Jason Garcia</a></td>
+                    <td>1524.3</td>
+                    <td>19.0</td>
+                    <td>1672.7</td>
+                    <td>130</td>
+                </tr>
+            
+                <tr>
+                    <td>71</td>
+                    <td><a href="player_274397.html">Matt Delsman</a></td>
+                    <td>1523.7</td>
+                    <td>27.1</td>
+                    <td>1624.0</td>
+                    <td>60</td>
+                </tr>
+            
+                <tr>
+                    <td>72</td>
+                    <td><a href="player_165915.html">Melina Meltzer</a></td>
+                    <td>1521.1</td>
+                    <td>11.2</td>
+                    <td>1582.4</td>
+                    <td>366</td>
+                </tr>
+            
+                <tr>
+                    <td>73</td>
+                    <td><a href="player_162773.html">Lindsay McClure</a></td>
+                    <td>1518.9</td>
+                    <td>13.7</td>
+                    <td>1695.1</td>
+                    <td>249</td>
+                </tr>
+            
+                <tr>
+                    <td>74</td>
+                    <td><a href="player_79530.html">Dexter Farm</a></td>
+                    <td>1518.0</td>
+                    <td>6.7</td>
+                    <td>1655.8</td>
+                    <td>1030</td>
+                </tr>
+            
+                <tr>
+                    <td>75</td>
+                    <td><a href="player_98350.html">Jaymie fitzpatrick</a></td>
+                    <td>1514.1</td>
+                    <td>17.4</td>
+                    <td>1561.4</td>
+                    <td>154</td>
+                </tr>
+            
+                <tr>
+                    <td>76</td>
+                    <td><a href="player_71358.html">Isaak Cervantes</a></td>
+                    <td>1514.1</td>
+                    <td>28.4</td>
+                    <td>1546.4</td>
+                    <td>60</td>
+                </tr>
+            
+                <tr>
+                    <td>77</td>
+                    <td><a href="player_177157.html">Laura Masana</a></td>
+                    <td>1509.9</td>
+                    <td>11.7</td>
+                    <td>1510.2</td>
+                    <td>340</td>
+                </tr>
+            
+                <tr>
+                    <td>78</td>
+                    <td><a href="player_13717.html">Todd Brammer</a></td>
+                    <td>1509.3</td>
+                    <td>11.4</td>
+                    <td>1526.3</td>
+                    <td>410</td>
+                </tr>
+            
+                <tr>
+                    <td>79</td>
+                    <td><a href="player_252035.html">Dean Roblee</a></td>
+                    <td>1505.0</td>
+                    <td>18.2</td>
+                    <td>1608.7</td>
+                    <td>134</td>
+                </tr>
+            
+                <tr>
+                    <td>80</td>
+                    <td><a href="player_191110.html">Barry White CA</a></td>
+                    <td>1504.3</td>
+                    <td>9.3</td>
+                    <td>1504.3</td>
+                    <td>580</td>
+                </tr>
+            
+                <tr>
+                    <td>81</td>
+                    <td><a href="player_50534.html">Sneha Kolar</a></td>
+                    <td>1498.1</td>
+                    <td>6.9</td>
+                    <td>1542.5</td>
+                    <td>1030</td>
+                </tr>
+            
+                <tr>
+                    <td>82</td>
+                    <td><a href="player_184572.html">Evan Buss</a></td>
+                    <td>1494.7</td>
+                    <td>27.4</td>
+                    <td>1582.6</td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td>83</td>
+                    <td><a href="player_117812.html">Matt Sheahan</a></td>
+                    <td>1494.4</td>
+                    <td>24.5</td>
+                    <td>1804.8</td>
+                    <td>81</td>
+                </tr>
+            
+                <tr>
+                    <td>84</td>
+                    <td><a href="player_127357.html">Ivy Simpson</a></td>
+                    <td>1494.3</td>
+                    <td>7.7</td>
+                    <td>1625.9</td>
+                    <td>798</td>
+                </tr>
+            
+                <tr>
+                    <td>85</td>
+                    <td><a href="player_276013.html">Joshua Delsman</a></td>
+                    <td>1490.2</td>
+                    <td>31.1</td>
+                    <td>1520.7</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>86</td>
+                    <td><a href="player_50531.html">Chris Stark</a></td>
+                    <td>1489.3</td>
+                    <td>25.3</td>
+                    <td>1511.8</td>
+                    <td>90</td>
+                </tr>
+            
+                <tr>
+                    <td>87</td>
+                    <td><a href="player_74842.html">Scott Tashiro</a></td>
+                    <td>1485.8</td>
+                    <td>15.9</td>
+                    <td>1603.0</td>
+                    <td>205</td>
+                </tr>
+            
+                <tr>
+                    <td>88</td>
+                    <td><a href="player_170835.html">Anthony Howard-Erevia</a></td>
+                    <td>1484.8</td>
+                    <td>27.2</td>
+                    <td>1500.0</td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td>89</td>
+                    <td><a href="player_165919.html">Linda G</a></td>
+                    <td>1484.7</td>
+                    <td>10.7</td>
+                    <td>1511.7</td>
+                    <td>415</td>
+                </tr>
+            
+                <tr>
+                    <td>90</td>
+                    <td><a href="player_49308.html">“Iris”</a></td>
+                    <td>1481.7</td>
+                    <td>11.6</td>
+                    <td>1533.9</td>
+                    <td>370</td>
+                </tr>
+            
+                <tr>
+                    <td>91</td>
+                    <td><a href="player_514084.html">Jaysun Soliz</a></td>
+                    <td>1480.4</td>
+                    <td>32.4</td>
+                    <td>1500.0</td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td>92</td>
+                    <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                    <td>1480.4</td>
+                    <td>6.7</td>
+                    <td>1500.0</td>
+                    <td>1073</td>
+                </tr>
+            
+                <tr>
+                    <td>93</td>
+                    <td><a href="player_231116.html">Mark Kudrav</a></td>
+                    <td>1479.8</td>
+                    <td>15.1</td>
+                    <td>1529.5</td>
+                    <td>220</td>
+                </tr>
+            
+                <tr>
+                    <td>94</td>
+                    <td><a href="player_476904.html">Greg Perkins</a></td>
+                    <td>1477.6</td>
+                    <td>23.2</td>
+                    <td>1537.9</td>
+                    <td>90</td>
+                </tr>
+            
+                <tr>
+                    <td>95</td>
+                    <td><a href="player_254389.html">Danica Delsman</a></td>
+                    <td>1474.7</td>
+                    <td>30.1</td>
+                    <td>1500.0</td>
+                    <td>55</td>
+                </tr>
+            
+                <tr>
+                    <td>96</td>
+                    <td><a href="player_195334.html">Phillip Quebec</a></td>
+                    <td>1474.7</td>
+                    <td>23.5</td>
+                    <td>1673.5</td>
+                    <td>85</td>
+                </tr>
+            
+                <tr>
+                    <td>97</td>
+                    <td><a href="player_13715.html">Brian Ebach</a></td>
+                    <td>1474.6</td>
+                    <td>16.0</td>
+                    <td>1599.8</td>
+                    <td>248</td>
+                </tr>
+            
+                <tr>
+                    <td>98</td>
+                    <td><a href="player_61553.html">Danielle Licata</a></td>
+                    <td>1472.4</td>
+                    <td>25.7</td>
+                    <td>1596.9</td>
+                    <td>80</td>
+                </tr>
+            
+                <tr>
+                    <td>99</td>
+                    <td><a href="player_75808.html">Jeremy Loftin</a></td>
+                    <td>1468.9</td>
+                    <td>34.0</td>
+                    <td>1500.0</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>100</td>
+                    <td><a href="player_215530.html">Daniel Cooper</a></td>
+                    <td>1465.1</td>
+                    <td>16.5</td>
+                    <td>1662.7</td>
+                    <td>179</td>
+                </tr>
+            
+                <tr>
+                    <td>101</td>
+                    <td><a href="player_201655.html">Wade Violini</a></td>
+                    <td>1464.3</td>
+                    <td>15.6</td>
+                    <td>1500.0</td>
+                    <td>204</td>
+                </tr>
+            
+                <tr>
+                    <td>102</td>
+                    <td><a href="player_210413.html">Vincent Dane</a></td>
+                    <td>1461.6</td>
+                    <td>19.6</td>
+                    <td>1500.0</td>
+                    <td>130</td>
+                </tr>
+            
+                <tr>
+                    <td>103</td>
+                    <td><a href="player_31099.html">Jairo Picazo</a></td>
+                    <td>1459.3</td>
+                    <td>27.5</td>
+                    <td>1566.0</td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td>104</td>
+                    <td><a href="player_357288.html">Tyler Mollring</a></td>
+                    <td>1458.2</td>
+                    <td>25.6</td>
+                    <td>1542.4</td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td>105</td>
+                    <td><a href="player_202713.html">Brandon Thorp</a></td>
+                    <td>1449.8</td>
+                    <td>25.5</td>
+                    <td>1500.0</td>
+                    <td>79</td>
+                </tr>
+            
+                <tr>
+                    <td>106</td>
+                    <td><a href="player_219316.html">Tyler Powles</a></td>
+                    <td>1447.8</td>
+                    <td>23.3</td>
+                    <td>1500.0</td>
+                    <td>100</td>
+                </tr>
+            
+                <tr>
+                    <td>107</td>
+                    <td><a href="player_338843.html">Jenni Honka</a></td>
+                    <td>1447.6</td>
+                    <td>26.2</td>
+                    <td>1643.9</td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td>108</td>
+                    <td><a href="player_327421.html">Morgan Louis</a></td>
+                    <td>1447.5</td>
+                    <td>21.1</td>
+                    <td>1543.5</td>
+                    <td>108</td>
+                </tr>
+            
+                <tr>
+                    <td>109</td>
+                    <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                    <td>1445.8</td>
+                    <td>6.5</td>
+                    <td>1564.0</td>
+                    <td>1209</td>
+                </tr>
+            
+                <tr>
+                    <td>110</td>
+                    <td><a href="player_264678.html">Alan Solis</a></td>
+                    <td>1444.5</td>
+                    <td>23.5</td>
+                    <td>1502.5</td>
+                    <td>92</td>
+                </tr>
+            
+                <tr>
+                    <td>111</td>
+                    <td><a href="player_342318.html">Will Bernardi</a></td>
+                    <td>1444.2</td>
+                    <td>30.0</td>
+                    <td>1830.2</td>
+                    <td>54</td>
+                </tr>
+            
+                <tr>
+                    <td>112</td>
+                    <td><a href="player_165916.html">Tammy Ballinger</a></td>
+                    <td>1443.9</td>
+                    <td>23.5</td>
+                    <td>1553.4</td>
+                    <td>86</td>
+                </tr>
+            
+                <tr>
+                    <td>113</td>
+                    <td><a href="player_183505.html">Anna Stelle</a></td>
+                    <td>1437.5</td>
+                    <td>32.0</td>
+                    <td>1527.7</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>114</td>
+                    <td><a href="player_123865.html">Whitney Clark</a></td>
+                    <td>1436.5</td>
+                    <td>13.0</td>
+                    <td>1500.0</td>
+                    <td>320</td>
+                </tr>
+            
+                <tr>
+                    <td>115</td>
+                    <td><a href="player_74960.html">Caitlin Campbell</a></td>
+                    <td>1433.2</td>
+                    <td>15.7</td>
+                    <td>1500.0</td>
+                    <td>212</td>
+                </tr>
+            
+                <tr>
+                    <td>116</td>
+                    <td><a href="player_171742.html">Andreina Ramirez</a></td>
+                    <td>1432.1</td>
+                    <td>13.3</td>
+                    <td>1636.5</td>
+                    <td>297</td>
+                </tr>
+            
+                <tr>
+                    <td>117</td>
+                    <td><a href="player_307101.html">Terrie White</a></td>
+                    <td>1431.4</td>
+                    <td>17.2</td>
+                    <td>1500.0</td>
+                    <td>175</td>
+                </tr>
+            
+                <tr>
+                    <td>118</td>
+                    <td><a href="player_165837.html">OJ Ruiter</a></td>
+                    <td>1429.4</td>
+                    <td>16.5</td>
+                    <td>1500.0</td>
+                    <td>190</td>
+                </tr>
+            
+                <tr>
+                    <td>119</td>
+                    <td><a href="player_150134.html">Esmerelda Zarate</a></td>
+                    <td>1427.6</td>
+                    <td>18.0</td>
+                    <td>1696.9</td>
+                    <td>163</td>
+                </tr>
+            
+                <tr>
+                    <td>120</td>
+                    <td><a href="player_106082.html">Mando Espinoza</a></td>
+                    <td>1423.2</td>
+                    <td>29.9</td>
+                    <td>1885.3</td>
+                    <td>56</td>
+                </tr>
+            
+                <tr>
+                    <td>121</td>
+                    <td><a href="player_169887.html">Liam Hay</a></td>
+                    <td>1419.1</td>
+                    <td>27.5</td>
+                    <td>1694.9</td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td>122</td>
+                    <td><a href="player_195333.html">Justin Quebec</a></td>
+                    <td>1413.1</td>
+                    <td>22.2</td>
+                    <td>1525.6</td>
+                    <td>105</td>
+                </tr>
+            
+                <tr>
+                    <td>123</td>
+                    <td><a href="player_396771.html">Hunter Davis</a></td>
+                    <td>1412.7</td>
+                    <td>27.4</td>
+                    <td>1500.0</td>
+                    <td>75</td>
+                </tr>
+            
+                <tr>
+                    <td>124</td>
+                    <td><a href="player_290095.html">Korey Ericson</a></td>
+                    <td>1409.5</td>
+                    <td>14.2</td>
+                    <td>1500.0</td>
+                    <td>290</td>
+                </tr>
+            
+                <tr>
+                    <td>125</td>
+                    <td><a href="player_171625.html">Jim Dismukes</a></td>
+                    <td>1406.4</td>
+                    <td>16.4</td>
+                    <td>1605.6</td>
+                    <td>200</td>
+                </tr>
+            
+                <tr>
+                    <td>126</td>
+                    <td><a href="player_358903.html">Chris Godfrey</a></td>
+                    <td>1402.0</td>
+                    <td>31.9</td>
+                    <td>1653.0</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>127</td>
+                    <td><a href="player_183502.html">Aria Garcia</a></td>
+                    <td>1401.7</td>
+                    <td>33.6</td>
+                    <td>1500.0</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>128</td>
+                    <td><a href="player_70116.html">Steven Thomas Jr.</a></td>
+                    <td>1401.7</td>
+                    <td>25.1</td>
+                    <td>1555.4</td>
+                    <td>91</td>
+                </tr>
+            
+                <tr>
+                    <td>129</td>
+                    <td><a href="player_105060.html">Anders Lindström US</a></td>
+                    <td>1392.9</td>
+                    <td>24.8</td>
+                    <td>1500.0</td>
+                    <td>90</td>
+                </tr>
+            
+                <tr>
+                    <td>130</td>
+                    <td><a href="player_145773.html">Erik Finch</a></td>
+                    <td>1392.9</td>
+                    <td>18.1</td>
+                    <td>1500.0</td>
+                    <td>180</td>
+                </tr>
+            
+                <tr>
+                    <td>131</td>
+                    <td><a href="player_319971.html">Aaron Villegas</a></td>
+                    <td>1391.0</td>
+                    <td>13.9</td>
+                    <td>1500.0</td>
+                    <td>290</td>
+                </tr>
+            
+                <tr>
+                    <td>132</td>
+                    <td><a href="player_70106.html">Sergio Suarez</a></td>
+                    <td>1377.9</td>
+                    <td>29.3</td>
+                    <td>1612.6</td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td>133</td>
+                    <td><a href="player_244566.html">Caitlin Westmoreland</a></td>
+                    <td>1357.4</td>
+                    <td>32.7</td>
+                    <td>1620.2</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>134</td>
+                    <td><a href="player_236673.html">Mike Nease</a></td>
+                    <td>1343.1</td>
+                    <td>28.8</td>
+                    <td>1500.0</td>
+                    <td>72</td>
+                </tr>
+            
+                <tr>
+                    <td>135</td>
+                    <td><a href="player_163117.html">Joshua Phillips</a></td>
+                    <td>1287.9</td>
+                    <td>13.3</td>
+                    <td>1700.5</td>
+                    <td>380</td>
+                </tr>
+            
+        </tbody>
+    </table>
+</div>
+
+
+
         </div>
     </details>
 
@@ -1281,22 +2535,22 @@
         <div class="tab-content" id="content-mflp">
             
 
-<h2>All-Time Total Points</h2>
+<div class="section-header">All-Time Total Points</div>
 <div class="table-container">
     <table id="mflp-total-points-table">
         <thead>
             <tr>
-                <th onclick="sortTable('mflp-total-points-table', 0, true)">Rank</th>
+                <th onclick="sortTable('mflp-total-points-table', 0, true)">#</th>
                 <th onclick="sortTable('mflp-total-points-table', 1)">Player</th>
-                <th onclick="sortTable('mflp-total-points-table', 2, true)">Total Raw Points</th>
-                <th onclick="sortTable('mflp-total-points-table', 3, true)">Weekly Wins</th>
-                <th onclick="sortTable('mflp-total-points-table', 4, true)">Perfect Nights</th>
-                <th onclick="sortTable('mflp-total-points-table', 5, true)">Total Games Played</th>
-                <th onclick="sortTable('mflp-total-points-table', 6, true)">Total Games Won</th>
-                <th onclick="sortTable('mflp-total-points-table', 7, true)">Total Adjusted Points</th>
-                <th onclick="sortTable('mflp-total-points-table', 8, true)">Seasons Played</th>
-                <th onclick="sortTable('mflp-total-points-table', 9, true)">Total Weeks Attended</th>
-                <th onclick="sortTable('mflp-total-points-table', 10, true)">Points/Week</th>
+                <th onclick="sortTable('mflp-total-points-table', 2, true)">Raw Pts</th>
+                <th onclick="sortTable('mflp-total-points-table', 3, true)">Wk Wins</th>
+                <th onclick="sortTable('mflp-total-points-table', 4, true)">Perfects</th>
+                <th onclick="sortTable('mflp-total-points-table', 5, true)">GP</th>
+                <th onclick="sortTable('mflp-total-points-table', 6, true)">GW</th>
+                <th onclick="sortTable('mflp-total-points-table', 7, true)">Adj Pts</th>
+                <th onclick="sortTable('mflp-total-points-table', 8, true)">Seasons</th>
+                <th onclick="sortTable('mflp-total-points-table', 9, true)">Weeks</th>
+                <th onclick="sortTable('mflp-total-points-table', 10, true)">Pts/Wk</th>
             </tr>
         </thead>
         <tbody>
@@ -1655,7 +2909,7 @@
     </table>
 </div>
 
-<h2>Top 4 Finishes</h2>
+<div class="section-header">Top 4 Finishes</div>
 <div class="table-container">
     <table id="mflp-top-4-finishes-table">
         <thead>
@@ -1833,7 +3087,7 @@
     </table>
 </div>
 
-<h2>Top Season Performances</h2>
+<div class="section-header">Top Season Performances</div>
 <div class="table-container">
     <table id="mflp-top-seasons-table">
         <thead>
@@ -1841,12 +3095,12 @@
                 <th onclick="sortTable('mflp-top-seasons-table', 0)">Player</th>
                 <th onclick="sortTable('mflp-top-seasons-table', 1)">Season</th>
                 <th onclick="sortTable('mflp-top-seasons-table', 2, true)">Score</th>
-                <th onclick="sortTable('mflp-top-seasons-table', 3, true)">Weekly Wins</th>
+                <th onclick="sortTable('mflp-top-seasons-table', 3, true)">Wk Wins</th>
                 <th onclick="sortTable('mflp-top-seasons-table', 4, true)">1st</th>
                 <th onclick="sortTable('mflp-top-seasons-table', 5, true)">2nd</th>
                 <th onclick="sortTable('mflp-top-seasons-table', 6, true)">3rd</th>
-                <th onclick="sortTable('mflp-top-seasons-table', 7, true)">4th (3rd in 3p)</th>
-                <th onclick="sortTable('mflp-top-seasons-table', 8, true)">2nd (3p)</th>
+                <th onclick="sortTable('mflp-top-seasons-table', 7, true)">4th</th>
+                <th onclick="sortTable('mflp-top-seasons-table', 8, true)">2nd(3p)</th>
             </tr>
         </thead>
         <tbody>
@@ -2155,7 +3409,7 @@
     </table>
 </div>
 
-<h2>Most Improved</h2>
+<div class="section-header">Most Improved</div>
 <div class="table-container">
     <table id="mflp-most-improved-table">
         <thead>
@@ -2400,6 +3654,468 @@
 </div>
 
 
+<div class="section-header">Glicko Ratings</div>
+<div class="table-container">
+    <table id="mflp-elo-table">
+        <thead>
+            <tr>
+                <th onclick="sortTable('mflp-elo-table', 0, true)">#</th>
+                <th onclick="sortTable('mflp-elo-table', 1)">Player</th>
+                <th onclick="sortTable('mflp-elo-table', 2, true)">Rating</th>
+                <th onclick="sortTable('mflp-elo-table', 3, true)">±RD</th>
+                <th onclick="sortTable('mflp-elo-table', 4, true)">Peak</th>
+                <th onclick="sortTable('mflp-elo-table', 5, true)">Games</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr>
+                    <td>1</td>
+                    <td><a href="player_74016.html">Lucy Cachux</a></td>
+                    <td>1591.3</td>
+                    <td>10.2</td>
+                    <td>1852.3</td>
+                    <td>535</td>
+                </tr>
+            
+                <tr>
+                    <td>2</td>
+                    <td><a href="player_211265.html">Sam Stanko</a></td>
+                    <td>1554.3</td>
+                    <td>10.1</td>
+                    <td>1657.6</td>
+                    <td>465</td>
+                </tr>
+            
+                <tr>
+                    <td>3</td>
+                    <td><a href="player_97321.html">BeeOtch Westrum</a></td>
+                    <td>1545.4</td>
+                    <td>6.9</td>
+                    <td>1604.7</td>
+                    <td>1063</td>
+                </tr>
+            
+                <tr>
+                    <td>4</td>
+                    <td><a href="player_13710.html">Nikki Carmichael</a></td>
+                    <td>1539.6</td>
+                    <td>6.6</td>
+                    <td>1859.9</td>
+                    <td>1165</td>
+                </tr>
+            
+                <tr>
+                    <td>5</td>
+                    <td><a href="player_95694.html">Tasha Lindstrom</a></td>
+                    <td>1529.3</td>
+                    <td>16.9</td>
+                    <td>1799.1</td>
+                    <td>185</td>
+                </tr>
+            
+                <tr>
+                    <td>6</td>
+                    <td><a href="player_174629.html">Paige Peck</a></td>
+                    <td>1514.8</td>
+                    <td>10.2</td>
+                    <td>1574.1</td>
+                    <td>450</td>
+                </tr>
+            
+                <tr>
+                    <td>7</td>
+                    <td><a href="player_171853.html">Tiffani Cabutage</a></td>
+                    <td>1512.1</td>
+                    <td>13.4</td>
+                    <td>1674.6</td>
+                    <td>260</td>
+                </tr>
+            
+                <tr>
+                    <td>8</td>
+                    <td><a href="player_190358.html">Amy Wolfrum</a></td>
+                    <td>1507.5</td>
+                    <td>8.5</td>
+                    <td>1521.6</td>
+                    <td>635</td>
+                </tr>
+            
+                <tr>
+                    <td>9</td>
+                    <td><a href="player_73342.html">Jaclyn Tingco</a></td>
+                    <td>1498.8</td>
+                    <td>7.2</td>
+                    <td>1884.9</td>
+                    <td>959</td>
+                </tr>
+            
+                <tr>
+                    <td>10</td>
+                    <td><a href="player_162773.html">Lindsay McClure</a></td>
+                    <td>1475.3</td>
+                    <td>12.3</td>
+                    <td>1641.9</td>
+                    <td>320</td>
+                </tr>
+            
+                <tr>
+                    <td>11</td>
+                    <td><a href="player_50534.html">Sneha Kolar</a></td>
+                    <td>1465.8</td>
+                    <td>6.4</td>
+                    <td>1573.8</td>
+                    <td>1215</td>
+                </tr>
+            
+                <tr>
+                    <td>12</td>
+                    <td><a href="player_71359.html">Ikela Lagapa</a></td>
+                    <td>1464.8</td>
+                    <td>7.9</td>
+                    <td>1533.0</td>
+                    <td>811</td>
+                </tr>
+            
+                <tr>
+                    <td>13</td>
+                    <td><a href="player_73340.html">Krystal Estrada</a></td>
+                    <td>1456.2</td>
+                    <td>11.8</td>
+                    <td>1550.2</td>
+                    <td>385</td>
+                </tr>
+            
+                <tr>
+                    <td>14</td>
+                    <td><a href="player_212369.html">Bri Fitz</a></td>
+                    <td>1452.1</td>
+                    <td>9.1</td>
+                    <td>1588.9</td>
+                    <td>570</td>
+                </tr>
+            
+                <tr>
+                    <td>15</td>
+                    <td><a href="player_49308.html">“Iris”</a></td>
+                    <td>1450.7</td>
+                    <td>23.9</td>
+                    <td>1523.5</td>
+                    <td>89</td>
+                </tr>
+            
+                <tr>
+                    <td>16</td>
+                    <td><a href="player_177157.html">Laura Masana</a></td>
+                    <td>1450.6</td>
+                    <td>11.1</td>
+                    <td>1500.0</td>
+                    <td>390</td>
+                </tr>
+            
+                <tr>
+                    <td>17</td>
+                    <td><a href="player_165915.html">Melina Meltzer</a></td>
+                    <td>1449.3</td>
+                    <td>7.7</td>
+                    <td>1555.1</td>
+                    <td>800</td>
+                </tr>
+            
+                <tr>
+                    <td>18</td>
+                    <td><a href="player_338843.html">Jenni Honka</a></td>
+                    <td>1444.3</td>
+                    <td>16.7</td>
+                    <td>1544.2</td>
+                    <td>170</td>
+                </tr>
+            
+                <tr>
+                    <td>19</td>
+                    <td><a href="player_249325.html">Abby Rumph</a></td>
+                    <td>1443.5</td>
+                    <td>15.4</td>
+                    <td>1577.3</td>
+                    <td>195</td>
+                </tr>
+            
+                <tr>
+                    <td>20</td>
+                    <td><a href="player_127357.html">Ivy Simpson</a></td>
+                    <td>1437.1</td>
+                    <td>7.4</td>
+                    <td>1500.0</td>
+                    <td>880</td>
+                </tr>
+            
+                <tr>
+                    <td>21</td>
+                    <td><a href="player_165919.html">Linda G</a></td>
+                    <td>1435.3</td>
+                    <td>7.8</td>
+                    <td>1500.0</td>
+                    <td>804</td>
+                </tr>
+            
+                <tr>
+                    <td>22</td>
+                    <td><a href="player_195483.html">Honey Simpson</a></td>
+                    <td>1411.7</td>
+                    <td>25.1</td>
+                    <td>1614.2</td>
+                    <td>80</td>
+                </tr>
+            
+                <tr>
+                    <td>23</td>
+                    <td><a href="player_211266.html">Erika Svensson</a></td>
+                    <td>1404.4</td>
+                    <td>30.7</td>
+                    <td>1734.2</td>
+                    <td>53</td>
+                </tr>
+            
+                <tr>
+                    <td>24</td>
+                    <td><a href="player_189658.html">Carlene Malack</a></td>
+                    <td>1404.4</td>
+                    <td>8.3</td>
+                    <td>1639.9</td>
+                    <td>720</td>
+                </tr>
+            
+                <tr>
+                    <td>25</td>
+                    <td><a href="player_307101.html">Terrie White</a></td>
+                    <td>1403.0</td>
+                    <td>10.7</td>
+                    <td>1500.0</td>
+                    <td>430</td>
+                </tr>
+            
+                <tr>
+                    <td>26</td>
+                    <td><a href="player_351901.html">Gretchen Lou</a></td>
+                    <td>1396.6</td>
+                    <td>24.3</td>
+                    <td>1516.7</td>
+                    <td>86</td>
+                </tr>
+            
+                <tr>
+                    <td>27</td>
+                    <td><a href="player_173039.html">Tracy M</a></td>
+                    <td>1393.7</td>
+                    <td>23.3</td>
+                    <td>1558.0</td>
+                    <td>94</td>
+                </tr>
+            
+                <tr>
+                    <td>28</td>
+                    <td><a href="player_165916.html">Tammy Ballinger</a></td>
+                    <td>1389.4</td>
+                    <td>9.2</td>
+                    <td>1500.0</td>
+                    <td>584</td>
+                </tr>
+            
+                <tr>
+                    <td>29</td>
+                    <td><a href="player_50532.html">Jasmine Phillips</a></td>
+                    <td>1387.7</td>
+                    <td>19.1</td>
+                    <td>1737.6</td>
+                    <td>135</td>
+                </tr>
+            
+                <tr>
+                    <td>30</td>
+                    <td><a href="player_351900.html">Savannah Cabral</a></td>
+                    <td>1380.4</td>
+                    <td>22.3</td>
+                    <td>1500.0</td>
+                    <td>105</td>
+                </tr>
+            
+                <tr>
+                    <td>31</td>
+                    <td><a href="player_171742.html">Andreina Ramirez</a></td>
+                    <td>1376.9</td>
+                    <td>15.2</td>
+                    <td>1520.6</td>
+                    <td>218</td>
+                </tr>
+            
+                <tr>
+                    <td>32</td>
+                    <td><a href="player_366040.html">Cherene Marie</a></td>
+                    <td>1375.4</td>
+                    <td>19.2</td>
+                    <td>1718.4</td>
+                    <td>140</td>
+                </tr>
+            
+                <tr>
+                    <td>33</td>
+                    <td><a href="player_123865.html">Whitney Clark</a></td>
+                    <td>1369.6</td>
+                    <td>15.1</td>
+                    <td>1500.0</td>
+                    <td>230</td>
+                </tr>
+            
+                <tr>
+                    <td>34</td>
+                    <td><a href="player_254389.html">Danica Delsman</a></td>
+                    <td>1365.5</td>
+                    <td>30.6</td>
+                    <td>1500.0</td>
+                    <td>60</td>
+                </tr>
+            
+                <tr>
+                    <td>35</td>
+                    <td><a href="player_183502.html">Aria Garcia</a></td>
+                    <td>1361.0</td>
+                    <td>20.6</td>
+                    <td>1500.0</td>
+                    <td>128</td>
+                </tr>
+            
+                <tr>
+                    <td>36</td>
+                    <td><a href="player_197774.html">Tbird</a></td>
+                    <td>1356.6</td>
+                    <td>28.9</td>
+                    <td>1530.1</td>
+                    <td>60</td>
+                </tr>
+            
+                <tr>
+                    <td>37</td>
+                    <td><a href="player_250888.html">Candace Morris</a></td>
+                    <td>1347.7</td>
+                    <td>27.8</td>
+                    <td>1500.0</td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td>38</td>
+                    <td><a href="player_324011.html">Lauren Hughes</a></td>
+                    <td>1345.8</td>
+                    <td>14.5</td>
+                    <td>1500.0</td>
+                    <td>270</td>
+                </tr>
+            
+                <tr>
+                    <td>39</td>
+                    <td><a href="player_114923.html">Becky Waters</a></td>
+                    <td>1345.2</td>
+                    <td>15.1</td>
+                    <td>1500.0</td>
+                    <td>260</td>
+                </tr>
+            
+                <tr>
+                    <td>40</td>
+                    <td><a href="player_225596.html">Sydney Minges</a></td>
+                    <td>1341.0</td>
+                    <td>19.7</td>
+                    <td>1500.0</td>
+                    <td>135</td>
+                </tr>
+            
+                <tr>
+                    <td>41</td>
+                    <td><a href="player_115819.html">Ace</a></td>
+                    <td>1331.4</td>
+                    <td>38.2</td>
+                    <td>1500.0</td>
+                    <td>50</td>
+                </tr>
+            
+                <tr>
+                    <td>42</td>
+                    <td><a href="player_127358.html">April Wilson</a></td>
+                    <td>1324.4</td>
+                    <td>24.5</td>
+                    <td>1500.0</td>
+                    <td>110</td>
+                </tr>
+            
+                <tr>
+                    <td>43</td>
+                    <td><a href="player_105184.html">Carla Nierlich</a></td>
+                    <td>1323.0</td>
+                    <td>32.9</td>
+                    <td>1500.0</td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td>44</td>
+                    <td><a href="player_292612.html">Brenda Rhodes</a></td>
+                    <td>1311.6</td>
+                    <td>28.6</td>
+                    <td>1500.0</td>
+                    <td>65</td>
+                </tr>
+            
+                <tr>
+                    <td>45</td>
+                    <td><a href="player_292613.html">Olivia Rhodes</a></td>
+                    <td>1303.6</td>
+                    <td>28.3</td>
+                    <td>1500.0</td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td>46</td>
+                    <td><a href="player_206910.html">Willow Phillips</a></td>
+                    <td>1299.6</td>
+                    <td>26.1</td>
+                    <td>1711.9</td>
+                    <td>75</td>
+                </tr>
+            
+                <tr>
+                    <td>47</td>
+                    <td><a href="player_450053.html">Julia Payne</a></td>
+                    <td>1276.8</td>
+                    <td>23.7</td>
+                    <td>1500.0</td>
+                    <td>109</td>
+                </tr>
+            
+                <tr>
+                    <td>48</td>
+                    <td><a href="player_261892.html">Chelsey Robb</a></td>
+                    <td>1259.0</td>
+                    <td>31.3</td>
+                    <td>1500.0</td>
+                    <td>70</td>
+                </tr>
+            
+                <tr>
+                    <td>49</td>
+                    <td><a href="player_224451.html">Keeza Anzini</a></td>
+                    <td>1146.2</td>
+                    <td>35.5</td>
+                    <td>1500.0</td>
+                    <td>65</td>
+                </tr>
+            
+        </tbody>
+    </table>
+</div>
+
+
+
         </div>
     </details>
 
@@ -2408,22 +4124,22 @@
         <div class="tab-content" id="content-combined">
             
 
-<h2>All-Time Total Points</h2>
+<div class="section-header">All-Time Total Points</div>
 <div class="table-container">
     <table id="combined-total-points-table">
         <thead>
             <tr>
-                <th onclick="sortTable('combined-total-points-table', 0, true)">Rank</th>
+                <th onclick="sortTable('combined-total-points-table', 0, true)">#</th>
                 <th onclick="sortTable('combined-total-points-table', 1)">Player</th>
-                <th onclick="sortTable('combined-total-points-table', 2, true)">Total Raw Points</th>
-                <th onclick="sortTable('combined-total-points-table', 3, true)">Weekly Wins</th>
-                <th onclick="sortTable('combined-total-points-table', 4, true)">Perfect Nights</th>
-                <th onclick="sortTable('combined-total-points-table', 5, true)">Total Games Played</th>
-                <th onclick="sortTable('combined-total-points-table', 6, true)">Total Games Won</th>
-                <th onclick="sortTable('combined-total-points-table', 7, true)">Total Adjusted Points</th>
-                <th onclick="sortTable('combined-total-points-table', 8, true)">Seasons Played</th>
-                <th onclick="sortTable('combined-total-points-table', 9, true)">Total Weeks Attended</th>
-                <th onclick="sortTable('combined-total-points-table', 10, true)">Points/Week</th>
+                <th onclick="sortTable('combined-total-points-table', 2, true)">Raw Pts</th>
+                <th onclick="sortTable('combined-total-points-table', 3, true)">Wk Wins</th>
+                <th onclick="sortTable('combined-total-points-table', 4, true)">Perfects</th>
+                <th onclick="sortTable('combined-total-points-table', 5, true)">GP</th>
+                <th onclick="sortTable('combined-total-points-table', 6, true)">GW</th>
+                <th onclick="sortTable('combined-total-points-table', 7, true)">Adj Pts</th>
+                <th onclick="sortTable('combined-total-points-table', 8, true)">Seasons</th>
+                <th onclick="sortTable('combined-total-points-table', 9, true)">Weeks</th>
+                <th onclick="sortTable('combined-total-points-table', 10, true)">Pts/Wk</th>
             </tr>
         </thead>
         <tbody>
@@ -2782,7 +4498,7 @@
     </table>
 </div>
 
-<h2>Top 4 Finishes</h2>
+<div class="section-header">Top 4 Finishes</div>
 <div class="table-container">
     <table id="combined-top-4-finishes-table">
         <thead>
@@ -3160,7 +4876,7 @@
     </table>
 </div>
 
-<h2>Top Season Performances</h2>
+<div class="section-header">Top Season Performances</div>
 <div class="table-container">
     <table id="combined-top-seasons-table">
         <thead>
@@ -3168,12 +4884,12 @@
                 <th onclick="sortTable('combined-top-seasons-table', 0)">Player</th>
                 <th onclick="sortTable('combined-top-seasons-table', 1)">Season</th>
                 <th onclick="sortTable('combined-top-seasons-table', 2, true)">Score</th>
-                <th onclick="sortTable('combined-top-seasons-table', 3, true)">Weekly Wins</th>
+                <th onclick="sortTable('combined-top-seasons-table', 3, true)">Wk Wins</th>
                 <th onclick="sortTable('combined-top-seasons-table', 4, true)">1st</th>
                 <th onclick="sortTable('combined-top-seasons-table', 5, true)">2nd</th>
                 <th onclick="sortTable('combined-top-seasons-table', 6, true)">3rd</th>
-                <th onclick="sortTable('combined-top-seasons-table', 7, true)">4th (3rd in 3p)</th>
-                <th onclick="sortTable('combined-top-seasons-table', 8, true)">2nd (3p)</th>
+                <th onclick="sortTable('combined-top-seasons-table', 7, true)">4th</th>
+                <th onclick="sortTable('combined-top-seasons-table', 8, true)">2nd(3p)</th>
             </tr>
         </thead>
         <tbody>
@@ -3482,7 +5198,7 @@
     </table>
 </div>
 
-<h2>Most Improved</h2>
+<div class="section-header">Most Improved</div>
 <div class="table-container">
     <table id="combined-most-improved-table">
         <thead>
@@ -3727,46 +5443,39 @@
 </div>
 
 
+
+
         </div>
     </details>
 
     </main>
 
-    <footer class="container">
-        <small>Last updated: 2026-04-10 09:16:59</small>
+    <footer class="site-footer">
+        MFP Stats &middot; Data sourced from <a href="https://app.matchplay.events" target="_blank">Matchplay Events</a> &middot; Last updated: 2026-04-10 22:00:35
     </footer>
 
     <script>
         function sortTable(tableId, n, isNumeric = false) {
-            let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             table = document.getElementById(tableId);
+            if (!table) return;
             switching = true;
-            // Set the sorting direction to ascending:
             dir = "asc";
-            /* Make a loop that will continue until
-            no switching has been done: */
             while (switching) {
-                // Start by saying: no switching is done:
                 switching = false;
                 rows = table.rows;
-                /* Loop through all table rows (except the
-                first, which contains table headers): */
                 for (i = 1; i < (rows.length - 1); i++) {
-                    // Start by saying there should be no switching:
                     shouldSwitch = false;
-                    /* Get the two elements you want to compare,
-                    one from current row and one from the next: */
                     x = rows[i].getElementsByTagName("TD")[n];
                     y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (!x || !y) continue;
 
-                    let xContent = x.textContent || x.innerText;
-                    let yContent = y.textContent || y.innerText;
+                    var xContent = x.textContent || x.innerText;
+                    var yContent = y.textContent || y.innerText;
 
-                    // Convert to number if isNumeric is true
                     if (isNumeric) {
-                        xContent = parseFloat(xContent.replace(/[^0-9.-]+/g,"")); // Remove non-numeric chars except . and -
-                        yContent = parseFloat(yContent.replace(/[^0-9.-]+/g,""));
-                        // Handle NaN from parseFloat if content is not a valid number
+                        xContent = parseFloat(xContent.replace(/[^0-9.\-]+/g, ""));
+                        yContent = parseFloat(yContent.replace(/[^0-9.\-]+/g, ""));
                         if (isNaN(xContent)) xContent = dir === "asc" ? -Infinity : Infinity;
                         if (isNaN(yContent)) yContent = dir === "asc" ? -Infinity : Infinity;
                     } else {
@@ -3774,32 +5483,17 @@
                         yContent = yContent.toLowerCase();
                     }
 
-                    /* Check if the two rows should switch place,
-                    based on the direction, asc or desc: */
                     if (dir == "asc") {
-                        if (xContent > yContent) {
-                            // If so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
-                        }
+                        if (xContent > yContent) { shouldSwitch = true; break; }
                     } else if (dir == "desc") {
-                        if (xContent < yContent) {
-                            // If so, mark as a switch and break the loop:
-                            shouldSwitch = true;
-                            break;
-                        }
+                        if (xContent < yContent) { shouldSwitch = true; break; }
                     }
                 }
                 if (shouldSwitch) {
-                    /* If a switch has been marked, make the switch
-                    and mark that a switch has been done: */
                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                     switching = true;
-                    // Each time a switch is done, increase this count by 1:
                     switchcount++;
                 } else {
-                    /* If no switching has been done AND the direction is "asc",
-                    set the direction to "desc" and run the while loop again. */
                     if (switchcount == 0 && dir == "asc") {
                         dir = "desc";
                         switching = true;
