@@ -11,40 +11,48 @@
 
     {% if has_finals == "Yes" and finals_data.rounds %}
         <div class="section-header">Finals Results</div>
-        <div class="grid">
+        <div class="finals-bracket">
             {% for round_data in finals_data.rounds %}
-                <div class="column">
-                    <h3>{{ "Semi-Finals" if loop.index == 1 else "Finals" if loop.index == 2 else "Round " ~ loop.index }}</h3>
-                    {% for group_name, group_data in round_data.groups.items() %}
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Player</th>
-                                        {% for arena in group_data.arenas %}
-                                            <th>{{ arena }}</th>
-                                        {% endfor %}
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for player_id, player_data in group_data.players.items() %}
-                                        <tr {% if player_data.is_leader %}style="font-weight: bold;"{% endif %}>
-                                            <td><a href="player_{{ player_id }}.html">{{ player_data.name }}</a></td>
-                                            {% for arena in group_data.arenas %}
-                                                <td>{{ player_data.games.get(arena, '-') }}</td>
+                <div class="finals-round">
+                    <h3>{{ finals_data.round_names[loop.index0] }}</h3>
+                    <div class="finals-groups">
+                        {% for group_name, group_data in round_data.groups.items() %}
+                            <div class="finals-group">
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Player</th>
+                                                {% for arena in group_data.arenas %}
+                                                    <th>{{ arena }}</th>
+                                                {% endfor %}
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for player_id, player_data in group_data.players.items() %}
+                                                <tr {% if player_data.is_leader %}style="font-weight: bold;"{% endif %}>
+                                                    <td><a href="player_{{ player_id }}.html">{{ player_data.name }}</a></td>
+                                                    {% for arena in group_data.arenas %}
+                                                        <td>{{ player_data.games.get(arena, '-') }}</td>
+                                                    {% endfor %}
+                                                    <td>{{ player_data.total_points | format_number }}</td>
+                                                </tr>
                                             {% endfor %}
-                                            <td>{{ player_data.total_points | format_number }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                     {% if round_data.tiebreakers %}
                         <p class="text-small" style="margin-top: 0.3rem;"><strong>Tiebreakers:</strong>
                             {% for tiebreaker in round_data.tiebreakers %}
-                                {{ tiebreaker.winner }} def. {{ tiebreaker.loser }} on {{ tiebreaker.arena }}{% if not loop.last %}; {% endif %}
+                                {% if tiebreaker.all_players | length > 2 %}
+                                    {{ tiebreaker.all_players | join(' > ') }} on {{ tiebreaker.arena }}{% if not loop.last %}; {% endif %}
+                                {% else %}
+                                    {{ tiebreaker.winner }} def. {{ tiebreaker.loser }} on {{ tiebreaker.arena }}{% if not loop.last %}; {% endif %}
+                                {% endif %}
                             {% endfor %}
                         </p>
                     {% endif %}

@@ -240,11 +240,12 @@ def generate_season_pages(env, all_series_data):
                     for game in round_games:
                         arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
                         game_set = game.get('set', 0)
-                        
-                        if len(game['playerIds']) == 2:
+
+                        # Set 9999 indicates a tiebreaker game (any player count)
+                        if game_set == 9999:
                             tiebreakers.append(game)
                             continue
-                        
+
                         groups[game_set]['arenas'].add(arena_name)
                         for p_idx, player_id in enumerate(game['playerIds']):
                             groups[game_set]['players'][player_id]['name'] = player_name_map.get(player_id, 'Unknown Player')
@@ -253,12 +254,6 @@ def generate_season_pages(env, all_series_data):
                                 points = float(points_val) if points_val is not None else 0.0
                                 groups[game_set]['players'][player_id]['games'][arena_name] = points
                                 groups[game_set]['players'][player_id]['total_points'] += points
-                    
-                    for game in tiebreakers:
-                        arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
-                        winner_id = game['resultPositions'][0]
-                        loser_id = game['resultPositions'][1]
-                        # Tiebreakers are not added to groups, but stored separately
                     
                     # Determine leaders for each group
                     for group_id, group_data in groups.items():
@@ -299,25 +294,35 @@ def generate_season_pages(env, all_series_data):
                             else:
                                 group_data['players'][pid]['is_leader'] = False
 
+                    tiebreaker_entries = []
+                    for game in tiebreakers:
+                        arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
+                        positions = game.get('resultPositions', [])
+                        ranked_players = [player_name_map.get(pid, 'Unknown') for pid in positions]
+                        tiebreaker_entries.append({
+                            'winner': ranked_players[0] if ranked_players else 'Unknown',
+                            'loser': ranked_players[1] if len(ranked_players) > 1 else 'Unknown',
+                            'all_players': ranked_players,
+                            'arena': arena_name
+                        })
+
                     all_finals_rounds.append({
                         'groups': {f'group_{k}': dict(v) for k, v in groups.items()},
-                        'tiebreakers': [] # Tiebreakers logic needs to be fully implemented if we want to show them
+                        'tiebreakers': tiebreaker_entries
                     })
-                    
-                    # Add tiebreakers back if we processed them
-                    if tiebreakers:
-                         all_finals_rounds[-1]['tiebreakers'] = []
-                         for game in tiebreakers:
-                            arena_name = game.get('arena', {}).get('name', 'Unknown Arena')
-                            winner_id = game['resultPositions'][0]
-                            loser_id = game['resultPositions'][1]
-                            all_finals_rounds[-1]['tiebreakers'].append({
-                                'winner': player_name_map.get(winner_id, 'Unknown'),
-                                'loser': player_name_map.get(loser_id, 'Unknown'),
-                                'arena': arena_name
-                            })
 
             finals_data['rounds'] = all_finals_rounds
+
+            # Assign round names counting backwards: Finals, Semi-Finals, Quarterfinals
+            round_names_reversed = ['Finals', 'Semi-Finals', 'Quarterfinals']
+            total_rounds = len(all_finals_rounds)
+            finals_data['round_names'] = []
+            for i in range(total_rounds):
+                distance_from_end = total_rounds - 1 - i
+                if distance_from_end < len(round_names_reversed):
+                    finals_data['round_names'].append(round_names_reversed[distance_from_end])
+                else:
+                    finals_data['round_names'].append(f'Round {i + 1}')
 
         tournament_id_to_week_num = {tid: i + 1 for i, tid in enumerate(series['tournamentIds'])}
         

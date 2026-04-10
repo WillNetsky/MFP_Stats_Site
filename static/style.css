@@ -760,6 +760,24 @@ a[role="button"]:visited {
     min-width: 0;
 }
 
+/* ---- Finals bracket layout ---- */
+.finals-bracket {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.finals-round > h3 {
+    margin-bottom: 0.5rem;
+}
+.finals-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+}
+.finals-group {
+    min-width: 0;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
     html { font-size: 13px; }
