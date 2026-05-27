@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4 # Action to checkout your repository code
+        uses: actions/checkout@v5 # Action to checkout your repository code
 
       - name: Set up Python 🐍
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x' # Specify your Python version
 
@@ -48,7 +48,7 @@ jobs:
         run: python main.py --generate
 
       - name: Deploy to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3 # Action to deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4 # Action to deploy to gh-pages branch
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub's built-in token for authentication
           publish_dir: ./output # The directory containing your generated site
