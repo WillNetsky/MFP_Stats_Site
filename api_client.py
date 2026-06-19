@@ -21,6 +21,42 @@ HEADERS = {
 
 FORCE_REFRESH = False
 
+# Rate-limit handling for the Matchplay API.
+# REQUEST_DELAY throttles outbound requests to avoid tripping 429 in the first
+# place; on a 429 (or transient 5xx) we back off exponentially, honoring the
+# server's Retry-After header when present.
+REQUEST_DELAY = 0.25      # seconds between network requests
+MAX_RETRIES = 5
+INITIAL_BACKOFF = 2.0     # seconds, doubled on each retry
+
+def api_get(url, **kwargs):
+    """GET against the Matchplay API with throttling and retry/backoff.
+
+    Retries on HTTP 429 (rate limited) and 5xx (transient server errors),
+    respecting Retry-After when the server provides it. Raises on the final
+    attempt or on non-retryable errors, matching requests.get semantics.
+    """
+    backoff = INITIAL_BACKOFF
+    for attempt in range(1, MAX_RETRIES + 1):
+        time.sleep(REQUEST_DELAY)
+        response = requests.get(url, headers=HEADERS, **kwargs)
+        if response.status_code != 429 and response.status_code < 500:
+            return response
+
+        if attempt == MAX_RETRIES:
+            return response  # let caller's raise_for_status surface the error
+
+        retry_after = response.headers.get('Retry-After')
+        try:
+            wait = float(retry_after) if retry_after else backoff
+        except ValueError:
+            wait = backoff
+        print(f"Rate limited (HTTP {response.status_code}) on {url}. "
+              f"Retrying in {wait:.1f}s (attempt {attempt}/{MAX_RETRIES})...")
+        time.sleep(wait)
+        backoff *= 2
+    return response
+
 def is_cache_stale(filepath):
     if FORCE_REFRESH or not os.path.exists(filepath):
         return True
@@ -38,7 +74,7 @@ def get_series_by_owner(user_id, status=None):
     page = 1
     while True:
         params['page'] = page
-        response = requests.get(url, headers=HEADERS, params=params)
+        response = api_get(url, params=params)
         response.raise_for_status()
         data = response.json()
         if data.get('data'):
@@ -64,7 +100,7 @@ def fetch_finals_results(tournament_ids, series_status='active'):
         print(f"Fetching finals standings for Tournament ID: {tournament_id}...")
         url = f"{BASE_URL}/tournaments/{tournament_id}/standings"
         try:
-            response = requests.get(url, headers=HEADERS)
+            response = api_get(url)
             response.raise_for_status()
             current_results = response.json()
             with open(filepath, 'w') as f:
@@ -88,7 +124,7 @@ def fetch_tournament_games(tournament_id, series_status='active'):
     print(f"Fetching game data for Tournament ID: {tournament_id}...")
     url = f"{BASE_URL}/tournaments/{tournament_id}/games"
     try:
-        response = requests.get(url, headers=HEADERS)
+        response = api_get(url)
         response.raise_for_status()
         games_data = response.json()
         
@@ -121,7 +157,7 @@ def fetch_tournament_details(tournament_id, series_status='active'):
     url = f"{BASE_URL}/tournaments/{tournament_id}"
     params = {'includeArenas': 'true'}
     try:
-        response = requests.get(url, headers=HEADERS, params=params)
+        response = api_get(url, params=params)
         response.raise_for_status()
         tournament_details = response.json()
         with open(filepath, 'w') as f:
@@ -171,7 +207,7 @@ def fetch_data(excluded_series_names, finals_mapping, parse_series_name_func):
             print(f"Fetching details for Series ID: {series_id}...")
             url = f"{BASE_URL}/series/{series_id}"
             params = {'includeDetails': 'true'}
-            response = requests.get(url, headers=HEADERS, params=params)
+            response = api_get(url, params=params)
             response.raise_for_status()
             series_data_raw = response.json()
             with open(series_filepath, 'w') as f:
