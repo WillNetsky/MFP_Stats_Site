@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFLPinball Summer Season 26 — MFP Stats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        // Theme persistence
+        (function() {
+            const saved = localStorage.getItem('mfp-theme');
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', saved);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('mfp-theme', next);
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) btn.textContent = next === 'dark' ? 'Light' : 'Dark';
+        }
+
+        // Score color function
+        function updateScoreColors() {
+            const badges = document.querySelectorAll('.score-badge');
+            badges.forEach(badge => {
+                const score = parseFloat(badge.getAttribute('data-score'));
+                if (isNaN(score)) return;
+
+                let r, g, b;
+
+                if (score === 35) {
+                    r = 255; g = 215; b = 0;
+                } else if (score <= 5) {
+                    r = 255; g = 0; b = 0;
+                } else if (score >= 34) {
+                    r = 0; g = 128; b = 0;
+                } else if (score < 20) {
+                    const t = (score - 5) / 15.0;
+                    r = 255;
+                    g = Math.floor(255 * t);
+                    b = Math.floor(255 * t);
+                } else {
+                    const t = (score - 20) / 14.0;
+                    r = Math.floor(255 * (1 - t));
+                    g = Math.floor(255 * (1 - t) + 128 * t);
+                    b = Math.floor(255 * (1 - t));
+                }
+
+                badge.style.backgroundColor = `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`;
+
+                const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                badge.style.color = luminance > 0.5 ? 'black' : 'white';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateScoreColors();
+            const btn = document.getElementById('theme-toggle-btn');
+            if (btn) {
+                const theme = document.documentElement.getAttribute('data-theme');
+                btn.textContent = theme === 'dark' ? 'Light' : 'Dark';
+            }
+        });
+    </script>
+    
+</head>
+<body class="season-page">
+    <nav class="site-nav">
+    <div class="nav-inner">
+        <a class="brand" href="index.html">MFP Stats</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="seasons.html">Seasons</a>
+            <a href="players.html">Players</a>
+            <a href="charts.html">Charts</a>
+            <a href="leaderboards.html">Leaderboards</a>
+            <a href="frivolities.html">Frivolities</a>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()">Dark</button>
+        </div>
+    </div>
+</nav>
+    <main class="container-wide">
+        
+    <h1>MFLPinball Summer Season 26</h1>
+    <p class="text-small text-muted"><a href="https://app.matchplay.events/series/6149" target="_blank">View on Matchplay.events</a></p>
+
+    
+
+    <div class="section-header">Player Performance</div>
+    
+        <p>No player performance data available for this season.</p>
+    
+
+    </main>
+
+    <footer class="site-footer">
+        MFP Stats &middot; Data sourced from <a href="https://app.matchplay.events" target="_blank">Matchplay Events</a> &middot; Last updated: 2026-06-28 10:39:55
+    </footer>
+
+    <script>
+        function sortTable(tableId, n, isNumeric = false) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById(tableId);
+            if (!table) return;
+            switching = true;
+            dir = "asc";
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (!x || !y) continue;
+
+                    var xContent = x.textContent || x.innerText;
+                    var yContent = y.textContent || y.innerText;
+
+                    if (isNumeric) {
+                        xContent = parseFloat(xContent.replace(/[^0-9.\-]+/g, ""));
+                        yContent = parseFloat(yContent.replace(/[^0-9.\-]+/g, ""));
+                        if (isNaN(xContent)) xContent = dir === "asc" ? -Infinity : Infinity;
+                        if (isNaN(yContent)) yContent = dir === "asc" ? -Infinity : Infinity;
+                    } else {
+                        xContent = xContent.toLowerCase();
+                        yContent = yContent.toLowerCase();
+                    }
+
+                    if (dir == "asc") {
+                        if (xContent > yContent) { shouldSwitch = true; break; }
+                    } else if (dir == "desc") {
+                        if (xContent < yContent) { shouldSwitch = true; break; }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
