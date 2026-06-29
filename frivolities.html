@@ -99,7 +99,32 @@
         <summary>Tournaments on This Day</summary>
         <div class="tab-content" id="content-on-this-day">
             
-                <p>No tournaments found on this day in history.</p>
+                <div class="table-container">
+                    <table id="tournaments-on-this-day-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('tournaments-on-this-day-table', 0)">Date</th>
+                                <th onclick="sortTable('tournaments-on-this-day-table', 1)">Season</th>
+                                <th onclick="sortTable('tournaments-on-this-day-table', 2, true)">Week</th>
+                                <th onclick="sortTable('tournaments-on-this-day-table', 3)">Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                <tr>
+                                    <td>2022-06-29</td>
+                                    <td><a href="season_2161.html">MFLadies Pinball Summer 2022</a></td>
+                                    <td>1</td>
+                                    <td>
+                                        
+                                            <a href="player_127357.html">Ivy Simpson</a>
+                                        
+                                    </td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
             
         </div>
     </details>
@@ -10516,7 +10541,7 @@
     </main>
 
     <footer class="site-footer">
-        MFP Stats &middot; Data sourced from <a href="https://app.matchplay.events" target="_blank">Matchplay Events</a> &middot; Last updated: 2026-06-28 10:39:55
+        MFP Stats &middot; Data sourced from <a href="https://app.matchplay.events" target="_blank">Matchplay Events</a> &middot; Last updated: 2026-06-29 12:48:01
     </footer>
 
     <script>
