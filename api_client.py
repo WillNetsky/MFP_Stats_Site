@@ -11,7 +11,7 @@ load_dotenv()
 
 API_KEY = os.getenv("MATCHPLAY_API_KEY")
 USER_ID = os.getenv("USER_ID")
-BASE_URL = "https://app.matchplay.events/api"
+BASE_URL = "https://api.matchplay.events/api"
 
 HEADERS = {
     "Authorization": f"Bearer {API_KEY}",
